@@ -325,7 +325,8 @@ first, by the command in the kit's README.
    - When there is a preview host, `task/*` and the integration branch in its
      list of branches that build previews.
 
-Then return to step 3.
+Then carry on from step 3. At step 4 the task is the first task, already on
+its own branch, so step 5 has nothing left to do for it.
 
 A repository with no commits at all has no default branch, and a pull request
 needs a base. Create the default branch with a single commit holding only a

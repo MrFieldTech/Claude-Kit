@@ -35,17 +35,18 @@ complete is the failure this skill exists to prevent.
 Before anything is committed, account for every credential this session
 produced, was given, or found sitting somewhere it should not be.
 
-- **When the Credentials setting names a place or a rule,** such as a section
-  of the authority file, follow it for each value. Where it sends a value to a
-  file, name that file in the handoff and never the value.
-- **When it is `none`, or the repository is not confirmed private,** commit the
-  value nowhere, `HANDOFF.md` included. Put it in the final report under its
-  own heading, labelled with what it unlocks, and say plainly that the report
-  is the only copy, so the owner can place it before the conversation ends.
+First confirm the repository's visibility through the session's GitHub
+access. Then:
 
-Check the repository's visibility through the session's GitHub access before
-writing any value into a file. If it cannot be confirmed, treat the repository
-as public.
+- **When the repository is confirmed private and the Credentials setting names
+  a place or a rule,** such as a section of the authority file, follow it for
+  each value. Where it sends a value to a file, name that file in the handoff
+  and never the value.
+- **Otherwise,** when the setting is `none`, or the repository is public, or its
+  visibility cannot be confirmed, commit the value nowhere, `HANDOFF.md`
+  included. Put it in the final report under its own heading, labelled with
+  what it unlocks, and say plainly that the report is the only copy, so the
+  owner can place it before the conversation ends.
 
 Never mask, truncate, or substitute a reference where a value is recorded.
 Never leave a value only in the conversation without saying so.
@@ -178,8 +179,10 @@ Regenerate commands rewrote a generated file, commit it. Push the task branch.
 
 **Open and merge the pull request.** Through the session's GitHub access, open
 a pull request from `task/<slug>` into the target, titled after the task, with
-a body naming the task slug and what it changed. Wait for every check GitHub
-reports on the pull request to finish.
+a body naming the task slug and what it changed. Wait for every check run
+GitHub reports on the pull request to finish. A combined commit status that
+reads `pending` with no statuses behind it means nothing posted one, not that
+something is still running.
 
 When the Task preview address is set, the host usually posts the branch's
 preview address on the pull request once the branch builds. If it is not the
