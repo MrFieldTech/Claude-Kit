@@ -80,6 +80,7 @@ branches to build, when there is one.
 | `1.0.0, 1.1.0 available` | The source has a newer release |
 | `..., edited locally: <files>` | A kit-owned file was changed in place. Move the change into the kit |
 | `1.0.0, source unreachable` | The source could not be fetched. Nothing is wrong locally |
+| `1.0.0, the source has no release on its default branch` | The source's `main` holds no `VERSION`, so no release has reached it |
 
 An update happens only when the owner asks, on a task branch, as its own
 commit:
