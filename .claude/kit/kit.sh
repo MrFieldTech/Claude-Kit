@@ -182,8 +182,10 @@ cmd_status() {
   edits="$(local_edits "$root" | paste -sd ',' - | sed 's/,/, /g')"
 
   TMP_DIR="$(mktemp -d)"
-  if ! fetch_source "$source" "$TMP_DIR/kit" || [ ! -f "$TMP_DIR/kit/VERSION" ]; then
+  if ! fetch_source "$source" "$TMP_DIR/kit"; then
     state="source unreachable"
+  elif [ ! -f "$TMP_DIR/kit/VERSION" ]; then
+    state="the source has no release on its default branch"
   else
     local latest
     latest="$(tr -d '[:space:]' < "$TMP_DIR/kit/VERSION")"
