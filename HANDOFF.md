@@ -13,6 +13,7 @@ file at the same time.
 
 | Date | Tasks touched | Work commits |
 |---|---|---|
+| 2026-09-24 | `release-1-0`, DONE, merged into `preview` and then `main` at Devan's request: 1.0.0 built, checked, walked through a scratch repository, and installed in the repository the skills came from. `first-pilot` queued | `763033b..28fb6c4` |
 
 ## Blocked On
 
@@ -38,10 +39,21 @@ sends it here, and in this repository it never does.
 - **The integration branch is a per-repository setting, `preview` by
   default.** Devan, 2026-09-24. The rule that the default branch moves only
   when the owner asks then holds everywhere unless a repository opts out.
+- **1.0.0 reached `main` before the pilot.** Devan, 2026-09-24, so the pilot
+  installs by the command in `README.md` rather than from a task branch.
+- **No permission rule for a headless `claude` session.** Devan, 2026-09-24.
+  The pilot and his own sessions in real repositories are the fresh-session
+  tests.
+- **Files here are written as if the repository were public.** It was asked
+  for as public and created private. Nothing the kit installs names a
+  project, so making it public later needs no cleanup first.
 
 ## Open Questions For Devan
 
-None.
+1. Should this repository stay private or be made public, as it was asked for?
+   While it is private, a session in another repository needs it attached
+   before it can install or update the kit, and `kit.sh status` reads `source
+   unreachable` in any session without that access.
 
 ## Flagged As Unverified
 
@@ -56,3 +68,11 @@ skill rather than run `/session-open`, so the first run works either way.
 
 **The house rules load by import.** Confirmed in a headless session on
 2026-09-24, with no approval prompt. Not yet seen in an interactive session.
+
+**The repository the skills came from has not yet opened a session on the
+kit.** Its next `/session-open` should print a `Kit:` line. That report is
+item 3 of `release-1-0`.
+
+**Whether GitHub deletes merged branches here.** Automatically delete head
+branches was not checked when the repository was created. The close that
+merged `release-1-0` shows whether its task branch went.

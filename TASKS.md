@@ -43,56 +43,6 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
-### Build The First Release
-
-**Slug:** `release-1-0`
-**Status:** ACTIVE
-**Opened:** 2026-09-24
-
-Devan, 2026-09-24: the session skills he runs in one repository should work in
-any of his repositories. A repository that has never used them gets a
-first-run path that builds its state files, and the rules for how Claude works
-and answers are shared the same way. This repository is the single source,
-installed into each repository as a pinned copy.
-
-**What 1.0 is.** `HOUSE.md`, the two skills, `kit.sh`, `todo_sweep.py` and the
-templates, drawn from the existing skills with every value specific to one
-repository moved into Session Settings. `check.sh` and the CI workflow guard
-the release.
-
-**Verification before it merges.**
-
-1. `bash check.sh` passes.
-2. A scratch repository with a local remote goes through the first-run path
-   by the skill text alone: settings proposed, state files written on a pushed
-   task branch, the task worked, closed, parked for want of a pull request,
-   and resumed from a fresh clone. **Done 2026-09-24, by hand.** A headless
-   `claude` session was the plan, and the permission classifier refused to
-   start one with its permissions bypassed. The walk found four defects in
-   the skill text, all fixed: the default branch read with `origin/` still on
-   it, a `CLAUDE.md` with no title, the kit check run before the kit is on
-   the base, and a merge that created the integration branch before learning
-   no pull request could be opened.
-3. The repository the skills came from installs 1.0 in place of its own copies,
-   and a fresh session there reports the same lines as before plus `Kit:`.
-
-**Then the pilot.** The first other repository Devan chose takes the kit in a
-fresh session he starts there. Every defect it finds is fixed here and
-reinstalled.
-
-**Decided by Devan, 2026-09-24, after the first build.** 1.0.0 reaches `main`
-before the pilot, so the pilot installs by the command in `README.md`. No
-permission rule is added for a headless `claude` session: the pilot and his
-own sessions in real repositories are the fresh-session tests.
-
-**Stopping point.** Items 1 and 2 are done, and item 3's install is done: the
-repository the skills came from runs 1.0.0 from this branch. A review pass
-after the walk fixed three more places a fresh session could misread. What
-remains needs Devan: a fresh session in that repository for item 3's report,
-the pilot, and his word on whether 1.0.0 reaches `main` before the pilot. Until
-it does, the install command in `README.md` fails, because `main` holds only a
-README.
-
 ### Pilot The Kit In A Second Repository
 
 **Slug:** `first-pilot`
@@ -100,8 +50,9 @@ README.
 **Opened:** 2026-09-24
 
 Devan runs the first install outside the repository the skills came from, in a
-fresh session on the second repository he chose. He says: "Install Claude-Kit
-from https://github.com/MrFieldTech/Claude-Kit, then follow its session-open
+fresh session on the second repository he chose, with Claude-Kit attached to
+the session because it is private. He says: "Install Claude-Kit from
+https://github.com/MrFieldTech/Claude-Kit, then follow its session-open
 skill." The first run should propose its Session Settings, ask about what it
 cannot read, offer to remove the response-format section its existing
 `CLAUDE.md` repeats from `HOUSE.md`, and push its first task branch.
@@ -111,3 +62,48 @@ patch version, and taken by `kit.sh update` in every repository that has the
 kit. Record here what the pilot found, without naming the repository.
 
 ## Closed Tasks
+
+### Build The First Release
+
+**Slug:** `release-1-0`
+**Status:** DONE
+**Opened:** 2026-09-24
+**Closed:** 2026-09-24
+
+Devan, 2026-09-24: the session skills he runs in one repository should work in
+any of his repositories. A repository that has never used them gets a
+first-run path that builds its state files, and the rules for how Claude works
+and answers are shared the same way. This repository is the single source,
+installed into each repository as a pinned copy.
+
+**What 1.0.0 is.** `HOUSE.md`, the two skills, `kit.sh`, `todo_sweep.py` and
+the templates, drawn from the existing skills with every value specific to one
+repository moved into Session Settings. `check.sh` and the CI workflow guard a
+release.
+
+**How it was verified.**
+
+1. `bash check.sh` passes, and each of its guards was made to fail on purpose
+   to prove it can: a project term, an em dash, an unrecorded version, a skill
+   the model could invoke, a stale `TODO.md`, and a broken `kit.sh`.
+2. A scratch repository with a local remote went through the first-run path by
+   the skill text alone: settings proposed, state files written on a pushed
+   task branch, the task worked, closed, parked for want of a pull request,
+   and resumed from a fresh clone. It was walked by hand, because the
+   permission classifier refused to start a headless `claude` session with its
+   permissions bypassed. The walk found four defects in the skill text: the
+   default branch read with `origin/` still on it, a `CLAUDE.md` with no
+   title, the kit check run before the kit is on the base, and a merge that
+   created the integration branch before learning no pull request could be
+   opened. A review pass after it found three more: the first task falling into
+   the case that stops to ask, two credential rules that overlapped, and a
+   pending combined status read as a running check. All seven are fixed.
+3. The repository the skills came from installed 1.0.0 in place of its own
+   copies. A fresh session there has not run it yet; `HANDOFF.md` flags it.
+
+**Decided by Devan, 2026-09-24.** 1.0.0 reaches `main` before the pilot, so the
+pilot installs by the command in `README.md`. No permission rule is added for a
+headless `claude` session: the pilot and his own sessions in real repositories
+are the fresh-session tests. At close he asked for everything to reach `main`.
+
+The pilot is `first-pilot`.
