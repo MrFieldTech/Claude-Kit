@@ -46,7 +46,7 @@ Then the detail block, as prose.
 ### Pilot The Kit In A Second Repository
 
 **Slug:** `first-pilot`
-**Status:** TODO
+**Status:** ACTIVE
 **Opened:** 2026-09-24
 
 Devan runs the first install outside the repository the skills came from, in a
