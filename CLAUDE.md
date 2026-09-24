@@ -28,15 +28,17 @@ here, never in a kit-owned file.
   fixtures in `check.sh` are TODOs by design.
 - **Generated files:** `TODO.md`
 - **Checks before merge:** `bash check.sh`
-- **Credentials:** none. This repository is public.
+- **Credentials:** none. Nothing here needs one, and this repository may be
+  made public.
 - **State file format:** kit templates
 
 ## Project rules
 
-- **This repository is public.** A kit-owned file is installed into every
-  repository, so it names no project, person, account, host, address or
-  credential. When one leaks in, remove it and add the term to
-  `PROJECT_TERMS` in `check.sh` so it cannot return.
+- **Nothing the kit installs names a project.** A kit-owned file is installed
+  into every repository, and this repository may be made public, so it names
+  no project, person, account, host, address or credential. When one leaks
+  in, remove it and add the term to `PROJECT_TERMS` in `check.sh` so it
+  cannot return.
 - **Every change to a kit-owned file is a release.** Bump `VERSION`, add a
   `CHANGELOG.md` entry, and keep `README.md` true, all in the same pull
   request. A change that alters what a repository must do after updating

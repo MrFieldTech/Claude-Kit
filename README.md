@@ -53,8 +53,10 @@ git clone --depth 1 https://github.com/MrFieldTech/Claude-Kit "$(mktemp -d)/clau
 bash <that clone>/.claude/kit/kit.sh install .
 ```
 
-In a cloud session whose network refuses the clone, attach
-`MrFieldTech/Claude-Kit` to the session with read access and run it again.
+The repository is private, so the clone needs access to it. In a cloud
+session, attach `MrFieldTech/Claude-Kit` to the session with read access
+before the install. A session without that access reports the kit's status
+as `source unreachable`, and its installed copy keeps working.
 
 The install writes the kit-owned files into the working tree and commits
 nothing. `session-open` then finds a repository new to the kit and runs its
@@ -102,10 +104,11 @@ This repository runs on its own protocol, from the same files it ships. The
 files under `.claude/kit/` and the two skills are the source, so there is no
 `MANIFEST` here, and `kit.sh status` reports the source itself.
 
-- **This repository is public.** A kit-owned file is installed into every
-  repository, public or private, so it names no project, person, account,
-  host, address or credential. `check.sh` refuses the project terms it knows
-  about, and review catches the rest.
+- **Nothing the kit installs names a project.** A kit-owned file is
+  installed into every repository, and this repository may be made public,
+  so it names no project, person, account, host, address or credential.
+  `check.sh` refuses the project terms it knows about, and review catches the
+  rest.
 - **Every change to a kit-owned file is a release.** Bump `VERSION` and add a
   `CHANGELOG.md` entry in the same pull request.
 - **`main` is what every install and update takes,** so it moves only when the

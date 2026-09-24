@@ -21,7 +21,7 @@ None.
 ## Credentials In Transit
 
 None. A value is held here only when the Credentials setting in `CLAUDE.md`
-sends it here, and in this public repository it never does.
+sends it here, and in this repository it never does.
 
 ## Decisions Made
 
