@@ -1,0 +1,20 @@
+name: check
+
+on:
+  pull_request:
+  push:
+    # main and preview advance only by pull request, and pull_request above
+    # checks each one before it merges. The push trigger checks the merged
+    # result as well, which can differ when another task merged first.
+    branches: [main, preview]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # bash, git and python3 come with the runner. check.sh needs nothing
+      # else, which is the same promise the kit makes to every repository.
+      - name: Check the kit
+        run: bash check.sh
