@@ -53,6 +53,9 @@ git clone --depth 1 https://github.com/MrFieldTech/Claude-Kit "$(mktemp -d)/clau
 bash <that clone>/.claude/kit/kit.sh install .
 ```
 
+In a cloud session whose network refuses the clone, attach
+`MrFieldTech/Claude-Kit` to the session with read access and run it again.
+
 The install writes the kit-owned files into the working tree and commits
 nothing. `session-open` then finds a repository new to the kit and runs its
 first-run setup. It reads the repository to propose the Session Settings,

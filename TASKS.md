@@ -80,6 +80,11 @@ the release.
 fresh session he starts there. Every defect it finds is fixed here and
 reinstalled.
 
+**Decided by Devan, 2026-09-24, after the first build.** 1.0.0 reaches `main`
+before the pilot, so the pilot installs by the command in `README.md`. No
+permission rule is added for a headless `claude` session: the pilot and his
+own sessions in real repositories are the fresh-session tests.
+
 **Stopping point.** Items 1 and 2 are done, and item 3's install is done: the
 repository the skills came from runs 1.0.0 from this branch. A review pass
 after the walk fixed three more places a fresh session could misread. What
@@ -87,5 +92,22 @@ remains needs Devan: a fresh session in that repository for item 3's report,
 the pilot, and his word on whether 1.0.0 reaches `main` before the pilot. Until
 it does, the install command in `README.md` fails, because `main` holds only a
 README.
+
+### Pilot The Kit In A Second Repository
+
+**Slug:** `first-pilot`
+**Status:** TODO
+**Opened:** 2026-09-24
+
+Devan runs the first install outside the repository the skills came from, in a
+fresh session on the second repository he chose. He says: "Install Claude-Kit
+from https://github.com/MrFieldTech/Claude-Kit, then follow its session-open
+skill." The first run should propose its Session Settings, ask about what it
+cannot read, offer to remove the response-format section its existing
+`CLAUDE.md` repeats from `HOUSE.md`, and push its first task branch.
+
+Each defect the pilot finds is fixed here on this task's branch, released as a
+patch version, and taken by `kit.sh update` in every repository that has the
+kit. Record here what the pilot found, without naming the repository.
 
 ## Closed Tasks
