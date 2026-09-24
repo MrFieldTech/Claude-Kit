@@ -80,7 +80,12 @@ the release.
 fresh session he starts there. Every defect it finds is fixed here and
 reinstalled.
 
-**Stopping point.** Items 1 and 2 are done. Next: item 3, installing 1.0 in
-the repository the skills came from, which that repository's own task does.
+**Stopping point.** Items 1 and 2 are done, and item 3's install is done: the
+repository the skills came from runs 1.0.0 from this branch. A review pass
+after the walk fixed three more places a fresh session could misread. What
+remains needs Devan: a fresh session in that repository for item 3's report,
+the pilot, and his word on whether 1.0.0 reaches `main` before the pilot. Until
+it does, the install command in `README.md` fails, because `main` holds only a
+README.
 
 ## Closed Tasks
