@@ -61,6 +61,31 @@ Each defect the pilot finds is fixed here on this task's branch, released as a
 patch version, and taken by `kit.sh update` in every repository that has the
 kit. Record here what the pilot found, without naming the repository.
 
+**Found, 2026-09-24.** The first attempt stopped before anything was
+written, on two gates in front of the install, and asked Devan three
+questions rather than work around them.
+
+1. Auto mode's classifier blocked `kit.sh install` as `[Self-Modification]`,
+   because it writes into `.claude/skills/`. The rule is a soft block, and
+   `claude auto-mode defaults` says it clears only when the owner's message
+   names the configuration change as wanted. The install prompt only said
+   "install". Allow rules cannot clear it: they do not pre-approve writes into
+   `.claude/`, and one would have to be written there.
+2. The cloud session's instructions allow a push only to the branch it was
+   assigned, and the first run pushes `task/kit-setup`. The session asked
+   which to use. Once the kit is installed, `HOUSE.md` settles it, but the
+   first run reads `HOUSE.md` too late.
+
+Both are fixed in `README.md`, not in a kit-owned file, so there is no
+release: the install prompt now names the writes into `.claude/` and
+`CLAUDE.md` as wanted and gives permission to push the `task/` branch, says
+why, and gives Accept edits mode as the fallback.
+
+**Stopped at.** The fix is committed on this branch. Next, Devan answers the
+pilot session in the words the new prompt uses, or starts a fresh session
+there with the new prompt, and the first run carries on. Whether the new
+wording clears the classifier is unverified until then.
+
 ## Closed Tasks
 
 ### Build The First Release
