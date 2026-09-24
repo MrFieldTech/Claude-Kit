@@ -63,10 +63,16 @@ the release.
 **Verification before it merges.**
 
 1. `bash check.sh` passes.
-2. A headless session in a scratch repository with a local remote runs the
-   first-run path from the skill text alone: it proposes settings, asks, and
-   writes the state files on a pushed task branch. A second headless session
-   resumes that task by its slug.
+2. A scratch repository with a local remote goes through the first-run path
+   by the skill text alone: settings proposed, state files written on a pushed
+   task branch, the task worked, closed, parked for want of a pull request,
+   and resumed from a fresh clone. **Done 2026-09-24, by hand.** A headless
+   `claude` session was the plan, and the permission classifier refused to
+   start one with its permissions bypassed. The walk found four defects in
+   the skill text, all fixed: the default branch read with `origin/` still on
+   it, a `CLAUDE.md` with no title, the kit check run before the kit is on
+   the base, and a merge that created the integration branch before learning
+   no pull request could be opened.
 3. The repository the skills came from installs 1.0 in place of its own copies,
    and a fresh session there reports the same lines as before plus `Kit:`.
 
@@ -74,7 +80,7 @@ the release.
 fresh session he starts there. Every defect it finds is fixed here and
 reinstalled.
 
-**Stopping point.** The files for 1.0 are written. Next: run `bash check.sh`,
-then verification item 2.
+**Stopping point.** Items 1 and 2 are done. Next: item 3, installing 1.0 in
+the repository the skills came from, which that repository's own task does.
 
 ## Closed Tasks

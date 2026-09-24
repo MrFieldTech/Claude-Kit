@@ -41,7 +41,9 @@ run, follow First Run at the end of this file and then come back to step 3.
 
 A task branch carrying `TASKS.md` while the default branch does not is a first
 task that has not merged yet. That is not a first run. Read the settings and
-state files from that branch in place of the base below.
+state files from that branch in place of the base below, and run the kit check
+at the end of this step after step 5, because until that task merges the kit
+is only on its branch.
 
 **The base** is `origin/<integration branch>` when it exists. When it does not,
 GitHub deleted it after it merged into the default branch, which is the normal
@@ -263,10 +265,11 @@ kit-owned files into the working tree and nothing is committed yet. If
 `.claude/kit/kit.sh` is not there, stop and ask the owner to install the kit
 first, by the command in the kit's README.
 
-1. **Find the default branch.** Read it from
-   `git symbolic-ref --short refs/remotes/origin/HEAD`, or from the
-   `HEAD branch:` line of `git remote show origin`. A repository with no
-   commits at all has none, and the last paragraph of this section covers it.
+1. **Find the default branch.** `git symbolic-ref --short refs/remotes/origin/HEAD`
+   prints it after `origin/`, and the `HEAD branch:` line of
+   `git remote show origin` names it when that ref is missing. A repository
+   with no commits at all has none, and the last paragraph of this section
+   covers it.
 
 2. **Read the repository and propose a value for every Session Settings key.**
    The keys and what each means are at the end of `.claude/kit/HOUSE.md`. Look
@@ -297,8 +300,9 @@ first, by the command in the kit's README.
    first task is the one the owner named, or `kit-setup` when they named none.
    Create its branch from the default branch as step 5 does. Then:
    - `CLAUDE.md`. When one exists, keep everything in it: add
-     `@.claude/kit/HOUSE.md` as its first line and the Session Settings section
-     after its title. Where one of its sections repeats a rule `HOUSE.md` now
+     `@.claude/kit/HOUSE.md` as its first line, a title and a line saying what
+     the repository is when it has neither, and the Session Settings section
+     after them. Where one of its sections repeats a rule `HOUSE.md` now
      carries, show the two together and ask before removing it. When there is
      no `CLAUDE.md`, start from `.claude/kit/templates/CLAUDE.md`.
    - `TASKS.md` from `.claude/kit/templates/TASKS.md`, with the first task's

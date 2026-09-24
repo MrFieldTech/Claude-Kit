@@ -45,4 +45,14 @@ None.
 
 ## Flagged As Unverified
 
-None.
+**No fresh session has run the kit yet.** The first-run path was walked by
+hand, by the session that wrote it, which knows what the text means to say. A
+fresh session reads only what the text does say. The pilot is the first real
+test.
+
+**Whether a skill installed partway through a session is listed before the
+next session starts.** The install prompt in `README.md` says to follow the
+skill rather than run `/session-open`, so the first run works either way.
+
+**The house rules load by import.** Confirmed in a headless session on
+2026-09-24, with no approval prompt. Not yet seen in an interactive session.

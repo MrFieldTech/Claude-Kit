@@ -144,6 +144,11 @@ A task that is `DONE` or `BLOCKED` merges into the integration branch. With
 `BLOCKED` one parks, below, because its partial work would otherwise reach
 production. Below, the target is the branch the task merges into.
 
+A merge needs a pull request, so first confirm the session can open one,
+through a GitHub connector or the `gh` command line. If it cannot, park the
+task, below, write in its block that the merge waits only on a pull request,
+and say so in the report. Change nothing on the remote but the task branch.
+
 **Bring the base in.** When there is an integration branch and it does not
 exist on the remote, GitHub deleted it after it merged into the default branch.
 Create it again at the default branch's head, which adds no commit to it:
@@ -171,12 +176,10 @@ unattended.
 before merge, then `git status --short`. If a check fails, park the task. If the
 Regenerate commands rewrote a generated file, commit it. Push the task branch.
 
-**Open and merge the pull request.** Through the session's GitHub access, a
-GitHub connector or the `gh` command line, open a pull request from
-`task/<slug>` into the target, titled after the task, with a body naming the
-task slug and what it changed. With no way to open a pull request, park the
-task and say so. Wait for every check GitHub reports on the pull request to
-finish.
+**Open and merge the pull request.** Through the session's GitHub access, open
+a pull request from `task/<slug>` into the target, titled after the task, with
+a body naming the task slug and what it changed. Wait for every check GitHub
+reports on the pull request to finish.
 
 When the Task preview address is set, the host usually posts the branch's
 preview address on the pull request once the branch builds. If it is not the
