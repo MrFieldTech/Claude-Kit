@@ -4,6 +4,24 @@ Every change to a kit-owned file is a release, recorded here with the version
 `VERSION` carries. A project's `/session-open` reports when a newer release
 exists, and the project takes it by `kit.sh update` when its owner asks.
 
+## 1.0.2
+
+Fixes from the third pilot attempt, which ran the first run to the end.
+
+- The first run's reply no longer lists the Session Settings. They are in
+  `CLAUDE.md`, and a value the owner is asked about carries its context in
+  its question.
+- Automatically delete head branches, and a preview host's branch list, are
+  `Action needed:` notices at the top of the reply rather than questions,
+  because the workflow needs them. `HOUSE.md` defines the notice.
+- The first run asks about a rule in the repository's own files that
+  contradicts `HOUSE.md`, such as a release process that pushes straight to
+  the default branch, and leaves the file as it is until answered.
+- `session-close` says on its `Branch:` line when a merged branch was not
+  deleted, so the setting is turned on.
+
+After updating, nothing is required.
+
 ## 1.0.1
 
 Fixes from the first pilot, the first install outside the kit's own
