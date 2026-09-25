@@ -48,7 +48,7 @@ Then the detail block, as prose.
 **Slug:** `first-pilot`
 **Status:** BLOCKED
 **Opened:** 2026-09-24
-**Blocked:** Devan answers the fourth attempt's waiting session with the install prompt now in `README.md`, which names the kit as his own source.
+**Blocked:** Devan runs a sixth attempt in a fresh session on the pilot repository, pasting the install prompt from `README.md` on `main`.
 
 Devan runs the first install outside the repository the skills came from, in a
 fresh session on the second repository he chose, with Claude-Kit attached to
@@ -146,6 +146,19 @@ changed nothing, refused to fetch the kit another way, and asked. The
 install prompt in `README.md` now calls the repository the owner's own and
 names running its `kit.sh install`, and the README says how to answer a
 session that stops on a block. No kit-owned file changed.
+
+**Found, 2026-09-25, fifth attempt.** With the prompt that named the kit as
+the owner's source, the session attached, cloned and registered the kit, read
+it, surveyed the repository, and was blocked at `kit.sh install` by the
+server-side classifier, which gave no reason. The session stopped, changed
+nothing, and offered the exact sentence to approve the command. Of five
+attempts, two were blocked at the installer, one at attaching the kit, and
+two passed, so no wording makes the install certain. Devan, 2026-09-25:
+install sessions stay in Auto mode and a block is answered when it happens,
+and the prompt may be as long as it needs, because it is pasted from the
+README. The prompt is now one numbered step per action the classifier
+reviews, and asks the session to stop with the approving sentence when a
+step is blocked anyway. No kit-owned file changed.
 
 ## Closed Tasks
 
