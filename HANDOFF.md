@@ -13,7 +13,8 @@ file at the same time.
 
 | Date | Tasks touched | Work commits |
 |---|---|---|
-| 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview`: the install prompt in `README.md` names the kit as the owner's own source, after the fourth attempt was blocked attaching it | `fb705b7..0f48004` |
+| 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at Devan's request: the install prompt in `README.md` rebuilt as one step per action, after the fifth attempt was blocked at the installer | `7a4320a..4aadb68` |
+| 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at Devan's request: the install prompt in `README.md` names the kit as the owner's own source, after the fourth attempt was blocked attaching it | `fb705b7..0f48004` |
 | 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at Devan's request: 1.0.2 released with the third attempt's fixes to the first run's reply | `770c7f5..144faaf` |
 | 2026-09-25 | `first-pilot`, BLOCKED again, merged into `preview` and then `main` at Devan's request: 1.0.1 released with the second pilot's fixes, and the install prompt shortened | `0777c20..c50d8ce` |
 | 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at Devan's request: the first pilot attempt was blocked before the install, and the install prompt in `README.md` was fixed for both causes | `f82f24f..76f1139` |
@@ -23,7 +24,7 @@ file at the same time.
 
 | Task | Waiting on |
 |---|---|
-| `first-pilot` | Devan answering the fourth attempt's waiting session with the install prompt now in `README.md` |
+| `first-pilot` | Devan running a sixth attempt in a fresh session, pasting the install prompt from `README.md` on `main` |
 
 ## Credentials In Transit
 
@@ -56,6 +57,12 @@ sends it here, and in this repository it never does.
   is `preview`. Either is changed in `CLAUDE.md` afterwards.
 - **A `CLAUDE.md` section that only repeats `HOUSE.md` is removed.** Devan,
   2026-09-25: there should be no duplicate, because two copies drift apart.
+- **An install session stays in Auto mode, and a block is answered when it
+  happens.** Devan, 2026-09-25. Accept edits mode never blocks but makes every
+  command that is not read-only wait for approval. The session stops and
+  gives the sentence that approves the blocked action.
+- **The install prompt may be as long as it needs.** Devan, 2026-09-25. It is
+  pasted whole from `README.md`, and a short one does not clear auto mode.
 - **Files here are written as if the repository were public.** It was asked
   for as public and created private. Nothing the kit installs names a
   project, so making it public later needs no cleanup first.
@@ -74,11 +81,12 @@ on 2026-09-25, finished the first run on 1.0.1 and pushed its first task
 branch. Its `/session-close`, the first merge into a new `preview`, and every
 rule 1.0.2 changed are untested by a fresh session.
 
-**Whether naming the kit as the owner's own source clears
-`[Untrusted Code Integration]` every time.** The rule's text says naming the
-source clears it, and the first three attempts passed without it, but the
-classifier is a model and the fourth attempt was blocked. The next attempts
-show how often it holds.
+**How often the rebuilt install prompt passes auto mode without a block.**
+It names every action the classifier reviews, which its rules say clears a
+soft block, but the fifth attempt was blocked by the server-side classifier
+with no reason given, on a prompt that named the source. The next attempts
+show how often it holds, and whether the session's approving sentence clears
+a block.
 
 **Whether Accept edits mode lets a cloud session's owner approve the install.**
 The permission-modes documentation says a cloud session's Accept edits mode is

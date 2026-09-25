@@ -42,52 +42,66 @@ read again after compaction, and the response rules have to govern every turn.
 
 ## Install
 
-In a Claude Code session on the repository, say:
+In a Claude Code session on the repository, paste this whole block:
 
-> Install Claude-Kit from my repository https://github.com/MrFieldTech/Claude-Kit:
-> attach it, run its `kit.sh install`, and follow its session-open skill. I want
-> its skills and rules written into `.claude/` and imported by `CLAUDE.md`, and
-> its `task/` branch pushed instead of this session's branch.
+```text
+Install Claude-Kit into this repository. Claude-Kit is my own repository,
+https://github.com/MrFieldTech/Claude-Kit, which I wrote and trust. I want
+you to take each of these actions:
 
-Each clause opens a gate a cloud session puts in front of the install, and
-each gate opens only when the owner's own message names the action:
+1. Attach MrFieldTech/Claude-Kit to this session with read access, if this
+   is a cloud session, and clone it. It is only the source the installer
+   copies from, so do not register the clone as one of this session's
+   repositories.
+2. From this repository's root, run the installer from that clone:
+   bash <the clone>/.claude/kit/kit.sh install .
+   It writes the kit's session-open and session-close skills into
+   .claude/skills/ and its house rules into .claude/kit/. I want that change
+   to your own configuration.
+3. Follow the session-open skill it installed. It adds the line
+   @.claude/kit/HOUSE.md to CLAUDE.md, writes TASKS.md and HANDOFF.md,
+   commits them on a new task/ branch, and pushes that branch. Push the
+   task/ branch, not the branch this session was assigned.
+
+If auto mode blocks one of these anyway, do not work around it. Stop, and
+give me the exact sentence to reply with that approves the blocked action.
+```
+
+A request as short as "Install MrFieldTech/Claude-Kit" is not enough, because
+each numbered step opens a gate that stays shut until the owner's own message
+names the action:
 
 - **`[Untrusted Code Integration]`.** Auto mode's classifier trusts only the
   repository the session started in and its remotes. Attaching another
   repository and running a script from it is blocked unless the owner names
-  that source. The fourth pilot's session was blocked attaching the kit, on a
-  prompt that gave only its address.
+  that source. Step 1 names it and says it is the owner's own.
 - **`[Self-Modification]`.** The classifier blocks a write into `.claude/` or
-  `CLAUDE.md` unless the owner's message says that change is wanted.
-  "Install" alone does not say so.
+  `CLAUDE.md` unless the owner's message says that change is wanted. Steps 2
+  and 3 name each write.
 - **The assigned branch.** A cloud session's own instructions allow a push
   only to the branch it was assigned, and the kit pushes `task/<slug>`
-  branches instead.
+  branches instead. Step 3 gives that permission.
 
-The classifier is a model, so the same prompt can pass one session and be
-blocked in the next. When a session stops on a block, answer it with a
-message naming the blocked action and its target, such as "attach
-MrFieldTech/Claude-Kit, my own repository, and run its `kit.sh install`",
-and it retries. If the block holds, switch the permission mode from Auto to
-Accept edits in the mode selector, approve the action when asked, and switch
-back.
+The classifier is a model, and the same prompt can pass in one session and be
+blocked in the next. Of five pilot attempts, two were blocked at the
+installer, one at attaching the kit, and two passed. A block is answered, not
+avoided: reply with the sentence the session gives, which names the blocked
+action and its target, and it retries. Only if the block holds after that,
+switch the permission mode from Auto to Accept edits in the mode selector,
+approve the action when asked, and switch back.
 
-The session runs:
+Steps 1 and 2 as commands, for a session that is not in the cloud:
 
 ```
 git clone --depth 1 https://github.com/MrFieldTech/Claude-Kit "$(mktemp -d)/claude-kit"
 bash <that clone>/.claude/kit/kit.sh install .
 ```
 
-The repository is private, so the clone needs access to it. A cloud session
-attaches `MrFieldTech/Claude-Kit` itself when its tools and the classifier
-allow, as the first three pilot sessions did. Otherwise attach it with read access before the install. A
-session without that access reports the kit's status as `source
-unreachable`, and its installed copy keeps working. The clone is only the
-source `kit.sh install` copies from. Its own `CLAUDE.md` and skills are this
-repository's and are not meant to load into the session, so the clone is not
-registered as one of the session's repositories. Auto mode blocked that in
-one pilot, which did no harm.
+The repository is private, so the clone needs access to it, which step 1
+gives a cloud session. A session without that access later reports the kit's
+status as `source unreachable`, and its installed copy keeps working. The
+clone's own `CLAUDE.md` and skills belong to the kit's repository, which is
+why step 1 keeps the clone from loading into the session.
 
 The install writes the kit-owned files into the working tree and commits
 nothing. `session-open` then finds a repository new to the kit and runs its
@@ -95,10 +109,11 @@ first-run setup. It reads the repository and settles every Session Setting it
 can: the Owner is the account that owns the repository, the integration
 branch is `preview`, and a key the repository does not show takes its
 default. It asks only about what is left, and when nothing is, it carries
-straight on. Its reply does not list the settings, which are in `CLAUDE.md`. It creates the first task's branch, writes `CLAUDE.md`,
-`TASKS.md` and `HANDOFF.md` on it, and commits them with the kit. An existing
-`CLAUDE.md` is kept and gains the import line and the settings, and a section
-of it that only repeats `HOUSE.md` is removed.
+straight on. Its reply does not list the settings, which are in `CLAUDE.md`.
+It creates the first task's branch, writes `CLAUDE.md`, `TASKS.md` and
+`HANDOFF.md` on it, and commits them with the kit. An existing `CLAUDE.md` is
+kept and gains the import line and the settings, and a section of it that
+only repeats `HOUSE.md` is removed.
 
 While the first run waits for an answer, the install stays uncommitted. A
 cloud session's end-of-turn hook asks for it to be committed and pushed to
