@@ -165,6 +165,9 @@ Keep full detail, in prose, outside the two-part structure, for:
   entire reply. Do no work and do not append the two-part structure.
 - A low-context warning is one line at the top of part 1. It does not become
   a question.
+- Something only the owner can do, where there is no choice to make, is a
+  line at the top of part 1 beginning `Action needed:`. It does not become a
+  question.
 
 ## Session Settings keys
 
