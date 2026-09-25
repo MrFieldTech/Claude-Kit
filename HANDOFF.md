@@ -13,7 +13,7 @@ file at the same time.
 
 | Date | Tasks touched | Work commits |
 |---|---|---|
-| 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview`: 1.0.2 released with the third attempt's fixes to the first run's reply | `770c7f5..144faaf` |
+| 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at Devan's request: 1.0.2 released with the third attempt's fixes to the first run's reply | `770c7f5..144faaf` |
 | 2026-09-25 | `first-pilot`, BLOCKED again, merged into `preview` and then `main` at Devan's request: 1.0.1 released with the second pilot's fixes, and the install prompt shortened | `0777c20..c50d8ce` |
 | 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at Devan's request: the first pilot attempt was blocked before the install, and the install prompt in `README.md` was fixed for both causes | `f82f24f..76f1139` |
 | 2026-09-24 | `release-1-0`, DONE, merged into `preview` and then `main` at Devan's request: 1.0.0 built, checked, walked through a scratch repository, and installed in the repository the skills came from. `first-pilot` queued | `763033b..28fb6c4` |
@@ -22,7 +22,7 @@ file at the same time.
 
 | Task | Waiting on |
 |---|---|
-| `first-pilot` | Devan deciding whether the pilot repository's session carries on to `/session-close` on 1.0.1, or is rolled back and run again with 1.0.2 |
+| `first-pilot` | Devan rolling the pilot repository back and running the install again with 1.0.2 from `main` |
 
 ## Credentials In Transit
 

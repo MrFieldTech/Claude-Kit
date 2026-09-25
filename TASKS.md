@@ -48,7 +48,7 @@ Then the detail block, as prose.
 **Slug:** `first-pilot`
 **Status:** BLOCKED
 **Opened:** 2026-09-24
-**Blocked:** Devan decides whether the pilot repository's session carries on to `/session-close` on 1.0.1, or is rolled back and run again with 1.0.2.
+**Blocked:** Devan rolls the pilot repository back and runs the install again, a fourth attempt, with 1.0.2 from `main`.
 
 Devan runs the first install outside the repository the skills came from, in a
 fresh session on the second repository he chose, with Claude-Kit attached to
@@ -132,7 +132,9 @@ that registration is not needed. Devan's review of its reply, fixed in 1.0.2:
 
 **Where it stands.** 1.0.2 is on `preview`. The pilot repository has 1.0.1
 on its `task/kit-setup`, its session waiting on Devan's answer about the
-release step. How the pilot continues is Devan's call, in `HANDOFF.md`.
+release step. Devan, 2026-09-25: 1.0.2 goes to `main`, and the pilot
+repository is rolled back and installed again with it rather than carried on
+to `/session-close` on 1.0.1.
 
 ## Closed Tasks
 
