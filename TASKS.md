@@ -46,9 +46,8 @@ Then the detail block, as prose.
 ### Pilot The Kit In A Second Repository
 
 **Slug:** `first-pilot`
-**Status:** BLOCKED
+**Status:** ACTIVE
 **Opened:** 2026-09-24
-**Blocked:** Devan runs the pilot again in a fresh session on that repository, with the install prompt from `README.md` word for word.
 
 Devan runs the first install outside the repository the skills came from, in a
 fresh session on the second repository he chose, with Claude-Kit attached to
