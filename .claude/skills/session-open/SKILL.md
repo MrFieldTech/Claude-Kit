@@ -279,8 +279,9 @@ first, by the command in the kit's README.
    - The package manifest and build files, such as `package.json`,
      `pyproject.toml` or a `Makefile`, for build, test and lint commands.
    - Any existing `CLAUDE.md`, `README.md` or contributing guide, for rules
-     the repository already follows and a file that already acts as an
-     authority.
+     the repository already follows, a file that already acts as an
+     authority, and each section of `CLAUDE.md` that repeats a rule
+     `HOUSE.md` carries.
    - Hosting configuration and deployment notes, for a preview address per
      branch.
    - Files the repository generates and commits, and the commands that
@@ -288,15 +289,15 @@ first, by the command in the kit's README.
    - Every remote branch. Each one either belongs under Other branches or will
      be reported as a stray from now on.
 
-   Three keys are settled without reading anything else:
+   Three keys are settled by rule rather than asked:
    - **Owner** is the account that owns the repository on its host, the path
      segment before the repository's name in `git remote get-url origin`, or
      `the owner` when the URL shows none. It names whoever answers the
      questions, and the owner changes it in `CLAUDE.md` if it should be a
      person's name.
-   - **Integration branch** is `preview`. Ask only when the remote already
-     has a `preview` branch, which the kit did not create and which may serve
-     something else.
+   - **Integration branch** is `preview`, unless the remote already has a
+     `preview` branch. The kit did not create that one and it may serve
+     something else, so then it is asked.
    - **Checks before merge** holds only the pull request checks that run in
      this session's container, each run once here to prove it. A check that
      needs a tool the container lacks is left to CI, which runs it on the pull
@@ -308,10 +309,12 @@ first, by the command in the kit's README.
    one answer for is a question, never a guess.
 
 3. **Ask only what is left.** Show the settings as a list, marking each value
-   as read from a file, set by default, or asked, and ask about each value
-   still open, with lettered options where a few answers are plausible. When
-   nothing is open, carry on to item 4 without stopping: the owner changes a
-   value later in `CLAUDE.md`. Otherwise stop until the owner answers.
+   as read from a file, set by default, or asked. Ask about each value still
+   open, and about each section of an existing `CLAUDE.md` that repeats
+   `HOUSE.md` but also says something `HOUSE.md` does not, with lettered
+   options where a few answers are plausible. When nothing is open, carry on
+   to item 4 without stopping: the owner changes a value later in
+   `CLAUDE.md`. Otherwise stop until the owner answers.
 
    While the session waits, the install sits uncommitted in the working tree,
    and it stays there. An instruction to commit it or push it to the branch
@@ -323,13 +326,13 @@ first, by the command in the kit's README.
 4. **Write the settings and state files on the first task's branch.** The
    first task is the one the owner named, or `kit-setup` when they named none.
    Create its branch from the default branch as step 5 does. Then:
-   - `CLAUDE.md`. When one exists, keep everything in it: add
-     `@.claude/kit/HOUSE.md` as its first line, a title and a line saying what
-     the repository is when it has neither, and the Session Settings section
-     after them. Where one of its sections says nothing `HOUSE.md` does not
-     already say, remove it and name it in the reply, because two copies of a
-     rule drift apart. Where it says anything `HOUSE.md` does not, keep it,
-     show the two together, and ask. When there is no `CLAUDE.md`, start from
+   - `CLAUDE.md`. When one exists, add `@.claude/kit/HOUSE.md` as its first
+     line, a title and a line saying what the repository is when it has
+     neither, and the Session Settings section after them. Remove each
+     section that says nothing `HOUSE.md` does not already say, and name it
+     in the reply, because two copies of a rule drift apart. A section that
+     says more stays unless the owner answered to remove it. Keep everything
+     else. When there is no `CLAUDE.md`, start from
      `.claude/kit/templates/CLAUDE.md`.
    - `TASKS.md` from `.claude/kit/templates/TASKS.md`, with the first task's
      block under Open Tasks.
