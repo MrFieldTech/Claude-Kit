@@ -13,6 +13,7 @@ file at the same time.
 
 | Date | Tasks touched | Work commits |
 |---|---|---|
+| 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview`: the install prompt in `README.md` names the kit as the owner's own source, after the fourth attempt was blocked attaching it | `fb705b7..0f48004` |
 | 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at Devan's request: 1.0.2 released with the third attempt's fixes to the first run's reply | `770c7f5..144faaf` |
 | 2026-09-25 | `first-pilot`, BLOCKED again, merged into `preview` and then `main` at Devan's request: 1.0.1 released with the second pilot's fixes, and the install prompt shortened | `0777c20..c50d8ce` |
 | 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at Devan's request: the first pilot attempt was blocked before the install, and the install prompt in `README.md` was fixed for both causes | `f82f24f..76f1139` |
@@ -22,7 +23,7 @@ file at the same time.
 
 | Task | Waiting on |
 |---|---|
-| `first-pilot` | Devan rolling the pilot repository back and running the install again with 1.0.2 from `main` |
+| `first-pilot` | Devan answering the fourth attempt's waiting session with the install prompt now in `README.md` |
 
 ## Credentials In Transit
 
@@ -72,6 +73,12 @@ sends it here, and in this repository it never does.
 on 2026-09-25, finished the first run on 1.0.1 and pushed its first task
 branch. Its `/session-close`, the first merge into a new `preview`, and every
 rule 1.0.2 changed are untested by a fresh session.
+
+**Whether naming the kit as the owner's own source clears
+`[Untrusted Code Integration]` every time.** The rule's text says naming the
+source clears it, and the first three attempts passed without it, but the
+classifier is a model and the fourth attempt was blocked. The next attempts
+show how often it holds.
 
 **Whether Accept edits mode lets a cloud session's owner approve the install.**
 The permission-modes documentation says a cloud session's Accept edits mode is
