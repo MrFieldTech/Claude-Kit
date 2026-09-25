@@ -46,8 +46,9 @@ Then the detail block, as prose.
 ### Pilot The Kit In A Second Repository
 
 **Slug:** `first-pilot`
-**Status:** ACTIVE
+**Status:** BLOCKED
 **Opened:** 2026-09-24
+**Blocked:** Devan runs the pilot again in a fresh session on that repository, with the install prompt from `README.md` word for word.
 
 Devan runs the first install outside the repository the skills came from, in a
 fresh session on the second repository he chose, with Claude-Kit attached to
@@ -81,10 +82,11 @@ release: the install prompt now names the writes into `.claude/` and
 `CLAUDE.md` as wanted and gives permission to push the `task/` branch, says
 why, and gives Accept edits mode as the fallback.
 
-**Stopped at.** The fix is committed on this branch. Next, Devan answers the
-pilot session in the words the new prompt uses, or starts a fresh session
-there with the new prompt, and the first run carries on. Whether the new
-wording clears the classifier is unverified until then.
+**Where it stands.** The fix merged into `main` on 2026-09-25 at Devan's
+request. Devan, 2026-09-25: the blocked pilot session is discarded rather than
+answered, and the pilot starts again in a fresh session. Whether the new
+wording clears the classifier is unverified until it does. The next session
+on this task takes up whatever that pilot finds.
 
 ## Closed Tasks
 
