@@ -3,7 +3,8 @@
 #
 # 1. No kit-owned file names anything that belongs to one project.
 # 2. No file in the repository holds an em dash.
-# 3. The scripts parse, and each skill's frontmatter is whole.
+# 3. The scripts parse, each skill's frontmatter is whole, and every
+#    kit-owned directory keeps LF line endings.
 # 4. VERSION is a version number and CHANGELOG.md has an entry for it.
 # 5. An install into a scratch repository works end to end: the manifest,
 #    the status line, the guard against overwriting local edits, and the
@@ -38,7 +39,9 @@ if git ls-files -z | xargs -0 grep -nI $'\xe2\x80\x94' --; then
 fi
 echo "check: no em dash"
 
-# 3. Syntax and skill frontmatter.
+# 3. Syntax, skill frontmatter, and line endings. A checkout on Windows
+# turns LF into CRLF unless .gitattributes says otherwise, and bash cannot
+# run kit.sh with CRLF endings.
 bash -n .claude/kit/kit.sh
 python3 -c 'import ast, sys; ast.parse(open(sys.argv[1]).read())' .claude/kit/todo_sweep.py
 for skill in session-open session-close; do
@@ -48,7 +51,14 @@ for skill in session-open session-close; do
   grep -qx "disable-model-invocation: true" "$file" || fail "$file can be invoked by the model"
   grep -q '^description: ' "$file" || fail "$file has no description"
 done
-echo "check: scripts parse and skills are whole"
+for dir in "${KIT_OWNED[@]}"; do
+  grep -qx '\* text eol=lf' "$dir/.gitattributes" 2>/dev/null \
+    || fail "$dir has no .gitattributes keeping LF line endings"
+done
+if grep -rlI $'\r' "${KIT_OWNED[@]}"; then
+  fail "the files above hold a carriage return"
+fi
+echo "check: scripts parse, skills are whole, and line endings stay LF"
 
 # 4. Every release is numbered and recorded.
 version="$(tr -d '[:space:]' < VERSION)"

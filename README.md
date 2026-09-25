@@ -26,6 +26,7 @@ by an update.
 | `.claude/kit/todo_sweep.py` | Collects every `TODO:` in the repository into `TODO.md` |
 | `.claude/kit/templates/` | The starting `CLAUDE.md`, `TASKS.md` and `HANDOFF.md` for the first run |
 | `.claude/kit/MANIFEST` | Written by the install: the version, the source, the commit, and a checksum per file |
+| `.gitattributes` in each kit directory | Keeps LF line endings, so a checkout on Windows can still run `kit.sh` and still matches the checksums |
 
 Everything else in a project is **project-owned** and an update never touches
 it: `CLAUDE.md`, `TASKS.md`, `HANDOFF.md`, `TODO.md`, and anything the project
@@ -43,29 +44,23 @@ read again after compaction, and the response rules have to govern every turn.
 
 In a Claude Code session on the repository, say:
 
-> Install Claude-Kit from https://github.com/MrFieldTech/Claude-Kit into this
-> repository. I want `kit.sh install` to write the kit's skills into
-> `.claude/skills/` and its house rules into `.claude/kit/`, and I want
-> `CLAUDE.md` to import them: that change to your own configuration is wanted.
-> Then follow its session-open skill, and push the `task/` branch it creates
-> in place of any branch this session was assigned.
+> Install Claude-Kit from https://github.com/MrFieldTech/Claude-Kit and follow
+> its session-open skill. I want its skills and rules written into `.claude/`
+> and imported by `CLAUDE.md`, and its `task/` branch pushed instead of this
+> session's branch.
 
-The prompt is long because of two gates a cloud session puts in front of the
-install, and each one clears only for an owner who names the action:
+The second sentence is there for two gates a cloud session puts in front of
+the install, each of which opens only when the owner names the action:
 
-- **Auto mode's classifier** treats a write into `.claude/skills/` or
-  `CLAUDE.md` as the session changing its own configuration, and blocks it as
-  `[Self-Modification]` unless the owner's own message says that change is
-  wanted. A request only to "install" something does not say so. Permission
-  allow rules do not help, because they do not pre-approve writes into
-  `.claude/`, and the rule would have to be written there.
-- **The cloud session's own instructions** name one branch to push and forbid
-  any other without the owner's permission. The kit never pushes that branch
-  and works on `task/<slug>` branches instead.
+- **Auto mode's classifier** blocks a write into `.claude/` or `CLAUDE.md` as
+  `[Self-Modification]` unless the owner's message says that change is
+  wanted. "Install" alone does not say so.
+- **The cloud session's own instructions** allow a push only to the branch it
+  was assigned, and the kit pushes `task/<slug>` branches instead.
 
-If the classifier blocks the install anyway, switch the session's permission
-mode from Auto to Accept edits in the mode selector and approve the command
-when it is asked for, then switch back.
+If the classifier blocks the install anyway, switch the permission mode from
+Auto to Accept edits in the mode selector, approve the command when asked,
+and switch back.
 
 The session runs:
 
@@ -74,18 +69,26 @@ git clone --depth 1 https://github.com/MrFieldTech/Claude-Kit "$(mktemp -d)/clau
 bash <that clone>/.claude/kit/kit.sh install .
 ```
 
-The repository is private, so the clone needs access to it. In a cloud
-session, attach `MrFieldTech/Claude-Kit` to the session with read access
-before the install. A session without that access reports the kit's status
-as `source unreachable`, and its installed copy keeps working.
+The repository is private, so the clone needs access to it. A cloud session
+attaches `MrFieldTech/Claude-Kit` itself when its tools allow, as both pilot
+sessions did. Otherwise attach it with read access before the install. A
+session without that access reports the kit's status as `source
+unreachable`, and its installed copy keeps working.
 
 The install writes the kit-owned files into the working tree and commits
 nothing. `session-open` then finds a repository new to the kit and runs its
-first-run setup. It reads the repository to propose the Session Settings,
-asks about whatever it cannot read, and creates the first task's branch. On
-that branch it writes `CLAUDE.md`, `TASKS.md` and `HANDOFF.md` and commits
-them with the kit. An existing `CLAUDE.md` is kept, and gains the import line
-and the settings.
+first-run setup. It reads the repository and settles every Session Setting it
+can: the Owner is the account that owns the repository, the integration
+branch is `preview`, and a key the repository does not show takes its
+default. It asks only about what is left, and when nothing is, it carries
+straight on. It creates the first task's branch, writes `CLAUDE.md`,
+`TASKS.md` and `HANDOFF.md` on it, and commits them with the kit. An existing
+`CLAUDE.md` is kept and gains the import line and the settings, and a section
+of it that only repeats `HOUSE.md` is removed.
+
+While the first run waits for an answer, the install stays uncommitted. A
+cloud session's end-of-turn hook asks for it to be committed and pushed to
+the assigned branch, and the session says why it will not.
 
 A skill installed partway through a session may not be listed until the next
 session starts, which is why the install prompt says to follow the skill rather

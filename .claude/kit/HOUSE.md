@@ -169,16 +169,17 @@ Keep full detail, in prose, outside the two-part structure, for:
 ## Session Settings keys
 
 `CLAUDE.md` holds a `## Session Settings` section with one bullet per key, in
-this order. `session-open` proposes every value the first time it runs in a
-repository. Change a value there, never in a kit-owned file.
+this order. `session-open` sets every value the first time it runs in a
+repository and asks only about what it cannot settle. Change a value there,
+never in a kit-owned file.
 
-- **Owner.** The person who answers the questions and who alone asks for the
-  default branch to move.
+- **Owner.** Whoever answers the questions and alone asks for the default
+  branch to move. The account that owns the repository unless changed.
 - **Authority file.** A file that overrides `CLAUDE.md`, this file and both
   skills, or `none`.
 - **Default branch.** Production, usually `main`.
 - **Integration branch.** Where finished and blocked tasks collect before the
-  default branch, usually `preview`, or `none`.
+  default branch, `preview` unless changed, or `none`.
 - **Other branches.** Branches the protocol leaves alone and never reports as
   strays, such as a `gh-pages` deployment branch, or `none`.
 - **Task preview address.** Where a task branch's build is served, with
@@ -193,7 +194,8 @@ repository. Change a value there, never in a kit-owned file.
   given, or `none`.
 - **Generated files.** The paths those commands write, or `none`.
 - **Checks before merge.** Commands run before a task's pull request is
-  opened, or `none`. The pull request's own checks run as well.
+  opened, or `none`. Only commands the session's container can run. The pull
+  request's own checks run as well.
 - **Credentials.** Where a credential goes, or the rule that says so, or
   `none`, which means nowhere in the repository.
 - **State file format.** The format `TASKS.md` and `HANDOFF.md` keep: `kit
