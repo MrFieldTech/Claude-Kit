@@ -44,23 +44,33 @@ read again after compaction, and the response rules have to govern every turn.
 
 In a Claude Code session on the repository, say:
 
-> Install Claude-Kit from https://github.com/MrFieldTech/Claude-Kit and follow
-> its session-open skill. I want its skills and rules written into `.claude/`
-> and imported by `CLAUDE.md`, and its `task/` branch pushed instead of this
-> session's branch.
+> Install Claude-Kit from my repository https://github.com/MrFieldTech/Claude-Kit:
+> attach it, run its `kit.sh install`, and follow its session-open skill. I want
+> its skills and rules written into `.claude/` and imported by `CLAUDE.md`, and
+> its `task/` branch pushed instead of this session's branch.
 
-The second sentence is there for two gates a cloud session puts in front of
-the install, each of which opens only when the owner names the action:
+Each clause opens a gate a cloud session puts in front of the install, and
+each gate opens only when the owner's own message names the action:
 
-- **Auto mode's classifier** blocks a write into `.claude/` or `CLAUDE.md` as
-  `[Self-Modification]` unless the owner's message says that change is
-  wanted. "Install" alone does not say so.
-- **The cloud session's own instructions** allow a push only to the branch it
-  was assigned, and the kit pushes `task/<slug>` branches instead.
+- **`[Untrusted Code Integration]`.** Auto mode's classifier trusts only the
+  repository the session started in and its remotes. Attaching another
+  repository and running a script from it is blocked unless the owner names
+  that source. The fourth pilot's session was blocked attaching the kit, on a
+  prompt that gave only its address.
+- **`[Self-Modification]`.** The classifier blocks a write into `.claude/` or
+  `CLAUDE.md` unless the owner's message says that change is wanted.
+  "Install" alone does not say so.
+- **The assigned branch.** A cloud session's own instructions allow a push
+  only to the branch it was assigned, and the kit pushes `task/<slug>`
+  branches instead.
 
-If the classifier blocks the install anyway, switch the permission mode from
-Auto to Accept edits in the mode selector, approve the command when asked,
-and switch back.
+The classifier is a model, so the same prompt can pass one session and be
+blocked in the next. When a session stops on a block, answer it with a
+message naming the blocked action and its target, such as "attach
+MrFieldTech/Claude-Kit, my own repository, and run its `kit.sh install`",
+and it retries. If the block holds, switch the permission mode from Auto to
+Accept edits in the mode selector, approve the action when asked, and switch
+back.
 
 The session runs:
 
@@ -70,8 +80,8 @@ bash <that clone>/.claude/kit/kit.sh install .
 ```
 
 The repository is private, so the clone needs access to it. A cloud session
-attaches `MrFieldTech/Claude-Kit` itself when its tools allow, as every pilot
-session did. Otherwise attach it with read access before the install. A
+attaches `MrFieldTech/Claude-Kit` itself when its tools and the classifier
+allow, as the first three pilot sessions did. Otherwise attach it with read access before the install. A
 session without that access reports the kit's status as `source
 unreachable`, and its installed copy keeps working. The clone is only the
 source `kit.sh install` copies from. Its own `CLAUDE.md` and skills are this
