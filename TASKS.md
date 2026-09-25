@@ -48,7 +48,7 @@ Then the detail block, as prose.
 **Slug:** `first-pilot`
 **Status:** BLOCKED
 **Opened:** 2026-09-24
-**Blocked:** Devan rolls the pilot repository back and runs the install again, a fourth attempt, with 1.0.2 from `main`.
+**Blocked:** Devan answers the fourth attempt's waiting session with the install prompt now in `README.md`, which names the kit as his own source.
 
 Devan runs the first install outside the repository the skills came from, in a
 fresh session on the second repository he chose, with Claude-Kit attached to
@@ -135,6 +135,17 @@ on its `task/kit-setup`, its session waiting on Devan's answer about the
 release step. Devan, 2026-09-25: 1.0.2 goes to `main`, and the pilot
 repository is rolled back and installed again with it rather than carried on
 to `/session-close` on 1.0.1.
+
+**Found, 2026-09-25, fourth attempt.** With 1.0.2 and the 1.0.1 prompt, auto
+mode blocked the session's first step, attaching the kit's repository, as
+`[Untrusted Code Integration]`. The first three attempts attached it with the
+same kind of prompt, so the classifier does not decide the same way every
+time. `claude auto-mode defaults` says the rule is a soft block that clears
+when the owner names the external source being integrated. The session
+changed nothing, refused to fetch the kit another way, and asked. The
+install prompt in `README.md` now calls the repository the owner's own and
+names running its `kit.sh install`, and the README says how to answer a
+session that stops on a block. No kit-owned file changed.
 
 ## Closed Tasks
 
