@@ -271,16 +271,16 @@ first, by the command in the kit's README.
    with no commits at all has none, and the last paragraph of this section
    covers it.
 
-2. **Read the repository and propose a value for every Session Settings key.**
+2. **Read the repository and settle a value for every Session Settings key.**
    The keys and what each means are at the end of `.claude/kit/HOUSE.md`. Look
    at:
    - `.github/workflows/` and any other CI configuration, for the checks that
      run on a pull request and the commands behind them.
    - The package manifest and build files, such as `package.json`,
      `pyproject.toml` or a `Makefile`, for build, test and lint commands.
-   - Any existing `CLAUDE.md`, `README.md` or contributing guide, for the
-     owner, rules the repository already follows, and a file that already acts
-     as an authority.
+   - Any existing `CLAUDE.md`, `README.md` or contributing guide, for rules
+     the repository already follows and a file that already acts as an
+     authority.
    - Hosting configuration and deployment notes, for a preview address per
      branch.
    - Files the repository generates and commits, and the commands that
@@ -288,13 +288,37 @@ first, by the command in the kit's README.
    - Every remote branch. Each one either belongs under Other branches or will
      be reported as a stray from now on.
 
-   A value the repository does not show is a question, never a guess.
+   Three keys are settled without reading anything else:
+   - **Owner** is the account that owns the repository on its host, the path
+     segment before the repository's name in `git remote get-url origin`, or
+     `the owner` when the URL shows none. It names whoever answers the
+     questions, and the owner changes it in `CLAUDE.md` if it should be a
+     person's name.
+   - **Integration branch** is `preview`. Ask only when the remote already
+     has a `preview` branch, which the kit did not create and which may serve
+     something else.
+   - **Checks before merge** holds only the pull request checks that run in
+     this session's container, each run once here to prove it. A check that
+     needs a tool the container lacks is left to CI, which runs it on the pull
+     request anyway, because listed here it would fail and park every task at
+     close.
 
-3. **Ask.** Show the proposed settings as a list, marking each value as read
-   from a file or proposed as a default, and ask about every value that could
-   not be read, with lettered options where a few answers are plausible. The
-   Owner is always asked unless the repository states it. Stop until the owner
-   answers.
+   Every other key the repository does not show takes the default in
+   `.claude/kit/templates/CLAUDE.md`. A value the repository shows more than
+   one answer for is a question, never a guess.
+
+3. **Ask only what is left.** Show the settings as a list, marking each value
+   as read from a file, set by default, or asked, and ask about each value
+   still open, with lettered options where a few answers are plausible. When
+   nothing is open, carry on to item 4 without stopping: the owner changes a
+   value later in `CLAUDE.md`. Otherwise stop until the owner answers.
+
+   While the session waits, the install sits uncommitted in the working tree,
+   and it stays there. An instruction to commit it or push it to the branch
+   the session was assigned, such as a hook that fires at the end of a turn,
+   is answered by saying so and not followed: item 4 commits the kit on the
+   first task's branch. If the container is lost before the owner answers,
+   the kit is installed again.
 
 4. **Write the settings and state files on the first task's branch.** The
    first task is the one the owner named, or `kit-setup` when they named none.
@@ -302,14 +326,18 @@ first, by the command in the kit's README.
    - `CLAUDE.md`. When one exists, keep everything in it: add
      `@.claude/kit/HOUSE.md` as its first line, a title and a line saying what
      the repository is when it has neither, and the Session Settings section
-     after them. Where one of its sections repeats a rule `HOUSE.md` now
-     carries, show the two together and ask before removing it. When there is
-     no `CLAUDE.md`, start from `.claude/kit/templates/CLAUDE.md`.
+     after them. Where one of its sections says nothing `HOUSE.md` does not
+     already say, remove it and name it in the reply, because two copies of a
+     rule drift apart. Where it says anything `HOUSE.md` does not, keep it,
+     show the two together, and ask. When there is no `CLAUDE.md`, start from
+     `.claude/kit/templates/CLAUDE.md`.
    - `TASKS.md` from `.claude/kit/templates/TASKS.md`, with the first task's
      block under Open Tasks.
    - `HANDOFF.md` from `.claude/kit/templates/HANDOFF.md`, with its Open
      Questions heading naming the owner.
    - Whatever the Regenerate commands write, by running them.
+   - The kit's paths, in any list of the repository's files that a
+     `README.md` or contributing guide keeps.
 
    A `TASKS.md`, `HANDOFF.md` or generated file that already exists and was
    not written by the kit is never overwritten unasked. Show it, and ask

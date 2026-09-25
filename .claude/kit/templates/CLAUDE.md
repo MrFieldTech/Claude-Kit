@@ -11,7 +11,7 @@ Read by `session-open` and `session-close`, which name no value of their own.
 What each key means is at the end of `.claude/kit/HOUSE.md`. Change a value
 here, never in a kit-owned file.
 
-- **Owner:** <name>
+- **Owner:** <the account that owns the repository>
 - **Authority file:** none
 - **Default branch:** `main`
 - **Integration branch:** `preview`
