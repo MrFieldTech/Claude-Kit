@@ -43,8 +43,29 @@ read again after compaction, and the response rules have to govern every turn.
 
 In a Claude Code session on the repository, say:
 
-> Install Claude-Kit from https://github.com/MrFieldTech/Claude-Kit, then follow
-> its session-open skill.
+> Install Claude-Kit from https://github.com/MrFieldTech/Claude-Kit into this
+> repository. I want `kit.sh install` to write the kit's skills into
+> `.claude/skills/` and its house rules into `.claude/kit/`, and I want
+> `CLAUDE.md` to import them: that change to your own configuration is wanted.
+> Then follow its session-open skill, and push the `task/` branch it creates
+> in place of any branch this session was assigned.
+
+The prompt is long because of two gates a cloud session puts in front of the
+install, and each one clears only for an owner who names the action:
+
+- **Auto mode's classifier** treats a write into `.claude/skills/` or
+  `CLAUDE.md` as the session changing its own configuration, and blocks it as
+  `[Self-Modification]` unless the owner's own message says that change is
+  wanted. A request only to "install" something does not say so. Permission
+  allow rules do not help, because they do not pre-approve writes into
+  `.claude/`, and the rule would have to be written there.
+- **The cloud session's own instructions** name one branch to push and forbid
+  any other without the owner's permission. The kit never pushes that branch
+  and works on `task/<slug>` branches instead.
+
+If the classifier blocks the install anyway, switch the session's permission
+mode from Auto to Accept edits in the mode selector and approve the command
+when it is asked for, then switch back.
 
 The session runs:
 

@@ -13,11 +13,14 @@ file at the same time.
 
 | Date | Tasks touched | Work commits |
 |---|---|---|
+| 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at Devan's request: the first pilot attempt was blocked before the install, and the install prompt in `README.md` was fixed for both causes | `f82f24f..76f1139` |
 | 2026-09-24 | `release-1-0`, DONE, merged into `preview` and then `main` at Devan's request: 1.0.0 built, checked, walked through a scratch repository, and installed in the repository the skills came from. `first-pilot` queued | `763033b..28fb6c4` |
 
 ## Blocked On
 
-None.
+| Task | Waiting on |
+|---|---|
+| `first-pilot` | Devan running the pilot again in a fresh session, with the install prompt from `README.md` word for word |
 
 ## Credentials In Transit
 
@@ -62,6 +65,16 @@ hand, by the session that wrote it, which knows what the text means to say. A
 fresh session reads only what the text does say. The pilot is the first real
 test.
 
+**Whether the new install prompt clears auto mode's classifier.** It names the
+writes into `.claude/` and `CLAUDE.md` as wanted, which is what the
+`[Self-Modification]` rule in `claude auto-mode defaults` asks for, but no
+session has been given it yet. The next pilot attempt verifies it.
+
+**Whether Accept edits mode lets a cloud session's owner approve the install.**
+The permission-modes documentation says a cloud session's Accept edits mode is
+`default` mode, where a shell command outside the read-only set prompts.
+Nobody has tried it. A pilot that falls back to it verifies it.
+
 **Whether a skill installed partway through a session is listed before the
 next session starts.** The install prompt in `README.md` says to follow the
 skill rather than run `/session-open`, so the first run works either way.
@@ -73,6 +86,9 @@ skill rather than run `/session-open`, so the first run works either way.
 kit.** Its next `/session-open` should print a `Kit:` line. That report is
 item 3 of `release-1-0`.
 
-**Whether GitHub deletes merged branches here.** Automatically delete head
-branches was not checked when the repository was created. The close that
-merged `release-1-0` shows whether its task branch went.
+**Whether GitHub deletes merged branches here.** It did not: `task/release-1-0`
+was still on the remote after it merged, with no commit `main` lacks. Devan
+turned Automatically delete head branches on on 2026-09-25 and is deleting that
+branch himself. Whether `task/first-pilot` and `preview` go when their pull
+requests merge is in the close report for 2026-09-25, and the next
+`/session-open` sees it in `git branch -r`.
