@@ -211,7 +211,8 @@ git ls-remote --heads origin task/<slug>
 ```
 
 The second command prints nothing when the branch is gone. If it is still there,
-report it for the owner to delete.
+report it for the owner to delete, and say on the `Branch:` line that
+Automatically delete head branches is off and needs turning on.
 
 **To park a task instead,** set a `DONE` task back to `ACTIVE` and move its
 block back to Open Tasks, or leave a `BLOCKED` task as it is. Write in the block
@@ -271,7 +272,7 @@ session closed:
 
 ```
 Task:    <task slug>, <DONE | BLOCKED | ACTIVE>
-Branch:  <merged into <target> by <pull request URL>, deleted by GitHub | parked at <hash>>
+Branch:  <merged into <target> by <pull request URL>, deleted by GitHub | merged into <target> by <pull request URL>, not deleted: turn on Automatically delete head branches | parked at <hash>>
 Preview: <the Task preview address when parked | the Integration preview address when merged | none>
 Commit:  <handoff commit hash>
 Secrets: <none | where each value was placed | N in this report for the owner to place>

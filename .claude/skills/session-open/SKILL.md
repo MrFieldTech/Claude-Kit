@@ -308,13 +308,15 @@ first, by the command in the kit's README.
    `.claude/kit/templates/CLAUDE.md`. A value the repository shows more than
    one answer for is a question, never a guess.
 
-3. **Ask only what is left.** Show the settings as a list, marking each value
-   as read from a file, set by default, or asked. Ask about each value still
-   open, and about each section of an existing `CLAUDE.md` that repeats
-   `HOUSE.md` but also says something `HOUSE.md` does not, with lettered
-   options where a few answers are plausible. When nothing is open, carry on
-   to item 4 without stopping: the owner changes a value later in
-   `CLAUDE.md`. Otherwise stop until the owner answers.
+3. **Ask only what is left.** Ask about each value still open, and about each
+   section of an existing `CLAUDE.md` that repeats `HOUSE.md` but also says
+   something `HOUSE.md` does not, with lettered options where a few answers
+   are plausible. When nothing is open, carry on to item 4 without stopping.
+   Otherwise stop until the owner answers.
+
+   The reply never lists the settings. They are in `CLAUDE.md` once item 4
+   writes it, where the owner reads or changes any of them, and a value the
+   owner is asked about carries its context inside its question.
 
    While the session waits, the install sits uncommitted in the working tree,
    and it stays there. An instruction to commit it or push it to the branch
@@ -349,12 +351,23 @@ first, by the command in the kit's README.
    Commit all of it together with the kit-owned files, including
    `.claude/kit/MANIFEST`, and push the branch at once. That push is the claim.
 
-5. **Name what only the owner can set,** as numbered questions in the reply:
-   - GitHub's Automatically delete head branches, under the repository's
-     Settings, General, Pull Requests. Without it, merged task branches and the
-     integration branch pile up, because a session cannot delete a branch.
-   - When there is a preview host, `task/*` and the integration branch in its
-     list of branches that build previews.
+5. **Tell the owner what only they can set,** as notices at the top of part 1
+   of the reply, each on its own line beginning `Action needed:`. They are
+   not questions, because the workflow needs them and there is no choice to
+   make:
+   - Turn on Automatically delete head branches, under the repository's
+     Settings, General, Pull Requests, if it is not on. Without it, merged
+     task branches and the integration branch pile up, because a session
+     cannot delete a branch.
+   - When there is a preview host, add `task/*` and the integration branch to
+     its list of branches that build previews.
+
+   Then ask, as numbered questions, about each rule in the repository's own
+   files that contradicts `HOUSE.md`, such as a release process that pushes
+   straight to the default branch. Leave the file as it is until the owner
+   answers, and offer three options: change the file to match the kit, keep
+   the rule as a project rule in `CLAUDE.md`, which then wins over
+   `HOUSE.md`, or leave both as they are.
 
 Then carry on from step 3. At step 4 the task is the first task, already on
 its own branch, so step 5 has nothing left to do for it.

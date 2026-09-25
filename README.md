@@ -70,10 +70,14 @@ bash <that clone>/.claude/kit/kit.sh install .
 ```
 
 The repository is private, so the clone needs access to it. A cloud session
-attaches `MrFieldTech/Claude-Kit` itself when its tools allow, as both pilot
-sessions did. Otherwise attach it with read access before the install. A
+attaches `MrFieldTech/Claude-Kit` itself when its tools allow, as every pilot
+session did. Otherwise attach it with read access before the install. A
 session without that access reports the kit's status as `source
-unreachable`, and its installed copy keeps working.
+unreachable`, and its installed copy keeps working. The clone is only the
+source `kit.sh install` copies from. Its own `CLAUDE.md` and skills are this
+repository's and are not meant to load into the session, so the clone is not
+registered as one of the session's repositories, and auto mode blocks that
+if it is tried.
 
 The install writes the kit-owned files into the working tree and commits
 nothing. `session-open` then finds a repository new to the kit and runs its
@@ -81,7 +85,7 @@ first-run setup. It reads the repository and settles every Session Setting it
 can: the Owner is the account that owns the repository, the integration
 branch is `preview`, and a key the repository does not show takes its
 default. It asks only about what is left, and when nothing is, it carries
-straight on. It creates the first task's branch, writes `CLAUDE.md`,
+straight on. Its reply does not list the settings, which are in `CLAUDE.md`. It creates the first task's branch, writes `CLAUDE.md`,
 `TASKS.md` and `HANDOFF.md` on it, and commits them with the kit. An existing
 `CLAUDE.md` is kept and gains the import line and the settings, and a section
 of it that only repeats `HOUSE.md` is removed.
@@ -95,9 +99,13 @@ session starts, which is why the install prompt says to follow the skill rather
 than to run `/session-open`. From the next session on, `/session-open` works
 as usual.
 
-Two settings only the owner can change: GitHub's Automatically delete head
-branches, which removes merged task branches, and a preview host's list of
-branches to build, when there is one.
+Two settings only the owner can change, which the first run gives as
+`Action needed:` notices rather than questions: GitHub's Automatically delete
+head branches, which the workflow needs because a session cannot delete a
+branch, and a preview host's list of branches to build, when there is one.
+The first run asks only about a rule in the repository's own files that
+contradicts the kit, such as a release process that pushes straight to the
+default branch.
 
 ## Update
 
