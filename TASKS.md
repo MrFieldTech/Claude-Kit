@@ -48,15 +48,14 @@ Then the detail block, as prose.
 **Slug:** `first-pilot`
 **Status:** BLOCKED
 **Opened:** 2026-09-24
-**Blocked:** Devan runs the pilot again in a fresh session on that repository, with the install prompt from `README.md` word for word.
+**Blocked:** Devan runs the pilot a third time in a fresh session on that repository, with the install prompt from `README.md` on `main` word for word, after rolling back what the second attempt changed there.
 
 Devan runs the first install outside the repository the skills came from, in a
 fresh session on the second repository he chose, with Claude-Kit attached to
-the session because it is private. He says: "Install Claude-Kit from
-https://github.com/MrFieldTech/Claude-Kit, then follow its session-open
-skill." The first run should propose its Session Settings, ask about what it
-cannot read, offer to remove the response-format section its existing
-`CLAUDE.md` repeats from `HOUSE.md`, and push its first task branch.
+the session because it is private. He says the install prompt in
+`README.md`. The first run should settle its Session Settings, asking only
+what it cannot, remove the response-format section its existing `CLAUDE.md`
+repeats from `HOUSE.md`, and push its first task branch.
 
 Each defect the pilot finds is fixed here on this task's branch, released as a
 patch version, and taken by `kit.sh update` in every repository that has the
@@ -82,11 +81,42 @@ release: the install prompt now names the writes into `.claude/` and
 `CLAUDE.md` as wanted and gives permission to push the `task/` branch, says
 why, and gives Accept edits mode as the fallback.
 
-**Where it stands.** The fix merged into `main` on 2026-09-25 at Devan's
-request. Devan, 2026-09-25: the blocked pilot session is discarded rather than
-answered, and the pilot starts again in a fresh session. Whether the new
-wording clears the classifier is unverified until it does. The next session
-on this task takes up whatever that pilot finds.
+**Found, 2026-09-25.** The second attempt, with the fixed prompt, got past
+the classifier, installed 1.0.0, named `task/kit-setup` as the branch it
+would push, and stopped at six questions. Devan's answers, and what they
+changed in 1.0.1:
+
+1. The Owner was asked, with two names to choose from. Devan: the Owner is
+   a placeholder for whoever answers, and is set without asking. It is now
+   the account in the repository's remote URL.
+2. The integration branch was asked, because the repository's contributing
+   guide releases from `main`. Devan: `preview`, without asking. It is now
+   asked only when a `preview` branch already exists.
+3. The checks CI runs need a tool the container lacked, so the session asked
+   whether to list them. Listed, they would fail at every close and park
+   every task. Checks before merge now holds only commands the container
+   runs, and CI runs the rest.
+4. The existing `CLAUDE.md` repeated `HOUSE.md`'s response format. Devan:
+   there should be no duplicate. A section that only repeats `HOUSE.md` is
+   now removed without asking.
+5. The repository's `.gitattributes` would let a Windows checkout give
+   `kit.sh` CRLF endings, which bash cannot run. A fix in one repository
+   reaches no other, so each kit directory now carries its own
+   `.gitattributes`. A scratch clone with `core.autocrlf=true` confirmed it.
+6. The contributing guide's file list did not name the kit's files. Devan:
+   add them. The first run now does, without asking.
+
+The environment's end-of-turn hook also told the session to commit the
+uncommitted install to its assigned branch while it waited for answers. The
+session refused on its own judgement. `session-open` now says to.
+
+Devan also asked for a shorter install prompt, and `README.md` has one.
+
+**Where it stands.** 1.0.1 merged into `main` on 2026-09-25 at Devan's
+request. Devan is discarding the second attempt's session and branches and
+rolling back what it changed, then running the pilot again. Whether the
+shorter prompt still clears the classifier is unverified until then. The
+next session on this task takes up whatever that pilot finds.
 
 ## Closed Tasks
 

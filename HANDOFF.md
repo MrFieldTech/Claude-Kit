@@ -13,6 +13,7 @@ file at the same time.
 
 | Date | Tasks touched | Work commits |
 |---|---|---|
+| 2026-09-25 | `first-pilot`, BLOCKED again, merged into `preview` and then `main` at Devan's request: 1.0.1 released with the second pilot's fixes, and the install prompt shortened | `0777c20..c50d8ce` |
 | 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at Devan's request: the first pilot attempt was blocked before the install, and the install prompt in `README.md` was fixed for both causes | `f82f24f..76f1139` |
 | 2026-09-24 | `release-1-0`, DONE, merged into `preview` and then `main` at Devan's request: 1.0.0 built, checked, walked through a scratch repository, and installed in the repository the skills came from. `first-pilot` queued | `763033b..28fb6c4` |
 
@@ -20,7 +21,7 @@ file at the same time.
 
 | Task | Waiting on |
 |---|---|
-| `first-pilot` | Devan running the pilot again in a fresh session, with the install prompt from `README.md` word for word |
+| `first-pilot` | Devan running the pilot a third time in a fresh session, with the install prompt from `README.md` on `main` word for word |
 
 ## Credentials In Transit
 
@@ -47,6 +48,12 @@ sends it here, and in this repository it never does.
 - **No permission rule for a headless `claude` session.** Devan, 2026-09-24.
   The pilot and his own sessions in real repositories are the fresh-session
   tests.
+- **The first run settles the Owner and the integration branch without
+  asking.** Devan, 2026-09-25. The Owner is a placeholder for whoever answers,
+  so it is the account that owns the repository, and the integration branch
+  is `preview`. Either is changed in `CLAUDE.md` afterwards.
+- **A `CLAUDE.md` section that only repeats `HOUSE.md` is removed.** Devan,
+  2026-09-25: there should be no duplicate, because two copies drift apart.
 - **Files here are written as if the repository were public.** It was asked
   for as public and created private. Nothing the kit installs names a
   project, so making it public later needs no cleanup first.
@@ -60,15 +67,15 @@ sends it here, and in this repository it never does.
 
 ## Flagged As Unverified
 
-**No fresh session has run the kit yet.** The first-run path was walked by
-hand, by the session that wrote it, which knows what the text means to say. A
-fresh session reads only what the text does say. The pilot is the first real
-test.
+**No fresh session has finished a first run.** The second pilot attempt, on
+2026-09-25, ran the install and the first run as far as its questions, on
+1.0.0. Everything from the answers on, and every rule 1.0.1 changed, is
+untested by a fresh session. The third attempt tests it.
 
-**Whether the new install prompt clears auto mode's classifier.** It names the
-writes into `.claude/` and `CLAUDE.md` as wanted, which is what the
-`[Self-Modification]` rule in `claude auto-mode defaults` asks for, but no
-session has been given it yet. The next pilot attempt verifies it.
+**Whether the shorter install prompt clears auto mode's classifier.** The
+longer prompt 1.0.0's README carried cleared it in the second pilot. The
+shorter one in 1.0.1 still says the writes into `.claude/` and `CLAUDE.md`
+are wanted, but in fewer words. The third attempt verifies it.
 
 **Whether Accept edits mode lets a cloud session's owner approve the install.**
 The permission-modes documentation says a cloud session's Accept edits mode is
@@ -85,10 +92,3 @@ skill rather than run `/session-open`, so the first run works either way.
 **The repository the skills came from has not yet opened a session on the
 kit.** Its next `/session-open` should print a `Kit:` line. That report is
 item 3 of `release-1-0`.
-
-**Whether GitHub deletes merged branches here.** It did not: `task/release-1-0`
-was still on the remote after it merged, with no commit `main` lacks. Devan
-turned Automatically delete head branches on on 2026-09-25 and is deleting that
-branch himself. Whether `task/first-pilot` and `preview` go when their pull
-requests merge is in the close report for 2026-09-25, and the next
-`/session-open` sees it in `git branch -r`.
