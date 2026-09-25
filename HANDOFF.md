@@ -13,6 +13,7 @@ file at the same time.
 
 | Date | Tasks touched | Work commits |
 |---|---|---|
+| 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview`: 1.0.2 released with the third attempt's fixes to the first run's reply | `770c7f5..144faaf` |
 | 2026-09-25 | `first-pilot`, BLOCKED again, merged into `preview` and then `main` at Devan's request: 1.0.1 released with the second pilot's fixes, and the install prompt shortened | `0777c20..c50d8ce` |
 | 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at Devan's request: the first pilot attempt was blocked before the install, and the install prompt in `README.md` was fixed for both causes | `f82f24f..76f1139` |
 | 2026-09-24 | `release-1-0`, DONE, merged into `preview` and then `main` at Devan's request: 1.0.0 built, checked, walked through a scratch repository, and installed in the repository the skills came from. `first-pilot` queued | `763033b..28fb6c4` |
@@ -21,7 +22,7 @@ file at the same time.
 
 | Task | Waiting on |
 |---|---|
-| `first-pilot` | Devan running the pilot a third time in a fresh session, with the install prompt from `README.md` on `main` word for word |
+| `first-pilot` | Devan deciding whether the pilot repository's session carries on to `/session-close` on 1.0.1, or is rolled back and run again with 1.0.2 |
 
 ## Credentials In Transit
 
@@ -67,15 +68,10 @@ sends it here, and in this repository it never does.
 
 ## Flagged As Unverified
 
-**No fresh session has finished a first run.** The second pilot attempt, on
-2026-09-25, ran the install and the first run as far as its questions, on
-1.0.0. Everything from the answers on, and every rule 1.0.1 changed, is
-untested by a fresh session. The third attempt tests it.
-
-**Whether the shorter install prompt clears auto mode's classifier.** The
-longer prompt 1.0.0's README carried cleared it in the second pilot. The
-shorter one in 1.0.1 still says the writes into `.claude/` and `CLAUDE.md`
-are wanted, but in fewer words. The third attempt verifies it.
+**No fresh session has closed a task on the kit.** The third pilot attempt,
+on 2026-09-25, finished the first run on 1.0.1 and pushed its first task
+branch. Its `/session-close`, the first merge into a new `preview`, and every
+rule 1.0.2 changed are untested by a fresh session.
 
 **Whether Accept edits mode lets a cloud session's owner approve the install.**
 The permission-modes documentation says a cloud session's Accept edits mode is

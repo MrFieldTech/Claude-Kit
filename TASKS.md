@@ -46,8 +46,9 @@ Then the detail block, as prose.
 ### Pilot The Kit In A Second Repository
 
 **Slug:** `first-pilot`
-**Status:** ACTIVE
+**Status:** BLOCKED
 **Opened:** 2026-09-24
+**Blocked:** Devan decides whether the pilot repository's session carries on to `/session-close` on 1.0.1, or is rolled back and run again with 1.0.2.
 
 Devan runs the first install outside the repository the skills came from, in a
 fresh session on the second repository he chose, with Claude-Kit attached to
@@ -111,11 +112,27 @@ session refused on its own judgement. `session-open` now says to.
 
 Devan also asked for a shorter install prompt, and `README.md` has one.
 
-**Where it stands.** 1.0.1 merged into `main` on 2026-09-25 at Devan's
-request. Devan is discarding the second attempt's session and branches and
-rolling back what it changed, then running the pilot again. Whether the
-shorter prompt still clears the classifier is unverified until then. The
-next session on this task takes up whatever that pilot finds.
+**Found, 2026-09-25, third attempt.** With 1.0.1 and the shorter prompt, the
+session attached and cloned the kit, installed it, settled every setting
+without asking, removed the repeated response-format section, added the
+kit's paths to the contributing guide, and pushed `task/kit-setup` without
+touching its assigned branch. Auto mode blocked registering the kit's clone
+as a repository of the session, which did no harm, and `README.md` now says
+that registration is not needed. Devan's review of its reply, fixed in 1.0.2:
+
+1. The reply listed every Session Setting, which the people reading it do
+   not need. It no longer lists them.
+2. Automatically delete head branches was asked as a question. The workflow
+   needs it, so it is now an `Action needed:` notice.
+3. The session asked whether the contributing guide's release step, which
+   pushes straight to `main`, or the kit's rule should hold. Devan: a
+   project file that contradicts the kit rightly needs the owner's answer.
+   The first run now asks this by rule rather than by the session's own
+   judgement.
+
+**Where it stands.** 1.0.2 is on `preview`. The pilot repository has 1.0.1
+on its `task/kit-setup`, its session waiting on Devan's answer about the
+release step. How the pilot continues is Devan's call, in `HANDOFF.md`.
 
 ## Closed Tasks
 

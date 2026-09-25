@@ -76,8 +76,8 @@ session without that access reports the kit's status as `source
 unreachable`, and its installed copy keeps working. The clone is only the
 source `kit.sh install` copies from. Its own `CLAUDE.md` and skills are this
 repository's and are not meant to load into the session, so the clone is not
-registered as one of the session's repositories, and auto mode blocks that
-if it is tried.
+registered as one of the session's repositories. Auto mode blocked that in
+one pilot, which did no harm.
 
 The install writes the kit-owned files into the working tree and commits
 nothing. `session-open` then finds a repository new to the kit and runs its
