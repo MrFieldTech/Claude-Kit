@@ -43,6 +43,21 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+### Prepare The Repository To Go Public
+
+**Slug:** `go-public`
+**Status:** ACTIVE
+**Opened:** 2026-09-26
+
+Devan, 2026-09-26: Claude-Kit is to be made public, so any session can check
+and take updates without attaching it. He would rather the repository hold no
+direct reference to his projects. The only one in the tree is the list of
+project terms in `check.sh`, which guards the kit-owned files against a
+project's details leaking in. Keep the guard, but move the list out of the
+repository into a GitHub Actions secret, add a generic guard against
+addresses that needs no list, and bring `README.md`, `CLAUDE.md` and the state
+files up to date for a public repository. Devan changes the visibility.
+
 ## Closed Tasks
 
 ### Pilot The Kit In A Second Repository
