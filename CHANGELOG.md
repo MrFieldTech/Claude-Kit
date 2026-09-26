@@ -4,6 +4,29 @@ Every change to a kit-owned file is a release, recorded here with the version
 `VERSION` carries. A project's `/session-open` reports when a newer release
 exists, and the project takes it by `kit.sh update` when its owner asks.
 
+## 1.0.3
+
+Fixes from the pilot's first full run, from install to a close that merged
+into the default branch.
+
+- `session-close` stays with a pull request until its checks finish, reading
+  them about once a minute by a check-in a minute or two out, rather than one
+  far out that leaves the merge idle after the checks pass.
+- `session-close` merges the integration branch into the default branch
+  without waiting for the checks to run again when they already passed on
+  exactly that code: the integration branch's head is the task merge this
+  session made after its checks passed, nothing else merged in between, and
+  the default branch holds nothing the integration branch lacks. `HOUSE.md` says the checks must have
+  passed on the code, not on the pull request itself.
+- The session log row says a task reached the default branch when the owner
+  asked for that merge in the session.
+- The status blocks `session-open` and `session-close` report are one fenced
+  code block with no backticks inside, which kept breaking apart.
+- `session-open` says, when a newer release exists, that the update prompt is
+  in the kit's README.
+
+After updating, nothing is required.
+
 ## 1.0.2
 
 Fixes from the third pilot attempt, which ran the first run to the end.
