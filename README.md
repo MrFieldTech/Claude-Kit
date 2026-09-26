@@ -97,11 +97,10 @@ git clone --depth 1 https://github.com/MrFieldTech/Claude-Kit "$(mktemp -d)/clau
 bash <that clone>/.claude/kit/kit.sh install .
 ```
 
-The repository is private, so the clone needs access to it, which step 1
-gives a cloud session. A session without that access later reports the kit's
-status as `source unreachable`, and its installed copy keeps working. The
-clone's own `CLAUDE.md` and skills belong to the kit's repository, which is
-why step 1 keeps the clone from loading into the session.
+The repository is public, so any session can clone it, and a cloud session
+whose proxy serves it already may find there is nothing to attach in step 1.
+The clone's own `CLAUDE.md` and skills belong to the kit's repository, which
+is why step 1 keeps the clone from loading into the session.
 
 The install writes the kit-owned files into the working tree and commits
 nothing. `session-open` then finds a repository new to the kit and runs its
@@ -146,10 +145,6 @@ take:
 | `1.0.0, source unreachable` | The source could not be fetched. Nothing is wrong locally |
 | `1.0.0, the source has no release on its default branch` | The source's `main` holds no `VERSION`, so no release has reached it |
 
-While this repository is private, a cloud session reaches it only when
-`MrFieldTech/Claude-Kit` is attached, so a session that has not attached it
-reads `source unreachable`.
-
 An update happens only when the owner asks, as its own task. In a Claude Code
 session on the repository, paste this whole block, with the new version in the
 slug, such as `kit-update-1-0-3`:
@@ -186,15 +181,17 @@ files under `.claude/kit/` and the two skills are the source, so there is no
 `MANIFEST` here, and `kit.sh status` reports the source itself.
 
 - **Nothing the kit installs names a project.** A kit-owned file is
-  installed into every repository, and this repository may be made public,
-  so it names no project, person, account, host, address or credential.
-  `check.sh` refuses the project terms it knows about, and review catches the
-  rest.
+  installed into every repository, and this repository is public, so it
+  names no project, person, account, host, address or credential. `check.sh`
+  refuses any web address, email address or host name, and any name on the
+  owner's private list of project terms, which is kept out of the repository
+  in the `KIT_PRIVATE_TERMS` secret CI reads. Review catches the rest.
 - **Every change to a kit-owned file is a release.** Bump `VERSION` and add a
   `CHANGELOG.md` entry in the same pull request.
 - **`main` is what every install and update takes,** so it moves only when the
   owner asks, like the default branch of any repository using the kit.
-- **Run `bash check.sh` before a pull request.** It checks the project terms,
-  the em dash, the scripts and the skills. It also installs the kit into a
+- **Run `bash check.sh` before a pull request.** It checks for addresses and
+  project names, the em dash, the scripts and the skills. Locally it checks
+  names only when an untracked `.private-terms` file holds the list. It also installs the kit into a
   scratch repository and exercises the install, status, update and the TODO
   sweep end to end. CI runs it on every pull request.

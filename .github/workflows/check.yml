@@ -16,5 +16,10 @@ jobs:
 
       # bash, git and python3 come with the runner. check.sh needs nothing
       # else, which is the same promise the kit makes to every repository.
+      # KIT_PRIVATE_TERMS is a repository secret listing the names of the
+      # owner's projects, which kit-owned files must never hold. It is a
+      # secret so the public repository does not publish the list.
       - name: Check the kit
+        env:
+          KIT_PRIVATE_TERMS: ${{ secrets.KIT_PRIVATE_TERMS }}
         run: bash check.sh
