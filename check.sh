@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Checks the kit before it merges. Run from anywhere: bash check.sh
 #
-# 1. No kit-owned file names anything that belongs to one project.
+# 1. No kit-owned file holds an address, or a name on the private list of
+#    project terms when one is given.
 # 2. No file in the repository holds an em dash.
 # 3. The scripts parse, each skill's frontmatter is whole, and every
 #    kit-owned directory keeps LF line endings.
@@ -25,13 +26,31 @@ fail() {
 }
 
 # 1. A kit-owned file is installed into every repository, public or private,
-# so it may name no project, person, account, host or address. Add a term here
-# whenever a project's detail is found to have leaked in.
-PROJECT_TERMS='Devan|Absolute|absolute-record|CONTRACT\.md|sections/|INDEX\.md|audit\.py|build_content|generate_section1|pages\.dev|mft\.gg|MrFieldTech|Adobe'
-if grep -rnIE "$PROJECT_TERMS" "${KIT_OWNED[@]}"; then
-  fail "the lines above name something that belongs to one project"
+# so it may name no project, person, account, host or address.
+#
+# Addresses are caught by pattern: a web address, an email address, or a
+# host name under a common top-level domain.
+ADDRESS='https?://|[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[A-Za-z]{2,}|\b[A-Za-z0-9-]+\.(com|net|org|io|dev|app|gg|co|us|me|ai)\b'
+if grep -rnIE "$ADDRESS" "${KIT_OWNED[@]}"; then
+  fail "the lines above hold an address, which belongs to one project"
 fi
-echo "check: kit-owned files name no project"
+# Names cannot be caught by pattern, so they come from a list kept out of
+# this public repository: the KIT_PRIVATE_TERMS repository secret in CI, or an
+# untracked .private-terms file locally, holding one extended regular
+# expression. Add a term there whenever a project's detail leaks in. Without
+# either, this part is skipped, and CI still runs it on every pull request.
+terms="${KIT_PRIVATE_TERMS:-}"
+if [ -z "$terms" ] && [ -f .private-terms ]; then
+  terms="$(tr -d '\n' < .private-terms)"
+fi
+if [ -n "$terms" ]; then
+  if grep -rnIE "$terms" "${KIT_OWNED[@]}"; then
+    fail "the lines above name something that belongs to one project"
+  fi
+  echo "check: kit-owned files hold no address and name no project"
+else
+  echo "check: kit-owned files hold no address (no private terms given, so names were not checked)"
+fi
 
 # 2. The house rules forbid the em dash, in the kit as everywhere else.
 if git ls-files -z | xargs -0 grep -nI $'\xe2\x80\x94' --; then
