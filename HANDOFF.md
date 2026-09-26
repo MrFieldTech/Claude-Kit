@@ -13,20 +13,20 @@ file at the same time.
 
 | Date | Tasks touched | Work commits |
 |---|---|---|
-| 2026-09-26 | `go-public`, BLOCKED, merged into `preview` and then `main` at Devan's request: the project terms left `check.sh` for a secret, and the files describe a public repository | `37ee80b..bb1444f` |
-| 2026-09-26 | `first-pilot`, DONE, merged into `preview` and then `main` at Devan's request: the sixth attempt ran a full round, and 1.0.3 released with its fixes | `37df0d1..0e3e434` |
-| 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at Devan's request: the install prompt in `README.md` rebuilt as one step per action, after the fifth attempt was blocked at the installer | `7a4320a..4aadb68` |
-| 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at Devan's request: the install prompt in `README.md` names the kit as the owner's own source, after the fourth attempt was blocked attaching it | `fb705b7..0f48004` |
-| 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at Devan's request: 1.0.2 released with the third attempt's fixes to the first run's reply | `770c7f5..144faaf` |
-| 2026-09-25 | `first-pilot`, BLOCKED again, merged into `preview` and then `main` at Devan's request: 1.0.1 released with the second pilot's fixes, and the install prompt shortened | `0777c20..c50d8ce` |
-| 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at Devan's request: the first pilot attempt was blocked before the install, and the install prompt in `README.md` was fixed for both causes | `f82f24f..76f1139` |
-| 2026-09-24 | `release-1-0`, DONE, merged into `preview` and then `main` at Devan's request: 1.0.0 built, checked, walked through a scratch repository, and installed in the repository the skills came from. `first-pilot` queued | `763033b..28fb6c4` |
+| 2026-09-26 | `go-public`, BLOCKED, merged into `preview` and then `main` at MrFieldTech's request: the project terms left `check.sh` for a secret, and the files describe a public repository | `37ee80b..bb1444f` |
+| 2026-09-26 | `first-pilot`, DONE, merged into `preview` and then `main` at MrFieldTech's request: the sixth attempt ran a full round, and 1.0.3 released with its fixes | `37df0d1..0e3e434` |
+| 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at MrFieldTech's request: the install prompt in `README.md` rebuilt as one step per action, after the fifth attempt was blocked at the installer | `7a4320a..4aadb68` |
+| 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at MrFieldTech's request: the install prompt in `README.md` names the kit as the owner's own source, after the fourth attempt was blocked attaching it | `fb705b7..0f48004` |
+| 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at MrFieldTech's request: 1.0.2 released with the third attempt's fixes to the first run's reply | `770c7f5..144faaf` |
+| 2026-09-25 | `first-pilot`, BLOCKED again, merged into `preview` and then `main` at MrFieldTech's request: 1.0.1 released with the second pilot's fixes, and the install prompt shortened | `0777c20..c50d8ce` |
+| 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at MrFieldTech's request: the first pilot attempt was blocked before the install, and the install prompt in `README.md` was fixed for both causes | `f82f24f..76f1139` |
+| 2026-09-24 | `release-1-0`, DONE, merged into `preview` and then `main` at MrFieldTech's request: 1.0.0 built, checked, walked through a scratch repository, and installed in the repository the skills came from. `first-pilot` queued | `763033b..28fb6c4` |
 
 ## Blocked On
 
 | Task | Waiting on |
 |---|---|
-| `go-public` | Devan adding the `KIT_PRIVATE_TERMS` repository secret and making the repository public |
+| `go-public` | MrFieldTech adding the `KIT_PRIVATE_TERMS` repository secret and making the repository public |
 
 ## Credentials In Transit
 
@@ -35,7 +35,7 @@ sends it here, and in this repository it never does.
 
 ## Decisions Made
 
-- **The kit is vendored, not a plugin and not account-level skills.** Devan,
+- **The kit is vendored, not a plugin and not account-level skills.** MrFieldTech,
   2026-09-24. Each repository holds a pinned copy, so it resumes from
   committed files alone, a kit change reaches it as a reviewable diff, and the
   command names stay `/session-open` and `/session-close`. A plugin cannot
@@ -46,27 +46,27 @@ sends it here, and in this repository it never does.
   response rules govern every turn. The import was confirmed to load in a
   headless session on 2026-09-24.
 - **The integration branch is a per-repository setting, `preview` by
-  default.** Devan, 2026-09-24. The rule that the default branch moves only
+  default.** MrFieldTech, 2026-09-24. The rule that the default branch moves only
   when the owner asks then holds everywhere unless a repository opts out.
-- **1.0.0 reached `main` before the pilot.** Devan, 2026-09-24, so the pilot
+- **1.0.0 reached `main` before the pilot.** MrFieldTech, 2026-09-24, so the pilot
   installs by the command in `README.md` rather than from a task branch.
-- **No permission rule for a headless `claude` session.** Devan, 2026-09-24.
-  The pilot and his own sessions in real repositories are the fresh-session
+- **No permission rule for a headless `claude` session.** MrFieldTech, 2026-09-24.
+  The pilot and the owner's own sessions in real repositories are the fresh-session
   tests.
 - **The first run settles the Owner and the integration branch without
-  asking.** Devan, 2026-09-25. The Owner is a placeholder for whoever answers,
+  asking.** MrFieldTech, 2026-09-25. The Owner is a placeholder for whoever answers,
   so it is the account that owns the repository, and the integration branch
   is `preview`. Either is changed in `CLAUDE.md` afterwards.
-- **A `CLAUDE.md` section that only repeats `HOUSE.md` is removed.** Devan,
+- **A `CLAUDE.md` section that only repeats `HOUSE.md` is removed.** MrFieldTech,
   2026-09-25: there should be no duplicate, because two copies drift apart.
 - **An install session stays in Auto mode, and a block is answered when it
-  happens.** Devan, 2026-09-25. Accept edits mode never blocks but makes every
+  happens.** MrFieldTech, 2026-09-25. Accept edits mode never blocks but makes every
   command that is not read-only wait for approval. The session stops and
   gives the sentence that approves the blocked action.
-- **The install prompt may be as long as it needs.** Devan, 2026-09-25. It is
+- **The install prompt may be as long as it needs.** MrFieldTech, 2026-09-25. It is
   pasted whole from `README.md`, and a short one does not clear auto mode.
 - **`session-close` rechecks a pull request about once a minute and skips a
-  second run of checks that already passed on the same code.** Devan,
+  second run of checks that already passed on the same code.** MrFieldTech,
   2026-09-26. Each recheck is a short turn on cached context, and the second
   run on the pull request into the default branch tested nothing new.
 - **A repository never updates the kit itself.** An update changes the rules
@@ -75,13 +75,12 @@ sends it here, and in this repository it never does.
 - **Files here are written as if the repository were public.** It was asked
   for as public and created private. Nothing the kit installs names a
   project, so making it public later needs no cleanup first.
-- **The repository is public.** Devan, 2026-09-26, so any session can check
+- **The repository is public.** MrFieldTech, 2026-09-26, so any session can check
   and take updates without attaching it. The list of project terms moved out
-  of `check.sh` into the `KIT_PRIVATE_TERMS` secret, because he would rather
-  the repository name none of his projects. One commit's `check.sh` in the
+  of `check.sh` into the `KIT_PRIVATE_TERMS` secret, because MrFieldTech would rather the repository name none of their other projects. One commit's `check.sh` in the
   history still holds the list, which only rewriting history would remove.
 
-## Open Questions For Devan
+## Open Questions For MrFieldTech
 
 None.
 
