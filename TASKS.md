@@ -46,8 +46,9 @@ Then the detail block, as prose.
 ### Prepare The Repository To Go Public
 
 **Slug:** `go-public`
-**Status:** ACTIVE
+**Status:** BLOCKED
 **Opened:** 2026-09-26
+**Blocked:** MrFieldTech makes the repository public under its Settings, and adds the `KIT_PRIVATE_TERMS` repository secret if they want CI to check names.
 
 MrFieldTech, 2026-09-26: Claude-Kit is to be made public, so any session can check
 and take updates without attaching it. They would rather the repository hold no direct reference to their other projects. The only one in the tree is the list of
@@ -69,6 +70,12 @@ which the house rules forbid.
 
 What is left is MrFieldTech's: the secret, so CI checks names again, and the
 visibility. The task closes when both are done.
+
+**Done, 2026-09-26, second session.** MrFieldTech chose to leave the history
+as it is, and to have the repository's own files name the owner by the
+account, so `CLAUDE.md`, `TASKS.md` and `HANDOFF.md` now say MrFieldTech. The
+secret is optional: without it CI skips the name check and says so, and the
+address check still runs.
 
 ## Closed Tasks
 
