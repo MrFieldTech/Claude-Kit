@@ -72,15 +72,15 @@ sends it here, and in this repository it never does.
 - **Files here are written as if the repository were public.** It was asked
   for as public and created private. Nothing the kit installs names a
   project, so making it public later needs no cleanup first.
+- **The repository is public.** Devan, 2026-09-26, so any session can check
+  and take updates without attaching it. The list of project terms moved out
+  of `check.sh` into the `KIT_PRIVATE_TERMS` secret, because he would rather
+  the repository name none of his projects. One commit's `check.sh` in the
+  history still holds the list, which only rewriting history would remove.
 
 ## Open Questions For Devan
 
-1. Should this repository stay private or be made public, as it was asked for?
-   While it is private, a session in another repository needs it attached
-   before it can install or update the kit, and every `/session-open` there
-   reads `source unreachable` on its `Kit:` line without that access. Public,
-   the history shows `check.sh`'s list of project terms, which names other
-   repositories.
+None.
 
 ## Flagged As Unverified
 
