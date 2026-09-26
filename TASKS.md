@@ -46,9 +46,8 @@ Then the detail block, as prose.
 ### Prepare The Repository To Go Public
 
 **Slug:** `go-public`
-**Status:** BLOCKED
+**Status:** ACTIVE
 **Opened:** 2026-09-26
-**Blocked:** Devan adds the `KIT_PRIVATE_TERMS` repository secret and makes the repository public, both under the repository's Settings.
 
 Devan, 2026-09-26: Claude-Kit is to be made public, so any session can check
 and take updates without attaching it. He would rather the repository hold no
