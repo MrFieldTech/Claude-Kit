@@ -46,8 +46,9 @@ Then the detail block, as prose.
 ### Prepare The Repository To Go Public
 
 **Slug:** `go-public`
-**Status:** ACTIVE
+**Status:** BLOCKED
 **Opened:** 2026-09-26
+**Blocked:** Devan adds the `KIT_PRIVATE_TERMS` repository secret and makes the repository public, both under the repository's Settings.
 
 Devan, 2026-09-26: Claude-Kit is to be made public, so any session can check
 and take updates without attaching it. He would rather the repository hold no
@@ -57,6 +58,19 @@ project's details leaking in. Keep the guard, but move the list out of the
 repository into a GitHub Actions secret, add a generic guard against
 addresses that needs no list, and bring `README.md`, `CLAUDE.md` and the state
 files up to date for a public repository. Devan changes the visibility.
+
+**Done, 2026-09-26.** `check.sh` no longer holds the list. It reads the
+`KIT_PRIVATE_TERMS` secret in CI, or an untracked `.private-terms` file
+locally, and skips the name check with a notice when it has neither. A new
+pattern check refuses web addresses, email addresses and host names in
+kit-owned files with no list at all. Each guard was made to fail on purpose,
+and the current kit passes the old list. `README.md`, `CLAUDE.md` and
+`HANDOFF.md` now describe a public repository. The list stays in the history
+of one early commit of `check.sh`; removing it would take rewriting history,
+which the house rules forbid.
+
+What is left is Devan's: the secret, so CI checks names again, and the
+visibility. The task closes when both are done.
 
 ## Closed Tasks
 

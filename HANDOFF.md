@@ -13,7 +13,8 @@ file at the same time.
 
 | Date | Tasks touched | Work commits |
 |---|---|---|
-| 2026-09-26 | `first-pilot`, DONE, merged into `preview`: the sixth attempt ran a full round, and 1.0.3 released with its fixes | `37df0d1..0e3e434` |
+| 2026-09-26 | `go-public`, BLOCKED, merged into `preview` and then `main` at Devan's request: the project terms left `check.sh` for a secret, and the files describe a public repository | `37ee80b..bb1444f` |
+| 2026-09-26 | `first-pilot`, DONE, merged into `preview` and then `main` at Devan's request: the sixth attempt ran a full round, and 1.0.3 released with its fixes | `37df0d1..0e3e434` |
 | 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at Devan's request: the install prompt in `README.md` rebuilt as one step per action, after the fifth attempt was blocked at the installer | `7a4320a..4aadb68` |
 | 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at Devan's request: the install prompt in `README.md` names the kit as the owner's own source, after the fourth attempt was blocked attaching it | `fb705b7..0f48004` |
 | 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at Devan's request: 1.0.2 released with the third attempt's fixes to the first run's reply | `770c7f5..144faaf` |
@@ -23,7 +24,9 @@ file at the same time.
 
 ## Blocked On
 
-None.
+| Task | Waiting on |
+|---|---|
+| `go-public` | Devan adding the `KIT_PRIVATE_TERMS` repository secret and making the repository public |
 
 ## Credentials In Transit
 
