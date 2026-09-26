@@ -16,7 +16,7 @@ into the default branch.
   without waiting for the checks to run again when they already passed on
   exactly that code: the integration branch's head is the task merge this
   session made after its checks passed, nothing else merged in between, and
-  the default branch has not moved. `HOUSE.md` says the checks must have
+  the default branch holds nothing the integration branch lacks. `HOUSE.md` says the checks must have
   passed on the code, not on the pull request itself.
 - The session log row says a task reached the default branch when the owner
   asked for that merge in the session.

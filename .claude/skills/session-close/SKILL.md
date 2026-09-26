@@ -249,8 +249,7 @@ When they have asked, check all three before touching anything:
    - That commit's first parent is the hash step 8 noted, so nothing else
      merged into the integration branch in between:
      `git rev-parse origin/<integration branch>^1`
-   - The default branch has not moved since the integration branch was made
-     from it:
+   - The default branch holds nothing the integration branch lacks:
      `git merge-base --is-ancestor origin/<default branch> origin/<integration branch>`
 
    The pull request into the default branch then holds exactly the code those
