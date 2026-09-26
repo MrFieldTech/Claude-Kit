@@ -13,6 +13,7 @@ file at the same time.
 
 | Date | Tasks touched | Work commits |
 |---|---|---|
+| 2026-09-26 | `first-pilot`, DONE, merged into `preview`: the sixth attempt ran a full round, and 1.0.3 released with its fixes | `37df0d1..0e3e434` |
 | 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at Devan's request: the install prompt in `README.md` rebuilt as one step per action, after the fifth attempt was blocked at the installer | `7a4320a..4aadb68` |
 | 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at Devan's request: the install prompt in `README.md` names the kit as the owner's own source, after the fourth attempt was blocked attaching it | `fb705b7..0f48004` |
 | 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at Devan's request: 1.0.2 released with the third attempt's fixes to the first run's reply | `770c7f5..144faaf` |
@@ -22,9 +23,7 @@ file at the same time.
 
 ## Blocked On
 
-| Task | Waiting on |
-|---|---|
-| `first-pilot` | Devan running a sixth attempt in a fresh session, pasting the install prompt from `README.md` on `main` |
+None.
 
 ## Credentials In Transit
 
@@ -63,6 +62,13 @@ sends it here, and in this repository it never does.
   gives the sentence that approves the blocked action.
 - **The install prompt may be as long as it needs.** Devan, 2026-09-25. It is
   pasted whole from `README.md`, and a short one does not clear auto mode.
+- **`session-close` rechecks a pull request about once a minute and skips a
+  second run of checks that already passed on the same code.** Devan,
+  2026-09-26. Each recheck is a short turn on cached context, and the second
+  run on the pull request into the default branch tested nothing new.
+- **A repository never updates the kit itself.** An update changes the rules
+  a session runs on, so it is the owner's call, taken by the update prompt in
+  `README.md` as its own task.
 - **Files here are written as if the repository were public.** It was asked
   for as public and created private. Nothing the kit installs names a
   project, so making it public later needs no cleanup first.
@@ -71,22 +77,25 @@ sends it here, and in this repository it never does.
 
 1. Should this repository stay private or be made public, as it was asked for?
    While it is private, a session in another repository needs it attached
-   before it can install or update the kit, and `kit.sh status` reads `source
-   unreachable` in any session without that access.
+   before it can install or update the kit, and every `/session-open` there
+   reads `source unreachable` on its `Kit:` line without that access. Public,
+   the history shows `check.sh`'s list of project terms, which names other
+   repositories.
 
 ## Flagged As Unverified
 
-**No fresh session has closed a task on the kit.** The third pilot attempt,
-on 2026-09-25, finished the first run on 1.0.1 and pushed its first task
-branch. Its `/session-close`, the first merge into a new `preview`, and every
-rule 1.0.2 changed are untested by a fresh session.
+**No session has run 1.0.3's close.** The sixth pilot attempt ran a full
+round on 1.0.2 on 2026-09-26. The once-a-minute recheck and the skipped second
+run of checks are untested.
+
+**Whether the update prompt works as one message.** It starts with
+`/session-open` and carries the instructions on the lines after it. Whether
+Claude Code passes those lines to the skill has not been tried.
 
 **How often the rebuilt install prompt passes auto mode without a block.**
-It names every action the classifier reviews, which its rules say clears a
-soft block, but the fifth attempt was blocked by the server-side classifier
-with no reason given, on a prompt that named the source. The next attempts
-show how often it holds, and whether the session's approving sentence clears
-a block.
+It passed in the sixth attempt, its first use. The fifth attempt was blocked
+by the server-side classifier with no reason given, on a prompt that named
+the source, so one pass does not show it always holds.
 
 **Whether Accept edits mode lets a cloud session's owner approve the install.**
 The permission-modes documentation says a cloud session's Accept edits mode is

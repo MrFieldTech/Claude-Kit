@@ -73,7 +73,7 @@ is never pushed. The session works on its task branch instead.
   `TASKS.md`, and `session-open` lists it at every open.
 - **The integration branch merges into the default branch only when the owner
   asks,** by a pull request the session opens and merges, and only when every
-  check passes on it and nothing conflicts.
+  check has passed on the code it holds and nothing conflicts.
 
 With `Integration branch: none` there are two kinds of branch. A task that is
 `DONE` merges into the default branch by pull request at close, and a

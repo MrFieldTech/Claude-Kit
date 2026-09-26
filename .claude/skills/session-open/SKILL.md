@@ -74,10 +74,12 @@ bash .claude/kit/kit.sh status
 ```
 
 It prints the `Kit:` line for step 6: the installed version, whether the kit's
-source has a newer one, and any kit-owned file edited in place. Never update
-the kit here. An update is the owner's call, made on a task branch in its own
-commit with `bash .claude/kit/kit.sh update`. A kit-owned file edited in place
-is reported and not reverted, because the edit may be the only copy of a fix
+source has a newer one, and any kit-owned file edited in place. When it
+reports a newer release, say in part 1 of the reply that the owner takes it
+with the update prompt in the kit's README. Never update the kit here. An
+update is the owner's call, made on a task branch in its own commit with
+`bash .claude/kit/kit.sh update`. A kit-owned file edited in place is
+reported and not reverted, because the edit may be the only copy of a fix
 that belongs in the kit.
 
 ## 3. Survey the branches
@@ -210,7 +212,8 @@ or `HANDOFF.md`, read them again.
 
 ## 6. Report, then work
 
-Report exactly these lines, then continue without waiting for a reply:
+Report exactly these lines, as one fenced code block with no backticks inside
+it, then continue without waiting for a reply:
 
 ```
 Task:     <task slug>, <resumed | started from the queue | new>

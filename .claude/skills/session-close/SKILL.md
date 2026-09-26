@@ -83,8 +83,10 @@ the named headings below, in this order, and add nothing else.
 - **Session Log.** Add one row for this task: the date, the task slug and where
   it ended, merged or parked, and the commit range of this session's work on its
   branch. Never the handoff commit's own hash or the pull request number, which
-  do not exist when the row is written. Keep the last ten rows and drop older
-  ones.
+  do not exist when the row is written. When the owner asked in this session
+  for the merge into the default branch, the row says the task went there too,
+  and if step 9 cannot make that merge, its report says so. Keep the last ten
+  rows and drop older ones.
 - **Blocked On.** Add, change or remove the row for any task this session
   blocked or unblocked.
 - **Credentials In Transit.** Values held here only when the Credentials
@@ -158,7 +160,8 @@ Create it again at the default branch's head, which adds no commit to it:
 git push origin origin/<default branch>:refs/heads/<integration branch>
 ```
 
-Then merge it into the task branch:
+Then merge it into the task branch, and note the hash of `origin/<target>`
+that this brings in, because step 9 compares against it:
 
 ```
 git fetch origin
@@ -183,6 +186,14 @@ a body naming the task slug and what it changed. Wait for every check run
 GitHub reports on the pull request to finish. A combined commit status that
 reads `pending` with no statuses behind it means nothing posted one, not that
 something is still running.
+
+Checks can run for many minutes. Stay with the pull request until they
+finish, reading them again about once a minute. When the session can schedule
+a message back to itself, wait by a check-in a minute or two out, which ends
+the turn, and carry on from here when it arrives. Never read the checks back
+to back, and never set the check-in far out, which leaves the merge idle long
+after the checks finish. Tell the owner nothing between readings unless a
+check fails.
 
 When the Task preview address is set, the host usually posts the branch's
 preview address on the pull request once the branch builds. If it is not the
@@ -231,7 +242,20 @@ time passing.
 
 When they have asked, check all three before touching anything:
 
-1. Every check GitHub reports passed on the integration branch's head.
+1. Every check passed on the code the integration branch holds. With no
+   checks to wait for, that is already true when all three of these hold:
+   - The integration branch's head is the merge commit of a task pull request
+     this session merged in step 8, after all its checks passed.
+   - That commit's first parent is the hash step 8 noted, so nothing else
+     merged into the integration branch in between:
+     `git rev-parse origin/<integration branch>^1`
+   - The default branch holds nothing the integration branch lacks:
+     `git merge-base --is-ancestor origin/<default branch> origin/<integration branch>`
+
+   The pull request into the default branch then holds exactly the code those
+   checks passed on, and running them again tests nothing new. Otherwise, wait
+   for every check GitHub reports on the integration branch's head, as step 8
+   waits.
 2. The integration branch merges into the default branch with no conflict.
 3. No task is `ACTIVE` in `TASKS.md` on the integration branch. A task branch
    merges only when its task is `DONE` or `BLOCKED`, so this always holds unless
@@ -244,7 +268,9 @@ When all three pass:
 1. Open the pull request from the integration branch into the default branch,
    titled after what it carries, with a body listing the tasks closed since the
    last merge.
-2. Merge it with a merge commit.
+2. Merge it with a merge commit: at once when check 1 held with no checks to
+   wait for, otherwise once every check on the pull request passes, waiting as
+   step 8 waits.
 3. GitHub deletes the integration branch. That is expected. The default branch
    now holds everything it did, and the next task to merge creates it again.
 
@@ -267,8 +293,8 @@ not. A session cannot delete a branch, so leave strays for the owner.
 ## 11. Report
 
 Do not summarize the handoff. Reply with exactly these lines and nothing else,
-giving one `Task:`, `Branch:` and `Preview:` line to each task branch the
-session closed:
+as one fenced code block with no backticks inside it, giving one `Task:`,
+`Branch:` and `Preview:` line to each task branch the session closed:
 
 ```
 Task:    <task slug>, <DONE | BLOCKED | ACTIVE>

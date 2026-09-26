@@ -43,12 +43,14 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+## Closed Tasks
+
 ### Pilot The Kit In A Second Repository
 
 **Slug:** `first-pilot`
-**Status:** BLOCKED
+**Status:** DONE
 **Opened:** 2026-09-24
-**Blocked:** Devan runs a sixth attempt in a fresh session on the pilot repository, pasting the install prompt from `README.md` on `main`.
+**Closed:** 2026-09-26
 
 Devan runs the first install outside the repository the skills came from, in a
 fresh session on the second repository he chose, with Claude-Kit attached to
@@ -160,7 +162,30 @@ README. The prompt is now one numbered step per action the classifier
 reviews, and asks the session to stop with the approving sentence when a
 step is blocked anyway. No kit-owned file changed.
 
-## Closed Tasks
+**Found, 2026-09-26, sixth attempt.** With the rebuilt prompt, the install
+went through with no block, and the first run settled every setting, asked
+only about the contributing guide's release step, which pushed straight to
+`main`, and pushed its first task branch. Devan answered to change the guide.
+`/session-close` then marked the task done, created `preview`, merged into it
+and on into `main` as asked, after CI passed on both pull requests, and GitHub
+deleted both branches. The repository is on 1.0.2 with only `main` left.
+Devan's review, fixed in 1.0.3:
+
+1. The status block came out broken apart. It is now one fenced block with no
+   backticks inside.
+2. The close took about seventeen minutes: CI ran in full on both pull
+   requests, and the session waited on a check-in sixteen minutes out. Devan:
+   recheck about once a minute if that costs little, which it does, and skip
+   the second run when nothing changed. `session-close` now does both.
+3. The session log row said the task reached `preview`, not `main`. It now
+   records a merge into the default branch the owner asked for.
+4. Devan asked whether a repository updates itself. It does not, by design:
+   `session-open` reports a newer release, and `README.md` now has the update
+   prompt.
+
+**Closed, 2026-09-26.** The kit installs and runs a full round in a second
+repository. The pilot repository takes 1.0.3 by the update prompt when Devan
+asks.
 
 ### Build The First Release
 
