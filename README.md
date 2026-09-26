@@ -134,7 +134,9 @@ default branch.
 
 ## Update
 
-`/session-open` reports the kit on its `Kit:` line:
+A repository never updates itself. Every `/session-open` checks the source and
+reports the kit on its `Kit:` line, and says when a newer release is there to
+take:
 
 | Line | Meaning |
 |---|---|
@@ -144,14 +146,36 @@ default branch.
 | `1.0.0, source unreachable` | The source could not be fetched. Nothing is wrong locally |
 | `1.0.0, the source has no release on its default branch` | The source's `main` holds no `VERSION`, so no release has reached it |
 
-An update happens only when the owner asks, on a task branch, as its own
-commit:
+While this repository is private, a cloud session reaches it only when
+`MrFieldTech/Claude-Kit` is attached, so a session that has not attached it
+reads `source unreachable`.
 
-```
-bash .claude/kit/kit.sh update
+An update happens only when the owner asks, as its own task. In a Claude Code
+session on the repository, paste this whole block, with the new version in the
+slug, such as `kit-update-1-0-3`:
+
+```text
+/session-open kit-update-<new version with hyphens>
+Update Claude-Kit in this repository, as this task. Claude-Kit is my own
+repository, https://github.com/MrFieldTech/Claude-Kit, which I wrote and
+trust. I want you to take each of these actions on this task's branch:
+
+1. Attach MrFieldTech/Claude-Kit to this session with read access, if this
+   is a cloud session. Do not register it as one of this session's
+   repositories.
+2. Run bash .claude/kit/kit.sh update. It clones the kit and runs the new
+   release's installer, which replaces the kit's skills in .claude/skills/
+   and its house rules in .claude/kit/. I want that change to your own
+   configuration.
+3. Commit the update on its own, then do whatever the kit's CHANGELOG.md
+   says the new release requires of a repository.
+
+If auto mode blocks one of these anyway, do not work around it. Stop, and
+give me the exact sentence to reply with that approves the blocked action.
 ```
 
-It refuses to overwrite a kit-owned file edited in place unless it is given
+Then `/session-close` merges it like any other task. The update refuses to
+overwrite a kit-owned file edited in place unless it is given
 `--discard-local-edits`, because that edit may be the only copy of a fix that
 belongs here.
 
