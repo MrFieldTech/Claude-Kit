@@ -48,16 +48,15 @@ Then the detail block, as prose.
 **Slug:** `go-public`
 **Status:** BLOCKED
 **Opened:** 2026-09-26
-**Blocked:** Devan adds the `KIT_PRIVATE_TERMS` repository secret and makes the repository public, both under the repository's Settings.
+**Blocked:** MrFieldTech makes the repository public under its Settings, and adds the `KIT_PRIVATE_TERMS` repository secret if they want CI to check names.
 
-Devan, 2026-09-26: Claude-Kit is to be made public, so any session can check
-and take updates without attaching it. He would rather the repository hold no
-direct reference to his projects. The only one in the tree is the list of
+MrFieldTech, 2026-09-26: Claude-Kit is to be made public, so any session can check
+and take updates without attaching it. They would rather the repository hold no direct reference to their other projects. The only one in the tree is the list of
 project terms in `check.sh`, which guards the kit-owned files against a
 project's details leaking in. Keep the guard, but move the list out of the
 repository into a GitHub Actions secret, add a generic guard against
 addresses that needs no list, and bring `README.md`, `CLAUDE.md` and the state
-files up to date for a public repository. Devan changes the visibility.
+files up to date for a public repository. MrFieldTech changes the visibility.
 
 **Done, 2026-09-26.** `check.sh` no longer holds the list. It reads the
 `KIT_PRIVATE_TERMS` secret in CI, or an untracked `.private-terms` file
@@ -69,8 +68,14 @@ and the current kit passes the old list. `README.md`, `CLAUDE.md` and
 of one early commit of `check.sh`; removing it would take rewriting history,
 which the house rules forbid.
 
-What is left is Devan's: the secret, so CI checks names again, and the
+What is left is MrFieldTech's: the secret, so CI checks names again, and the
 visibility. The task closes when both are done.
+
+**Done, 2026-09-26, second session.** MrFieldTech chose to leave the history
+as it is, and to have the repository's own files name the owner by the
+account, so `CLAUDE.md`, `TASKS.md` and `HANDOFF.md` now say MrFieldTech. The
+secret is optional: without it CI skips the name check and says so, and the
+address check still runs.
 
 ## Closed Tasks
 
@@ -81,9 +86,9 @@ visibility. The task closes when both are done.
 **Opened:** 2026-09-24
 **Closed:** 2026-09-26
 
-Devan runs the first install outside the repository the skills came from, in a
-fresh session on the second repository he chose, with Claude-Kit attached to
-the session because it is private. He says the install prompt in
+MrFieldTech runs the first install outside the repository the skills came from, in a
+fresh session on the second repository they chose, with Claude-Kit attached to
+the session because it is private. They say the install prompt in
 `README.md`. The first run should settle its Session Settings, asking only
 what it cannot, remove the response-format section its existing `CLAUDE.md`
 repeats from `HOUSE.md`, and push its first task branch.
@@ -93,7 +98,7 @@ patch version, and taken by `kit.sh update` in every repository that has the
 kit. Record here what the pilot found, without naming the repository.
 
 **Found, 2026-09-24.** The first attempt stopped before anything was
-written, on two gates in front of the install, and asked Devan three
+written, on two gates in front of the install, and asked MrFieldTech three
 questions rather than work around them.
 
 1. Auto mode's classifier blocked `kit.sh install` as `[Self-Modification]`,
@@ -114,34 +119,34 @@ why, and gives Accept edits mode as the fallback.
 
 **Found, 2026-09-25.** The second attempt, with the fixed prompt, got past
 the classifier, installed 1.0.0, named `task/kit-setup` as the branch it
-would push, and stopped at six questions. Devan's answers, and what they
+would push, and stopped at six questions. MrFieldTech's answers, and what they
 changed in 1.0.1:
 
-1. The Owner was asked, with two names to choose from. Devan: the Owner is
+1. The Owner was asked, with two names to choose from. MrFieldTech: the Owner is
    a placeholder for whoever answers, and is set without asking. It is now
    the account in the repository's remote URL.
 2. The integration branch was asked, because the repository's contributing
-   guide releases from `main`. Devan: `preview`, without asking. It is now
+   guide releases from `main`. MrFieldTech: `preview`, without asking. It is now
    asked only when a `preview` branch already exists.
 3. The checks CI runs need a tool the container lacked, so the session asked
    whether to list them. Listed, they would fail at every close and park
    every task. Checks before merge now holds only commands the container
    runs, and CI runs the rest.
-4. The existing `CLAUDE.md` repeated `HOUSE.md`'s response format. Devan:
+4. The existing `CLAUDE.md` repeated `HOUSE.md`'s response format. MrFieldTech:
    there should be no duplicate. A section that only repeats `HOUSE.md` is
    now removed without asking.
 5. The repository's `.gitattributes` would let a Windows checkout give
    `kit.sh` CRLF endings, which bash cannot run. A fix in one repository
    reaches no other, so each kit directory now carries its own
    `.gitattributes`. A scratch clone with `core.autocrlf=true` confirmed it.
-6. The contributing guide's file list did not name the kit's files. Devan:
+6. The contributing guide's file list did not name the kit's files. MrFieldTech:
    add them. The first run now does, without asking.
 
 The environment's end-of-turn hook also told the session to commit the
 uncommitted install to its assigned branch while it waited for answers. The
 session refused on its own judgement. `session-open` now says to.
 
-Devan also asked for a shorter install prompt, and `README.md` has one.
+MrFieldTech also asked for a shorter install prompt, and `README.md` has one.
 
 **Found, 2026-09-25, third attempt.** With 1.0.1 and the shorter prompt, the
 session attached and cloned the kit, installed it, settled every setting
@@ -149,21 +154,21 @@ without asking, removed the repeated response-format section, added the
 kit's paths to the contributing guide, and pushed `task/kit-setup` without
 touching its assigned branch. Auto mode blocked registering the kit's clone
 as a repository of the session, which did no harm, and `README.md` now says
-that registration is not needed. Devan's review of its reply, fixed in 1.0.2:
+that registration is not needed. MrFieldTech's review of its reply, fixed in 1.0.2:
 
 1. The reply listed every Session Setting, which the people reading it do
    not need. It no longer lists them.
 2. Automatically delete head branches was asked as a question. The workflow
    needs it, so it is now an `Action needed:` notice.
 3. The session asked whether the contributing guide's release step, which
-   pushes straight to `main`, or the kit's rule should hold. Devan: a
+   pushes straight to `main`, or the kit's rule should hold. MrFieldTech: a
    project file that contradicts the kit rightly needs the owner's answer.
    The first run now asks this by rule rather than by the session's own
    judgement.
 
 **Where it stands.** 1.0.2 is on `preview`. The pilot repository has 1.0.1
-on its `task/kit-setup`, its session waiting on Devan's answer about the
-release step. Devan, 2026-09-25: 1.0.2 goes to `main`, and the pilot
+on its `task/kit-setup`, its session waiting on MrFieldTech's answer about the
+release step. MrFieldTech, 2026-09-25: 1.0.2 goes to `main`, and the pilot
 repository is rolled back and installed again with it rather than carried on
 to `/session-close` on 1.0.1.
 
@@ -184,7 +189,7 @@ it, surveyed the repository, and was blocked at `kit.sh install` by the
 server-side classifier, which gave no reason. The session stopped, changed
 nothing, and offered the exact sentence to approve the command. Of five
 attempts, two were blocked at the installer, one at attaching the kit, and
-two passed, so no wording makes the install certain. Devan, 2026-09-25:
+two passed, so no wording makes the install certain. MrFieldTech, 2026-09-25:
 install sessions stay in Auto mode and a block is answered when it happens,
 and the prompt may be as long as it needs, because it is pasted from the
 README. The prompt is now one numbered step per action the classifier
@@ -194,26 +199,26 @@ step is blocked anyway. No kit-owned file changed.
 **Found, 2026-09-26, sixth attempt.** With the rebuilt prompt, the install
 went through with no block, and the first run settled every setting, asked
 only about the contributing guide's release step, which pushed straight to
-`main`, and pushed its first task branch. Devan answered to change the guide.
+`main`, and pushed its first task branch. MrFieldTech answered to change the guide.
 `/session-close` then marked the task done, created `preview`, merged into it
 and on into `main` as asked, after CI passed on both pull requests, and GitHub
 deleted both branches. The repository is on 1.0.2 with only `main` left.
-Devan's review, fixed in 1.0.3:
+MrFieldTech's review, fixed in 1.0.3:
 
 1. The status block came out broken apart. It is now one fenced block with no
    backticks inside.
 2. The close took about seventeen minutes: CI ran in full on both pull
-   requests, and the session waited on a check-in sixteen minutes out. Devan:
+   requests, and the session waited on a check-in sixteen minutes out. MrFieldTech:
    recheck about once a minute if that costs little, which it does, and skip
    the second run when nothing changed. `session-close` now does both.
 3. The session log row said the task reached `preview`, not `main`. It now
    records a merge into the default branch the owner asked for.
-4. Devan asked whether a repository updates itself. It does not, by design:
+4. MrFieldTech asked whether a repository updates itself. It does not, by design:
    `session-open` reports a newer release, and `README.md` now has the update
    prompt.
 
 **Closed, 2026-09-26.** The kit installs and runs a full round in a second
-repository. The pilot repository takes 1.0.3 by the update prompt when Devan
+repository. The pilot repository takes 1.0.3 by the update prompt when MrFieldTech
 asks.
 
 ### Build The First Release
@@ -223,8 +228,7 @@ asks.
 **Opened:** 2026-09-24
 **Closed:** 2026-09-24
 
-Devan, 2026-09-24: the session skills he runs in one repository should work in
-any of his repositories. A repository that has never used them gets a
+MrFieldTech, 2026-09-24: the session skills they run in one repository should work in any of their repositories. A repository that has never used them gets a
 first-run path that builds its state files, and the rules for how Claude works
 and answers are shared the same way. This repository is the single source,
 installed into each repository as a pinned copy.
@@ -254,9 +258,9 @@ release.
 3. The repository the skills came from installed 1.0.0 in place of its own
    copies. A fresh session there has not run it yet; `HANDOFF.md` flags it.
 
-**Decided by Devan, 2026-09-24.** 1.0.0 reaches `main` before the pilot, so the
+**Decided by MrFieldTech, 2026-09-24.** 1.0.0 reaches `main` before the pilot, so the
 pilot installs by the command in `README.md`. No permission rule is added for a
-headless `claude` session: the pilot and his own sessions in real repositories
-are the fresh-session tests. At close he asked for everything to reach `main`.
+headless `claude` session: the pilot and their own sessions in real repositories
+are the fresh-session tests. At close they asked for everything to reach `main`.
 
 The pilot is `first-pilot`.
