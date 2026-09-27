@@ -46,9 +46,8 @@ Then the detail block, as prose.
 ### Prepare The Repository To Go Public
 
 **Slug:** `go-public`
-**Status:** BLOCKED
+**Status:** ACTIVE
 **Opened:** 2026-09-26
-**Blocked:** MrFieldTech makes the repository public under its Settings, and adds the `KIT_PRIVATE_TERMS` repository secret if they want CI to check names.
 
 MrFieldTech, 2026-09-26: Claude-Kit is to be made public, so any session can check
 and take updates without attaching it. They would rather the repository hold no direct reference to their other projects. The only one in the tree is the list of
