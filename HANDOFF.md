@@ -13,6 +13,7 @@ file at the same time.
 
 | Date | Tasks touched | Work commits |
 |---|---|---|
+| 2026-09-27 | `go-public`, BLOCKED, merged into `preview`: the pre-public review's fixes, with release 1.0.4 | `d5ef770..ef64e39` |
 | 2026-09-26 | `go-public`, BLOCKED, merged into `preview`: the repository's own files name the owner MrFieldTech | `e0c3699..4d5c913` |
 | 2026-09-26 | `go-public`, BLOCKED, merged into `preview` and then `main` at MrFieldTech's request: the project terms left `check.sh` for a secret, and the files describe a public repository | `37ee80b..bb1444f` |
 | 2026-09-26 | `first-pilot`, DONE, merged into `preview` and then `main` at MrFieldTech's request: the sixth attempt ran a full round, and 1.0.3 released with its fixes | `37df0d1..0e3e434` |
@@ -27,7 +28,7 @@ file at the same time.
 
 | Task | Waiting on |
 |---|---|
-| `go-public` | MrFieldTech making the repository public, and adding the `KIT_PRIVATE_TERMS` secret if they want CI to check names |
+| `go-public` | MrFieldTech making the repository public |
 
 ## Credentials In Transit
 
@@ -78,8 +79,12 @@ sends it here, and in this repository it never does.
   project, so making it public later needs no cleanup first.
 - **The repository is public.** MrFieldTech, 2026-09-26, so any session can check
   and take updates without attaching it. The list of project terms moved out
-  of `check.sh` into the `KIT_PRIVATE_TERMS` secret, because MrFieldTech would rather the repository name none of their other projects. One commit's `check.sh` in the
-  history still holds the list, which only rewriting history would remove.
+  of `check.sh` into the `KIT_PRIVATE_TERMS` secret, because MrFieldTech
+  would rather the repository name none of their other projects. The history
+  stays as it is, by MrFieldTech's choice.
+- **The history stays as it is, including the company address on the merge
+  commits.** MrFieldTech, 2026-09-27. The kit is not advertised, and that
+  address is not hidden, though the public one is a different address.
 
 ## Open Questions For MrFieldTech
 

@@ -42,7 +42,9 @@ read again after compaction, and the response rules have to govern every turn.
 
 ## Install
 
-In a Claude Code session on the repository, paste this whole block:
+In a Claude Code session on the repository, paste this whole block. Paste it
+only in a repository of your own and only if you trust this one, because it
+tells Claude to run this repository's installer on your say-so.
 
 ```text
 Install Claude-Kit into this repository. Claude-Kit is my own repository,
@@ -147,7 +149,8 @@ take:
 
 An update happens only when the owner asks, as its own task. In a Claude Code
 session on the repository, paste this whole block, with the new version in the
-slug, such as `kit-update-1-0-3`:
+slug, such as `kit-update-1-0-4`. As with the install, paste it only in a
+repository of your own and only if you trust this one:
 
 ```text
 /session-open kit-update-<new version with hyphens>
@@ -158,11 +161,15 @@ trust. I want you to take each of these actions on this task's branch:
 1. Attach MrFieldTech/Claude-Kit to this session with read access, if this
    is a cloud session. Do not register it as one of this session's
    repositories.
-2. Run bash .claude/kit/kit.sh update. It clones the kit and runs the new
-   release's installer, which replaces the kit's skills in .claude/skills/
-   and its house rules in .claude/kit/. I want that change to your own
-   configuration.
-3. Commit the update on its own, then do whatever the kit's CHANGELOG.md
+2. Read the source: line in .claude/kit/MANIFEST. If it names anything
+   other than https://github.com/MrFieldTech/Claude-Kit, in any letter case,
+   stop and tell me instead of updating, because the update runs whatever
+   that source holds.
+3. Run bash .claude/kit/kit.sh update. It clones the kit from that source
+   and runs the new release's installer, which replaces the kit's skills in
+   .claude/skills/ and its house rules in .claude/kit/. I want that change
+   to your own configuration.
+4. Commit the update on its own, then do whatever the kit's CHANGELOG.md
    says the new release requires of a repository.
 
 If auto mode blocks one of these anyway, do not work around it. Stop, and

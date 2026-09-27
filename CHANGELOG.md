@@ -4,6 +4,23 @@ Every change to a kit-owned file is a release, recorded here with the version
 `VERSION` carries. A project's `/session-open` reports when a newer release
 exists, and the project takes it by `kit.sh update` when its owner asks.
 
+## 1.0.4
+
+Hardening from the review before the repository went public.
+
+- `kit.sh update` prints the source it is about to fetch and run, as
+  `.claude/kit/MANIFEST` names it, so whoever reads the output can confirm
+  it. The update prompt in `README.md` has the session check that source
+  before updating, which works with every earlier `kit.sh`.
+- `kit.sh` passes the source to `git clone` after `--`, so a source that
+  begins with a dash cannot be read as an option.
+- `session-close` creates the integration branch through its GitHub access
+  when GitHub declines the push that would create it, which it does when the
+  owner keeps their email address private and the default branch's head is a
+  merge made under it.
+
+After updating, nothing is required.
+
 ## 1.0.3
 
 Fixes from the pilot's first full run, from install to a close that merged
