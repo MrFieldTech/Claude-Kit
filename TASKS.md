@@ -43,12 +43,14 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+## Closed Tasks
+
 ### Prepare The Repository To Go Public
 
 **Slug:** `go-public`
-**Status:** BLOCKED
+**Status:** DONE
 **Opened:** 2026-09-26
-**Blocked:** MrFieldTech makes the repository public under its Settings.
+**Closed:** 2026-09-27
 
 MrFieldTech, 2026-09-26: Claude-Kit is to be made public, so any session can check
 and take updates without attaching it. They would rather the repository hold no direct reference to their other projects. The only one in the tree is the list of
@@ -95,7 +97,9 @@ turned on email privacy, and `main`'s head was a merge made under the old
 address. The branch was created through the GitHub API instead, and 1.0.4's
 `session-close` now does the same when the push is declined.
 
-## Closed Tasks
+**Closed, 2026-09-27.** MrFieldTech made the repository public. GitHub
+reports it as not private, and its page loads for a visitor who is not
+signed in.
 
 ### Pilot The Kit In A Second Repository
 

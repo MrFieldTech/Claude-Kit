@@ -13,6 +13,7 @@ file at the same time.
 
 | Date | Tasks touched | Work commits |
 |---|---|---|
+| 2026-09-27 | `go-public`, DONE, merged into `preview`: the repository is public | none, the handoff alone |
 | 2026-09-27 | `go-public`, BLOCKED, merged into `preview`: the pre-public review's fixes, with release 1.0.4 | `d5ef770..ef64e39` |
 | 2026-09-26 | `go-public`, BLOCKED, merged into `preview`: the repository's own files name the owner MrFieldTech | `e0c3699..4d5c913` |
 | 2026-09-26 | `go-public`, BLOCKED, merged into `preview` and then `main` at MrFieldTech's request: the project terms left `check.sh` for a secret, and the files describe a public repository | `37ee80b..bb1444f` |
@@ -26,9 +27,7 @@ file at the same time.
 
 ## Blocked On
 
-| Task | Waiting on |
-|---|---|
-| `go-public` | MrFieldTech making the repository public |
+None.
 
 ## Credentials In Transit
 
