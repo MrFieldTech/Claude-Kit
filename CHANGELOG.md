@@ -14,6 +14,10 @@ Hardening from the review before the repository went public.
   before updating, which works with every earlier `kit.sh`.
 - `kit.sh` passes the source to `git clone` after `--`, so a source that
   begins with a dash cannot be read as an option.
+- `session-close` creates the integration branch through its GitHub access
+  when GitHub declines the push that would create it, which it does when the
+  owner keeps their email address private and the default branch's head is a
+  merge made under it.
 
 After updating, nothing is required.
 

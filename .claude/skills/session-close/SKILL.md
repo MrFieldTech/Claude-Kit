@@ -160,6 +160,11 @@ Create it again at the default branch's head, which adds no commit to it:
 git push origin origin/<default branch>:refs/heads/<integration branch>
 ```
 
+GitHub declines that push, as one that would publish a private email
+address, when the owner keeps their address private and the default branch's
+head is a merge made under it. Then create the branch through the session's
+GitHub access instead, from the default branch, which publishes nothing new.
+
 Then merge it into the task branch, and note the hash of `origin/<target>`
 that this brings in, because step 9 compares against it:
 
