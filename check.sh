@@ -31,9 +31,12 @@ fail() {
 # Addresses are caught by pattern: a web address, an email address, or a
 # host name under a common top-level domain.
 ADDRESS='https?://|[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[A-Za-z]{2,}|\b[A-Za-z0-9-]+\.(com|net|org|io|dev|app|gg|co|us|me|ai)\b'
-if grep -rnIE "$ADDRESS" "${KIT_OWNED[@]}"; then
-  fail "the lines above hold an address, which belongs to one project"
-fi
+# grep exits 1 when nothing matches and 2 when it cannot search, which must
+# fail the check rather than pass it.
+status=0
+grep -rnIE "$ADDRESS" "${KIT_OWNED[@]}" || status=$?
+[ "$status" -ne 0 ] && [ "$status" -ne 1 ] && fail "the address pattern could not be searched"
+[ "$status" -eq 0 ] && fail "the lines above hold an address, which belongs to one project"
 # Names cannot be caught by pattern, so they come from a list kept out of
 # this public repository: the KIT_PRIVATE_TERMS repository secret in CI, or an
 # untracked .private-terms file locally, holding one extended regular
@@ -44,9 +47,10 @@ if [ -z "$terms" ] && [ -f .private-terms ]; then
   terms="$(tr -d '\n' < .private-terms)"
 fi
 if [ -n "$terms" ]; then
-  if grep -rnIE "$terms" "${KIT_OWNED[@]}"; then
-    fail "the lines above name something that belongs to one project"
-  fi
+  status=0
+  grep -rnIE "$terms" "${KIT_OWNED[@]}" || status=$?
+  [ "$status" -ne 0 ] && [ "$status" -ne 1 ] && fail "the private terms are not a valid pattern"
+  [ "$status" -eq 0 ] && fail "the lines above name something that belongs to one project"
   echo "check: kit-owned files hold no address and name no project"
 else
   echo "check: kit-owned files hold no address (no private terms given, so names were not checked)"

@@ -92,13 +92,14 @@ repo_root() {
   git rev-parse --show-toplevel 2>/dev/null || die "not inside a git repository"
 }
 
-# Clone the source into a directory, quietly and without prompting.
+# Clone the source into a directory, quietly and without prompting. The "--"
+# keeps a source that begins with a dash from being read as an option.
 fetch_source() {
   local source="$1" into="$2"
   case "$source" in
     /*) source="file://$source" ;;
   esac
-  GIT_TERMINAL_PROMPT=0 git clone --quiet --depth 1 "$source" "$into" >/dev/null 2>&1
+  GIT_TERMINAL_PROMPT=0 git clone --quiet --depth 1 -- "$source" "$into" >/dev/null 2>&1
 }
 
 cmd_install() {
@@ -217,8 +218,11 @@ cmd_update() {
   esac
   [ -f "$root/$MANIFEST" ] || die "no $MANIFEST here: install the kit first"
 
+  # The update runs the installer it fetches, so it names where that comes
+  # from before fetching it, for whoever reads the output to confirm.
   local source
   source="$(manifest_field source "$root/$MANIFEST")"
+  printf 'kit.sh: updating from %s, the source .claude/kit/MANIFEST names\n' "$source"
   TMP_DIR="$(mktemp -d)"
   fetch_source "$source" "$TMP_DIR/kit" || die "cannot fetch the kit from $source"
   [ -f "$TMP_DIR/kit/.claude/kit/kit.sh" ] || die "$source holds no kit"
