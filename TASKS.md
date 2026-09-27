@@ -46,8 +46,9 @@ Then the detail block, as prose.
 ### Prepare The Repository To Go Public
 
 **Slug:** `go-public`
-**Status:** ACTIVE
+**Status:** BLOCKED
 **Opened:** 2026-09-26
+**Blocked:** MrFieldTech makes the repository public under its Settings.
 
 MrFieldTech, 2026-09-26: Claude-Kit is to be made public, so any session can check
 and take updates without attaching it. They would rather the repository hold no direct reference to their other projects. The only one in the tree is the list of
@@ -63,9 +64,7 @@ locally, and skips the name check with a notice when it has neither. A new
 pattern check refuses web addresses, email addresses and host names in
 kit-owned files with no list at all. Each guard was made to fail on purpose,
 and the current kit passes the old list. `README.md`, `CLAUDE.md` and
-`HANDOFF.md` now describe a public repository. The list stays in the history
-of one early commit of `check.sh`; removing it would take rewriting history,
-which the house rules forbid.
+`HANDOFF.md` now describe a public repository.
 
 What is left is MrFieldTech's: the secret, so CI checks names again, and the
 visibility. The task closes when both are done.
@@ -75,6 +74,20 @@ as it is, and to have the repository's own files name the owner by the
 account, so `CLAUDE.md`, `TASKS.md` and `HANDOFF.md` now say MrFieldTech. The
 secret is optional: without it CI skips the name check and says so, and the
 address check still runs.
+
+**Done, 2026-09-27.** A review of every commit, every version of every file
+and every pull request description found no credential, key, password,
+private address or surname. From its findings, at MrFieldTech's request:
+release 1.0.4 has `kit.sh update` name the source it fetches and runs and
+pass it to `git clone` after `--`, and the update prompt in `README.md` has
+the session confirm that source first, which works from every earlier
+`kit.sh`; an update from 1.0.2 to 1.0.4 was tested. `check.sh` fails when a
+pattern cannot be searched rather than passing. CI runs with a read-only
+token and a pinned checkout action. Both prompts in `README.md` say to paste
+them only into your own repositories. Two sentences that pointed at the old
+list in the history came out of this file and `HANDOFF.md`, and fourteen
+pull request descriptions now name MrFieldTech. MrFieldTech keeps the
+history, including the company address on the merge commits.
 
 ## Closed Tasks
 
