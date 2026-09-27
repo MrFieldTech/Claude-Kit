@@ -2,7 +2,7 @@
 
 # Claude-Kit
 
-The session protocol and house rules shared by Devan's repositories, installed
+The session protocol and house rules shared by MrFieldTech's repositories, installed
 into each one as a pinned copy. This repository is the source. The files under
 `.claude/kit/` and the two skills in `.claude/skills/` are edited here and
 nowhere else, and this repository's own sessions run on them directly.
@@ -14,10 +14,10 @@ Read by `session-open` and `session-close`, which name no value of their own.
 What each key means is at the end of `.claude/kit/HOUSE.md`. Change a value
 here, never in a kit-owned file.
 
-- **Owner:** Devan
+- **Owner:** MrFieldTech
 - **Authority file:** none
 - **Default branch:** `main`. Every install and update takes it, so it moves
-  only when Devan asks.
+  only when MrFieldTech asks.
 - **Integration branch:** `preview`
 - **Other branches:** none
 - **Task preview address:** none
