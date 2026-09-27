@@ -89,6 +89,12 @@ list in the history came out of this file and `HANDOFF.md`, and fourteen
 pull request descriptions now name MrFieldTech. MrFieldTech keeps the
 history, including the company address on the merge commits.
 
+Closing this task, GitHub declined recreating `preview` with
+`GH007: Your push would publish a private email address`: MrFieldTech had
+turned on email privacy, and `main`'s head was a merge made under the old
+address. The branch was created through the GitHub API instead, and 1.0.4's
+`session-close` now does the same when the push is declined.
+
 ## Closed Tasks
 
 ### Pilot The Kit In A Second Repository

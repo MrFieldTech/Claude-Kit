@@ -13,7 +13,7 @@ file at the same time.
 
 | Date | Tasks touched | Work commits |
 |---|---|---|
-| 2026-09-27 | `go-public`, BLOCKED, merged into `preview`: the pre-public review's fixes, with release 1.0.4 | `d5ef770..6e41568` |
+| 2026-09-27 | `go-public`, BLOCKED, merged into `preview`: the pre-public review's fixes, with release 1.0.4 | `d5ef770..ef64e39` |
 | 2026-09-26 | `go-public`, BLOCKED, merged into `preview`: the repository's own files name the owner MrFieldTech | `e0c3699..4d5c913` |
 | 2026-09-26 | `go-public`, BLOCKED, merged into `preview` and then `main` at MrFieldTech's request: the project terms left `check.sh` for a secret, and the files describe a public repository | `37ee80b..bb1444f` |
 | 2026-09-26 | `first-pilot`, DONE, merged into `preview` and then `main` at MrFieldTech's request: the sixth attempt ran a full round, and 1.0.3 released with its fixes | `37df0d1..0e3e434` |
