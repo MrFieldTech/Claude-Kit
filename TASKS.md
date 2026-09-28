@@ -58,6 +58,17 @@ encrypted, by a method the Credentials setting names, keep the kit generic,
 and record a value that spans more than one line, such as an encrypted
 block or a key file, so that it survives whole.
 
+**Done, 2026-09-28, on the branch.** Release 1.0.5: `HOUSE.md` never commits
+a credential in plaintext, and the Credentials key names the encryption
+method, the tool and the public key or recipient, for any place inside the
+repository. `session-close` step 2 encrypts a value bound for a committed
+file by that method and checks the output does not contain it, and sends it
+to the close report as the only copy when no method is named or the
+container cannot run it. Step 4 holds a value under Credentials In Transit
+encrypted, with its method. A value that spans lines is kept whole in a
+fenced block of its own, in `HANDOFF.md` and in the report. `bash check.sh`
+passes. Not merged yet: it waits for `/session-close`.
+
 ## Closed Tasks
 
 ### Prepare The Repository To Go Public
