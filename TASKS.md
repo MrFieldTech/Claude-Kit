@@ -43,11 +43,14 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+## Closed Tasks
+
 ### Encrypt Credentials Committed In Transit
 
 **Slug:** `multi-line-secrets`
-**Status:** ACTIVE
+**Status:** DONE
 **Opened:** 2026-09-28
+**Closed:** 2026-09-28
 
 MrFieldTech, 2026-09-28: step 4 of `session-close` says a value held under
 Credentials In Transit in `HANDOFF.md` is kept "in full plaintext". A
@@ -67,9 +70,12 @@ to the close report as the only copy when no method is named or the
 container cannot run it. Step 4 holds a value under Credentials In Transit
 encrypted, with its method. A value that spans lines is kept whole in a
 fenced block of its own, in `HANDOFF.md` and in the report. `bash check.sh`
-passes. Not merged yet: it waits for `/session-close`.
+passes.
 
-## Closed Tasks
+**Closed, 2026-09-28.** MrFieldTech kept the rule that nothing is committed,
+encrypted or not, unless the repository is confirmed private, and asked for
+1.0.5 to reach `main`. The repository whose authority file requires
+encryption names its method in its Credentials setting when it takes 1.0.5.
 
 ### Prepare The Repository To Go Public
 
