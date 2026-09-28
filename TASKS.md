@@ -45,6 +45,38 @@ Then the detail block, as prose.
 
 ## Closed Tasks
 
+### Encrypt Credentials Committed In Transit
+
+**Slug:** `multi-line-secrets`
+**Status:** DONE
+**Opened:** 2026-09-28
+**Closed:** 2026-09-28
+
+MrFieldTech, 2026-09-28: step 4 of `session-close` says a value held under
+Credentials In Transit in `HANDOFF.md` is kept "in full plaintext". A
+project's authority file says such values are encrypted, and it wins in that
+project, but the kit should not say the opposite. Secrets should be
+encrypted in transit. Make the kit hold a committed credential only
+encrypted, by a method the Credentials setting names, keep the kit generic,
+and record a value that spans more than one line, such as an encrypted
+block or a key file, so that it survives whole.
+
+**Done, 2026-09-28, on the branch.** Release 1.0.5: `HOUSE.md` never commits
+a credential in plaintext, and the Credentials key names the encryption
+method, the tool and the public key or recipient, for any place inside the
+repository. `session-close` step 2 encrypts a value bound for a committed
+file by that method and checks the output does not contain it, and sends it
+to the close report as the only copy when no method is named or the
+container cannot run it. Step 4 holds a value under Credentials In Transit
+encrypted, with its method. A value that spans lines is kept whole in a
+fenced block of its own, in `HANDOFF.md` and in the report. `bash check.sh`
+passes.
+
+**Closed, 2026-09-28.** MrFieldTech kept the rule that nothing is committed,
+encrypted or not, unless the repository is confirmed private, and asked for
+1.0.5 to reach `main`. The repository whose authority file requires
+encryption names its method in its Credentials setting when it takes 1.0.5.
+
 ### Prepare The Repository To Go Public
 
 **Slug:** `go-public`

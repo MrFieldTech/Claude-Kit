@@ -40,16 +40,27 @@ access. Then:
 
 - **When the repository is confirmed private and the Credentials setting names
   a place or a rule,** such as a section of the authority file, follow it for
-  each value. Where it sends a value to a file, name that file in the handoff
-  and never the value.
+  each value. Where it sends a value to a file the repository does not
+  commit, or to a store outside the repository, name that place in the
+  handoff and never the value. Where it sends a value into a file the
+  repository commits, `HANDOFF.md` included, encrypt the value by the method
+  the setting names and commit only what the encryption prints. Check that
+  the output does not contain the value before it is written anywhere.
 - **Otherwise,** when the setting is `none`, or the repository is public, or its
-  visibility cannot be confirmed, commit the value nowhere, `HANDOFF.md`
-  included. Put it in the final report under its own heading, labelled with
-  what it unlocks, and say plainly that the report is the only copy, so the
-  owner can place it before the conversation ends.
+  visibility cannot be confirmed, or a value bound for a committed file has no
+  encryption method named or none this session's container can run, commit
+  the value nowhere, `HANDOFF.md` included. Put it in the final report under
+  its own heading, labelled with what it unlocks, and say plainly that the
+  report is the only copy, so the owner can place it before the conversation
+  ends. When a method was named but could not run, say why.
 
-Never mask, truncate, or substitute a reference where a value is recorded.
-Never leave a value only in the conversation without saying so.
+Never commit a value in plaintext. Never mask, truncate, or substitute a
+reference where a value is recorded, in the report or in a file. Encrypting a
+value by the setting's method is not masking it. A value that spans more than
+one line, such as a private key or an encrypted block, is recorded whole in a
+fenced code block of its own, exactly as it is: never joined onto one line,
+wrapped, or re-indented, and never inside a table. Never leave a value only in
+the conversation without saying so.
 
 ## 3. Update the task's block in TASKS.md
 
@@ -90,9 +101,10 @@ the named headings below, in this order, and add nothing else.
 - **Blocked On.** Add, change or remove the row for any task this session
   blocked or unblocked.
 - **Credentials In Transit.** Values held here only when the Credentials
-  setting sends them here, each in full plaintext with a label and the task that
-  will place it. Otherwise `None`. If the file has a `has_secrets` field, set it
-  to match.
+  setting sends them here, each encrypted by step 2 and never in plaintext,
+  with a label, the method that encrypted it, and the task that will place it.
+  Each value is whole in a fenced code block of its own. Otherwise `None`. If
+  the file has a `has_secrets` field, set it to match.
 - **Decisions Made.** Add the decisions taken this session that are recorded
   nowhere else, each with its reasoning in one line. A decision that governs
   future work belongs in the authority file, or in `CLAUDE.md` when there is
@@ -313,7 +325,8 @@ Merged:  <integration branch into default branch pull request URL, or not reques
 ```
 
 A value that could not be committed, by step 2, follows these lines under its
-own heading, and is the one exception to "nothing else".
+own heading, in a fenced code block of its own when it spans more than one
+line, and is the one exception to "nothing else".
 
 A parked task's preview address serves the newest build of its branch. A
 merged task's work is on the integration preview once the host has built the

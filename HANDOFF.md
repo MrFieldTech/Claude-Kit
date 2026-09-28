@@ -13,6 +13,7 @@ file at the same time.
 
 | Date | Tasks touched | Work commits |
 |---|---|---|
+| 2026-09-28 | `multi-line-secrets`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.0.5 never commits a credential in plaintext | `3e8aa5b..a1a2427` |
 | 2026-09-27 | `go-public`, DONE, merged into `preview`: the repository is public | none, the handoff alone |
 | 2026-09-27 | `go-public`, BLOCKED, merged into `preview`: the pre-public review's fixes, with release 1.0.4 | `d5ef770..ef64e39` |
 | 2026-09-26 | `go-public`, BLOCKED, merged into `preview`: the repository's own files name the owner MrFieldTech | `e0c3699..4d5c913` |
@@ -22,8 +23,6 @@ file at the same time.
 | 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at MrFieldTech's request: the install prompt in `README.md` names the kit as the owner's own source, after the fourth attempt was blocked attaching it | `fb705b7..0f48004` |
 | 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at MrFieldTech's request: 1.0.2 released with the third attempt's fixes to the first run's reply | `770c7f5..144faaf` |
 | 2026-09-25 | `first-pilot`, BLOCKED again, merged into `preview` and then `main` at MrFieldTech's request: 1.0.1 released with the second pilot's fixes, and the install prompt shortened | `0777c20..c50d8ce` |
-| 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at MrFieldTech's request: the first pilot attempt was blocked before the install, and the install prompt in `README.md` was fixed for both causes | `f82f24f..76f1139` |
-| 2026-09-24 | `release-1-0`, DONE, merged into `preview` and then `main` at MrFieldTech's request: 1.0.0 built, checked, walked through a scratch repository, and installed in the repository the skills came from. `first-pilot` queued | `763033b..28fb6c4` |
 
 ## Blocked On
 
@@ -32,7 +31,8 @@ None.
 ## Credentials In Transit
 
 None. A value is held here only when the Credentials setting in `CLAUDE.md`
-sends it here, and in this repository it never does.
+sends it here, and only encrypted by the method that setting names. In this
+repository it never does.
 
 ## Decisions Made
 
@@ -84,6 +84,10 @@ sends it here, and in this repository it never does.
 - **The history stays as it is, including the company address on the merge
   commits.** MrFieldTech, 2026-09-27. The kit is not advertised, and that
   address is not hidden, though the public one is a different address.
+- **A credential is committed only encrypted, and only in a repository
+  confirmed private.** MrFieldTech, 2026-09-28. Secrets are encrypted in
+  transit, by the method each repository's Credentials setting names, and
+  encryption does not make a public repository a place for them.
 
 ## Open Questions For MrFieldTech
 
