@@ -35,9 +35,12 @@ owner is not resolved by picking one. Say so plainly and stop.
   run out, stop at a boundary and say exactly where to resume. Never continue
   past a boundary hoping it fits.
 - A credential is never left only in the conversation and never written
-  anywhere the Credentials setting does not send it. With no rule set, or in a
-  repository not confirmed private, it is committed nowhere: it goes in the
-  reply for the owner to place, and the reply says it is the only copy.
+  anywhere the Credentials setting does not send it. It is never committed in
+  plaintext: a value committed to the repository is encrypted first, by the
+  method the Credentials setting names. With no rule set, with no method named
+  or none the container can run, or in a repository not confirmed private, it
+  is committed nowhere: it goes in the reply for the owner to place, and the
+  reply says it is the only copy.
 
 ## Sessions and branches
 
@@ -200,6 +203,9 @@ never in a kit-owned file.
   opened, or `none`. Only commands the session's container can run. The pull
   request's own checks run as well.
 - **Credentials.** Where a credential goes, or the rule that says so, or
-  `none`, which means nowhere in the repository.
+  `none`, which means nowhere in the repository. A place inside the repository
+  also names how a value is encrypted there: the tool, and the public key or
+  recipient it encrypts to. The key that decrypts is never in the repository
+  or the session.
 - **State file format.** The format `TASKS.md` and `HANDOFF.md` keep: `kit
   templates`, or a rule in the authority file.
