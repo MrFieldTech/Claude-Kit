@@ -4,6 +4,28 @@ Every change to a kit-owned file is a release, recorded here with the version
 `VERSION` carries. A project's `/session-open` reports when a newer release
 exists, and the project takes it by `kit.sh update` when its owner asks.
 
+## 1.0.5
+
+A credential is never committed in plaintext.
+
+- `HOUSE.md` and `session-close` commit a credential only encrypted, by the
+  method the Credentials setting names: the tool, and the public key or
+  recipient it encrypts to. `session-close` no longer holds a value under
+  Credentials In Transit "in full plaintext", which contradicted an authority
+  file that requires encryption. A value bound for a committed file with no
+  method named, or one the container cannot run, goes in the close report as
+  the only copy, as a value does in a public repository.
+- A value that spans more than one line, such as a private key or an
+  encrypted block, is recorded whole in a fenced code block of its own, in
+  `HANDOFF.md` and in the close report, never joined, wrapped, re-indented or
+  put in a table.
+
+After updating: a repository whose Credentials setting sends a value into a
+committed file, `HANDOFF.md` included, adds the encryption method to that
+setting in `CLAUDE.md`, or its sessions put every such value in the close
+report instead. A value already committed in plaintext stays in the history
+after it is replaced, so it is rotated, not only re-encrypted.
+
 ## 1.0.4
 
 Hardening from the review before the repository went public.
