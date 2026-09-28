@@ -43,6 +43,21 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+### Encrypt Credentials Committed In Transit
+
+**Slug:** `multi-line-secrets`
+**Status:** ACTIVE
+**Opened:** 2026-09-28
+
+MrFieldTech, 2026-09-28: step 4 of `session-close` says a value held under
+Credentials In Transit in `HANDOFF.md` is kept "in full plaintext". A
+project's authority file says such values are encrypted, and it wins in that
+project, but the kit should not say the opposite. Secrets should be
+encrypted in transit. Make the kit hold a committed credential only
+encrypted, by a method the Credentials setting names, keep the kit generic,
+and record a value that spans more than one line, such as an encrypted
+block or a key file, so that it survives whole.
+
 ## Closed Tasks
 
 ### Prepare The Repository To Go Public
