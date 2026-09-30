@@ -43,7 +43,8 @@ here, never in a kit-owned file.
   the repository.
 - **Every change to a kit-owned file is a release.** Bump `VERSION`, add a
   `CHANGELOG.md` entry, and keep `README.md` true, all in the same pull
-  request. A change that alters what a repository must do after updating
+  request. Keeping it true includes the slug in its update block, which names
+  the new version with hyphens, such as `kit-update-1-1-0`. A change that alters what a repository must do after updating
   says so in its entry.
 - **The kit-owned files are the source here.** There is no `MANIFEST` in this
   repository, and the rule that kit-owned files are never edited applies to

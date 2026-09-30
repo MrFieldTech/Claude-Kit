@@ -56,6 +56,12 @@ version the kit is currently on, and keep it current: every version change
 already changes the repository, so it updates the README to the version a
 repository can update to as well.
 
+Done on the branch: the update block's slug reads `kit-update-1-1-0`, the text
+above it says the slug names the current release, the README's and
+`CLAUDE.md`'s release rules add setting that slug, and `check.sh` section 4
+fails when the slug does not match `VERSION`. README and `check.sh` are not
+kit-owned, so this is not a release. Next: close.
+
 ## Closed Tasks
 
 ### Add A Temporary Session
