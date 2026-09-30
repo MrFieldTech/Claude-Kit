@@ -45,6 +45,26 @@ Then the detail block, as prose.
 
 ## Closed Tasks
 
+### Keep The README Update Prompt On The Current Version
+
+**Slug:** `readme-version-update`
+**Status:** DONE
+**Opened:** 2026-09-30
+**Closed:** 2026-09-30
+
+MrFieldTech, 2026-09-30: the README's copy and paste block for updating
+Claude-Kit in a repository opens with
+`/session-open kit-update-<new version with hyphens>`. Make that line name the
+version the kit is currently on, and keep it current: every version change
+already changes the repository, so it updates the README to the version a
+repository can update to as well.
+
+Done: the update block's slug reads `kit-update-1-1-0`, the text
+above it says the slug names the current release, the README's and
+`CLAUDE.md`'s release rules add setting that slug, and `check.sh` section 4
+fails when the slug does not match `VERSION`. README and `check.sh` are not
+kit-owned, so this is not a release.
+
 ### Add A Temporary Session
 
 **Slug:** `add-session-temp`

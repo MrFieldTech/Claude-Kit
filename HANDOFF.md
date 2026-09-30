@@ -13,6 +13,7 @@ file at the same time.
 
 | Date | Tasks touched | Work commits |
 |---|---|---|
+| 2026-09-30 | `readme-version-update`, DONE, merged into `preview`: the README's update block names the current release, and `check.sh` holds it to `VERSION` | `b7e7ae1..067e760` |
 | 2026-09-30 | `add-session-temp`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.1.0 adds `/session-open temp` | `db3756b..d48c4d3` |
 | 2026-09-28 | `multi-line-secrets`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.0.5 never commits a credential in plaintext | `3e8aa5b..a1a2427` |
 | 2026-09-27 | `go-public`, DONE, merged into `preview`: the repository is public | none, the handoff alone |
@@ -22,7 +23,6 @@ file at the same time.
 | 2026-09-26 | `first-pilot`, DONE, merged into `preview` and then `main` at MrFieldTech's request: the sixth attempt ran a full round, and 1.0.3 released with its fixes | `37df0d1..0e3e434` |
 | 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at MrFieldTech's request: the install prompt in `README.md` rebuilt as one step per action, after the fifth attempt was blocked at the installer | `7a4320a..4aadb68` |
 | 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at MrFieldTech's request: the install prompt in `README.md` names the kit as the owner's own source, after the fourth attempt was blocked attaching it | `fb705b7..0f48004` |
-| 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at MrFieldTech's request: 1.0.2 released with the third attempt's fixes to the first run's reply | `770c7f5..144faaf` |
 
 ## Blocked On
 
@@ -94,6 +94,10 @@ repository it never does.
   become a task or to open one per topic, the slug comes from the owner or is
   proposed and asked, and a branch for later is a parked task whose block
   carries its background, so it is never a stray.
+- **The README's update block names the current release, and every release
+  sets it.** MrFieldTech, 2026-09-30. A release already changes the
+  repository, so the prompt is pasted as is. The rule is in `CLAUDE.md` and
+  `check.sh` enforces it.
 
 ## Open Questions For MrFieldTech
 

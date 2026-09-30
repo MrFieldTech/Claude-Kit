@@ -6,7 +6,8 @@
 # 2. No file in the repository holds an em dash.
 # 3. The scripts parse, each skill's frontmatter is whole, and every
 #    kit-owned directory keeps LF line endings.
-# 4. VERSION is a version number and CHANGELOG.md has an entry for it.
+# 4. VERSION is a version number, CHANGELOG.md has an entry for it, and the
+#    README's update block names it.
 # 5. An install into a scratch repository works end to end: the manifest,
 #    the status line, the guard against overwriting local edits, and the
 #    TODO sweep.
@@ -87,6 +88,8 @@ echo "check: scripts parse, skills are whole, and line endings stay LF"
 version="$(tr -d '[:space:]' < VERSION)"
 [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || fail "VERSION holds '$version', not a version number"
 grep -q "^## $version\b" CHANGELOG.md || fail "CHANGELOG.md has no '## $version' entry"
+grep -qx "/session-open kit-update-${version//./-}" README.md \
+  || fail "README.md's update block does not open with /session-open kit-update-${version//./-}"
 echo "check: version $version is recorded"
 
 # 5. End to end, in a scratch repository with nothing of its own.
