@@ -48,13 +48,20 @@ Every session starts with `/session-open` and ends with `/session-close`. If a
 session begins without `/session-open`, ask the owner to run it before doing
 any work. If context is running low and `/session-close` has not run, say so.
 
+`/session-open temp` opens a temporary session instead, for questions about
+the repository. It reads the state and answers, and it writes, commits and
+pushes nothing and takes no branch. When something from it is to be kept or
+built, the session turns it into a task, with its own branch, and from then on
+it is an ordinary session that ends with `/session-close`. A temporary session
+that opened no task needs no close.
+
 There are three kinds of branch, and no others.
 
 | Branch | What it is |
 |---|---|
 | The default branch | Production. It moves only by a pull request from the integration branch, and only when the owner asks. |
 | The integration branch | Where finished and blocked tasks collect. It moves only by pull requests from task branches. |
-| `task/<task-slug>` | One per task in `TASKS.md`, named after the task's slug. Every session works on one. |
+| `task/<task-slug>` | One per task in `TASKS.md`, named after the task's slug. Every session works on one, except a temporary session that has opened no task. |
 
 Branches the Other branches setting names are left alone. Anything else is a
 stray: a branch by any other name, or a `task/` branch whose slug is not a
@@ -195,7 +202,9 @@ never in a kit-owned file.
 - **Task slug limit.** The longest a task slug may be. 23 unless a repository
   needs otherwise: Cloudflare Pages cuts a branch's preview address at 28
   characters, and `task-` takes five, so 23 keeps every address whole.
-- **Reserved slugs.** Names a task slug may not take, or `none`.
+- **Reserved slugs.** Names a task slug may not take, or `none`. `temp` is
+  never a task slug, whatever this setting says, because it opens a
+  temporary session.
 - **Regenerate.** Commands that rewrite the generated files, run in the order
   given, or `none`.
 - **Generated files.** The paths those commands write, or `none`.

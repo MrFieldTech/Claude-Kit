@@ -21,6 +21,12 @@ Every session works on task branches, `task/<task-slug>`. Close each task
 branch this session worked on, one at a time, by steps 1 to 8. Most sessions
 have one. Then do steps 9 to 11 once.
 
+A temporary session, opened with `/session-open temp`, that opened no task
+has nothing to close. Say so and stop. If something worth keeping is still
+only in the conversation, offer to open a task for it first, as the temporary
+session section of `session-open` says. A temporary session that opened tasks
+closes each of their branches like any other.
+
 ## 1. Stop at a clean boundary
 
 Do not begin new work. Finish only the file or step already in progress. If it
