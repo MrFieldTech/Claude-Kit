@@ -43,11 +43,14 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+## Closed Tasks
+
 ### Add A Temporary Session
 
 **Slug:** `add-session-temp`
-**Status:** ACTIVE
+**Status:** DONE
 **Opened:** 2026-09-30
+**Closed:** 2026-09-30
 
 MrFieldTech, 2026-09-30: there should be a temporary session option that
 opens a session for questions about the repository and its details without
@@ -74,7 +77,7 @@ every repository, `session-close` stops with nothing to close for a temporary
 session that opened no task, and `README.md` and `CHANGELOG.md` describe it.
 `bash check.sh` passes. Not yet tried in a real temporary session.
 
-## Closed Tasks
+**Closed, 2026-09-30.** MrFieldTech asked for 1.1.0 to reach `main`.
 
 ### Encrypt Credentials Committed In Transit
 
