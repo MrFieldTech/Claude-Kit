@@ -1,7 +1,7 @@
 ---
 name: session-open
 description: >-
-  Start a Claude Code session in a repository that uses Claude-Kit. Takes an optional task slug: an existing task resumes on its branch, a slug that names no task starts a new task under that name, and with no slug it lists the parked task branches and queued tasks and asks. In a repository that has never used the kit, it proposes the Session Settings and builds TASKS.md and HANDOFF.md first. Reads the authority file, CLAUDE.md, TASKS.md and HANDOFF.md, reports the kit's version and any stray branch, puts the session on the task's own branch, task/<task-slug>, and works the task from the stopping point in its block. Runs only when the owner invokes /session-open.
+  Start a Claude Code session in a repository that uses Claude-Kit. Takes an optional task slug: an existing task resumes on its branch, a slug that names no task starts a new task under that name, and with no slug it lists the parked task branches and queued tasks and asks. In a repository that has never used the kit, it proposes the Session Settings and builds TASKS.md and HANDOFF.md first. Reads the authority file, CLAUDE.md, TASKS.md and HANDOFF.md, reports the kit's version and any stray branch, puts the session on the task's own branch, task/<task-slug>, and works the task from the stopping point in its block. With the argument temp it opens a temporary session instead: it reads and reports the same way, answers questions without taking a branch or writing anything, and turns what is to be kept or built into tasks when the owner asks. Runs only when the owner invokes /session-open.
 disable-model-invocation: true
 ---
 
@@ -19,7 +19,9 @@ the rules this skill applies. Below, the owner, the authority file, the default
 branch and the integration branch are what Session Settings says they are.
 
 Every session works on the branch of one task, `task/<task-slug>`. Run these
-steps in order. Do not skip ahead to the work.
+steps in order. Do not skip ahead to the work. The one exception is
+`/session-open temp`, which opens a temporary session by Temporary Session at
+the end of this file.
 
 ## 1. Fetch everything
 
@@ -128,6 +130,9 @@ owner already answered for in this session's First Run.
 
 ## 4. Choose the task
 
+If the owner named `temp`, with or without `task/` in front, stop following
+these steps here and follow Temporary Session at the end of this file.
+
 The owner names a task by its slug, after `/session-open` or in their message,
 with or without `task/` in front: `/session-open footer-rebuild` and
 `/session-open task/footer-rebuild` mean the same. Take the first case that
@@ -156,7 +161,7 @@ to list, say so and ask what the new task is. Do not invent work. Stop until
 they answer.
 
 A task slug is lowercase letters, digits and hyphens, no longer than the Task
-slug limit, unique among tasks, and none of the Reserved slugs.
+slug limit, unique among tasks, none of the Reserved slugs, and never `temp`.
 
 A task branch the owner did not name or choose is never taken. A parked branch
 and one another session is working look the same, and two sessions on one task
@@ -260,6 +265,67 @@ the Credentials setting and the credential rule in `.claude/kit/HOUSE.md`. Do
 not leave it only in the conversation without saying so.
 
 Never use an em dash.
+
+## Temporary Session
+
+For questions about the repository, its state and its details, where nothing
+is to be built yet. It ran steps 1 to 3 like any session, so its answers come
+from the committed state and not from memory, with two differences: in a
+repository new to the kit it does not run First Run, and says so, and a stray
+does not stop it, because it changes nothing, though every stray is reported.
+
+**It stays read-only.** It stays detached on the base, takes no branch, and
+writes, commits and pushes nothing. It never pushes the branch the cloud
+harness assigned. Report these lines, as one fenced code block with no
+backticks inside it, then answer what the owner asked:
+
+```
+Task:     none, temporary session
+Branch:   none, detached at <the base branch's name> <hash>
+Base:     <as in step 6>
+Kit:      <the line kit.sh status printed>
+Parked:   <none | the task branches, each with its task's status>
+Strays:   <none | as in step 6>
+```
+
+**Watch for what is worth keeping.** A decision the owner makes, a fact the
+session confirms that the state files lack, a request to change or build
+something, a question left open. None of it survives the session unless it
+reaches a task's block. When one comes up, offer to keep it, as a numbered
+question in the reply, and say which way the session proposes:
+
+- **Turn this session into a task,** when the conversation has been about one
+  thing and the owner wants it built or recorded now.
+- **Open a task for later,** one per topic, when the conversation covered
+  several, or when the owner wants the work queued rather than started. Offer
+  as many as there are topics worth keeping, each with its proposed slug and
+  title.
+
+The owner may also ask for either at any time without an offer.
+
+**Turning it into a task.** Each task takes its slug from the owner. If they
+named none, propose one that keeps the slug rule in step 4 and ask. Then open
+it by step 4 case c and claim it by step 5: a new branch from the base, the
+task's block under Open Tasks in `TASKS.md`, committed and pushed at once. The
+block records, beyond what case c asks:
+
+- why the task was made and what it is for;
+- the background from this session that a later session needs to start
+  without it: what was asked, what was looked at and found, and what the
+  session said, in as much detail as the work needs;
+- each decision the owner made, with their name and the date, and each
+  question left open, written out.
+
+A task the owner wants built now is worked from here like any other: report
+step 6's lines and start. A task opened for later stays `ACTIVE` with its
+stopping point `Not started.` and its first step, and the session checks the
+base out again, detached, before the next one. From the moment it opens its
+first task, it is an ordinary session: it ends with `/session-close`, which
+closes every task branch it opened.
+
+A temporary session that opened no task needs no `/session-close`. If context
+runs low while something worth keeping is still only in the conversation, say
+so on the low-context line and offer to open its task before anything else.
 
 ## First Run
 
