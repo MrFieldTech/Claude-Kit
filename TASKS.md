@@ -43,6 +43,28 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+### Add A Temporary Session
+
+**Slug:** `add-session-temp`
+**Status:** ACTIVE
+**Opened:** 2026-09-30
+
+MrFieldTech, 2026-09-30: there should be a temporary session option that
+opens a session for questions about the repository and its details without
+creating a task branch or anything that follows from one. If, during a
+temporary session, MrFieldTech asks for branches to use later, creating them
+is fine, but the temporary session itself creates none of that. MrFieldTech
+asked for opinions first.
+
+**Proposed, 2026-09-30, awaiting MrFieldTech's answers.** `/session-open temp`
+runs steps 1 to 3 read-only (fetch, read state on the base, kit status,
+branch survey), stays detached on the base, reports without a `Task:` line,
+and answers questions. It writes, commits and pushes nothing, and needs no
+`/session-close`. A request for work, or for a branch to use later, opens a
+task by step 4 case c or d, which claims `task/<slug>` with its block in
+`TASKS.md`. `temp` becomes a slug the kit reserves. `HOUSE.md` says a
+session works on one task branch unless it is temporary. Release 1.1.0.
+
 ## Closed Tasks
 
 ### Encrypt Credentials Committed In Transit
