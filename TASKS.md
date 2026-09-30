@@ -56,14 +56,23 @@ temporary session, MrFieldTech asks for branches to use later, creating them
 is fine, but the temporary session itself creates none of that. MrFieldTech
 asked for opinions first.
 
-**Proposed, 2026-09-30, awaiting MrFieldTech's answers.** `/session-open temp`
-runs steps 1 to 3 read-only (fetch, read state on the base, kit status,
-branch survey), stays detached on the base, reports without a `Task:` line,
-and answers questions. It writes, commits and pushes nothing, and needs no
-`/session-close`. A request for work, or for a branch to use later, opens a
-task by step 4 case c or d, which claims `task/<slug>` with its block in
-`TASKS.md`. `temp` becomes a slug the kit reserves. `HOUSE.md` says a
-session works on one task branch unless it is temporary. Release 1.1.0.
+**Decided by MrFieldTech, 2026-09-30.**
+
+1. The command is `/session-open temp`. If the owner later wants to build or
+   keep something, the session asks for a slug or takes the one given,
+   checks out that task's branch, and either records what is to be kept or
+   starts building.
+2. When a decision or a request for work comes up, the session offers to
+   turn itself into a task or to open a new one, whichever fits, and may
+   offer several when the session covered several topics.
+3. A branch for later is a parked task, and its block records why it was
+   made, what it is for, and as much background as it needs.
+
+**Done, 2026-09-30, on the branch.** Release 1.1.0: a Temporary Session
+section in `session-open`, a paragraph in `HOUSE.md`, `temp` reserved in
+every repository, `session-close` stops with nothing to close for a temporary
+session that opened no task, and `README.md` and `CHANGELOG.md` describe it.
+`bash check.sh` passes. Not yet tried in a real temporary session.
 
 ## Closed Tasks
 
