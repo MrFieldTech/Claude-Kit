@@ -45,6 +45,40 @@ Then the detail block, as prose.
 
 ## Closed Tasks
 
+### Add A Temporary Session
+
+**Slug:** `add-session-temp`
+**Status:** DONE
+**Opened:** 2026-09-30
+**Closed:** 2026-09-30
+
+MrFieldTech, 2026-09-30: there should be a temporary session option that
+opens a session for questions about the repository and its details without
+creating a task branch or anything that follows from one. If, during a
+temporary session, MrFieldTech asks for branches to use later, creating them
+is fine, but the temporary session itself creates none of that. MrFieldTech
+asked for opinions first.
+
+**Decided by MrFieldTech, 2026-09-30.**
+
+1. The command is `/session-open temp`. If the owner later wants to build or
+   keep something, the session asks for a slug or takes the one given,
+   checks out that task's branch, and either records what is to be kept or
+   starts building.
+2. When a decision or a request for work comes up, the session offers to
+   turn itself into a task or to open a new one, whichever fits, and may
+   offer several when the session covered several topics.
+3. A branch for later is a parked task, and its block records why it was
+   made, what it is for, and as much background as it needs.
+
+**Done, 2026-09-30, on the branch.** Release 1.1.0: a Temporary Session
+section in `session-open`, a paragraph in `HOUSE.md`, `temp` reserved in
+every repository, `session-close` stops with nothing to close for a temporary
+session that opened no task, and `README.md` and `CHANGELOG.md` describe it.
+`bash check.sh` passes. Not yet tried in a real temporary session.
+
+**Closed, 2026-09-30.** MrFieldTech asked for 1.1.0 to reach `main`.
+
 ### Encrypt Credentials Committed In Transit
 
 **Slug:** `multi-line-secrets`

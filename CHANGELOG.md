@@ -4,6 +4,27 @@ Every change to a kit-owned file is a release, recorded here with the version
 `VERSION` carries. A project's `/session-open` reports when a newer release
 exists, and the project takes it by `kit.sh update` when its owner asks.
 
+## 1.1.0
+
+A temporary session, for questions without a branch.
+
+- `/session-open temp` runs the fetch, the state reads, the kit check and the
+  branch survey, then stays detached on the base and answers questions. It
+  writes, commits and pushes nothing, a stray does not stop it, and in a
+  repository new to the kit it does not run the first run.
+- When a decision, a confirmed fact or a request for work comes up, it offers
+  to keep it: to turn the session into a task, or to open a task for each
+  topic to take up later. Each task's slug comes from the owner, or is
+  proposed and asked. Its block records why it was made, what it is for, and
+  the background, decisions and open questions from the session.
+- From its first task on, it is an ordinary session that ends with
+  `/session-close`. `session-close` says there is nothing to close for a
+  temporary session that opened no task.
+- `temp` is never a task slug, whatever the Reserved slugs setting says.
+
+After updating: nothing is required. A repository with a task whose slug is
+`temp` renames it, since `/session-open temp` no longer resumes it.
+
 ## 1.0.5
 
 A credential is never committed in plaintext.

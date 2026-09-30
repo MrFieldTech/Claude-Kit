@@ -13,6 +13,7 @@ file at the same time.
 
 | Date | Tasks touched | Work commits |
 |---|---|---|
+| 2026-09-30 | `add-session-temp`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.1.0 adds `/session-open temp` | `db3756b..d48c4d3` |
 | 2026-09-28 | `multi-line-secrets`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.0.5 never commits a credential in plaintext | `3e8aa5b..a1a2427` |
 | 2026-09-27 | `go-public`, DONE, merged into `preview`: the repository is public | none, the handoff alone |
 | 2026-09-27 | `go-public`, BLOCKED, merged into `preview`: the pre-public review's fixes, with release 1.0.4 | `d5ef770..ef64e39` |
@@ -22,7 +23,6 @@ file at the same time.
 | 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at MrFieldTech's request: the install prompt in `README.md` rebuilt as one step per action, after the fifth attempt was blocked at the installer | `7a4320a..4aadb68` |
 | 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at MrFieldTech's request: the install prompt in `README.md` names the kit as the owner's own source, after the fourth attempt was blocked attaching it | `fb705b7..0f48004` |
 | 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at MrFieldTech's request: 1.0.2 released with the third attempt's fixes to the first run's reply | `770c7f5..144faaf` |
-| 2026-09-25 | `first-pilot`, BLOCKED again, merged into `preview` and then `main` at MrFieldTech's request: 1.0.1 released with the second pilot's fixes, and the install prompt shortened | `0777c20..c50d8ce` |
 
 ## Blocked On
 
@@ -88,12 +88,22 @@ repository it never does.
   confirmed private.** MrFieldTech, 2026-09-28. Secrets are encrypted in
   transit, by the method each repository's Credentials setting names, and
   encryption does not make a public repository a place for them.
+- **A temporary session, `/session-open temp`, answers questions without a
+  branch and turns what is worth keeping into tasks.** MrFieldTech,
+  2026-09-30. A question-only session should not claim a task. It offers to
+  become a task or to open one per topic, the slug comes from the owner or is
+  proposed and asked, and a branch for later is a parked task whose block
+  carries its background, so it is never a stray.
 
 ## Open Questions For MrFieldTech
 
 None.
 
 ## Flagged As Unverified
+
+**No session has run `/session-open temp`.** 1.1.0 was checked by
+`check.sh` only. The first temporary session verifies that it stays
+read-only and that turning it into a task claims the branch as step 5 says.
 
 **No session has run 1.0.3's close.** The sixth pilot attempt ran a full
 round on 1.0.2 on 2026-09-26. The once-a-minute recheck and the skipped second
