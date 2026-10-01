@@ -4,6 +4,24 @@ Every change to a kit-owned file is a release, recorded here with the version
 `VERSION` carries. A project's `/session-open` reports when a newer release
 exists, and the project takes it by `kit.sh update` when its owner asks.
 
+## 1.2.0
+
+A temporary session promotes the integration branch.
+
+- Asked in any words, a temporary session merges the integration branch into
+  the default branch by `session-close` step 9's checks, with no task and no
+  close. It waits for the checks GitHub reports on the integration branch's
+  head, and stops on an open pull request into the integration branch, which
+  GitHub would retarget at the default branch.
+- A conflict stops it, and it offers a task to resolve it on a branch from
+  the integration branch. A conflict means a commit reached the default
+  branch outside the protocol.
+- A promotion from a temporary session records nothing in the repository. The
+  pull request is the record. `session-close` step 9 still promotes when the
+  owner asks during a close.
+
+After updating: nothing is required.
+
 ## 1.1.0
 
 A temporary session, for questions without a branch.

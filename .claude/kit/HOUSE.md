@@ -50,7 +50,8 @@ any work. If context is running low and `/session-close` has not run, say so.
 
 `/session-open temp` opens a temporary session instead, for questions about
 the repository. It reads the state and answers, and it writes, commits and
-pushes nothing and takes no branch. When something from it is to be kept or
+pushes nothing and takes no branch, except that it merges the integration
+branch into the default branch when the owner asks. When something from it is to be kept or
 built, the session turns it into a task, with its own branch, and from then on
 it is an ordinary session that ends with `/session-close`. A temporary session
 that opened no task needs no close.
