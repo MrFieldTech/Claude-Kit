@@ -99,18 +99,20 @@ README's update slug, keep `README.md` true):
    `session-close` step 9 point to the new form for a merge with no task.
 4. With `Integration branch: none`, the form has nothing to do and says so.
 
-**Open questions for MrFieldTech.**
-- The exact invocation: `/session-open temp promote`, `/session-open temp
-  promote preview`, or another form. The integration branch's name differs
-  between repositories, so naming it in the command would mean checking it
-  against Session Settings.
-- Whether a promotion from a temporary session leaves the `HANDOFF.md`
-  session log without a line, relying on the pull request on GitHub, or
-  whether the next session to close adds one.
-- Whether `session-close` step 9 stays as well, so a close can still promote
-  when asked, or whether promotion moves to the temporary session alone.
+**Decisions, MrFieldTech, 2026-10-01.**
+- No keyword. `temp` is the session, and asking it to promote is an ordinary
+  request in any words, which the session works out from the conversation.
+- A promotion from a temporary session leaves no line in the `HANDOFF.md`
+  session log. The pull request into main is the record.
+- `session-close` step 9 stays, so a close still promotes when asked.
 
-Stopping point: Not started. First step is item 1 of To do.
+Done in release 1.2.0: `session-open`'s Temporary Session section promotes by
+`session-close` step 9, waits for the checks on the integration branch's head,
+stops on an open pull request into it, and offers a task on a conflict.
+`HOUSE.md`, `session-close` step 9, `README.md`, `VERSION` and `CHANGELOG.md`
+match.
+
+Stopping point: release 1.2.0 committed and `bash check.sh` passes. Next is `/session-close`.
 
 ## Closed Tasks
 
