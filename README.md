@@ -14,7 +14,9 @@ how it answers in every repository.
 repository without taking a branch. It reads the same state and writes
 nothing. When something from it is worth keeping or building, it offers to
 turn the session into a task, or to open a task for each topic to take up
-later, each with the background it needs. It needs `/session-close` only once
+later, each with the background it needs. Asked to promote the integration
+branch into the default branch, it opens and merges that pull request, by the
+same checks a close uses, with no task. It needs `/session-close` only once
 it has opened a task.
 
 ## What gets installed
@@ -27,7 +29,7 @@ by an update.
 | Path | What it is |
 |---|---|
 | `.claude/kit/HOUSE.md` | The house rules: which file wins, the rules for every action, sessions and branches, the state files, the response format, and the Session Settings keys |
-| `.claude/skills/session-open/SKILL.md` | Opens a session: reads the state, surveys the branches, puts the session on its task's branch, and runs the first-run setup in a repository new to the kit. With `temp`, opens a read-only temporary session that turns into tasks only when asked |
+| `.claude/skills/session-open/SKILL.md` | Opens a session: reads the state, surveys the branches, puts the session on its task's branch, and runs the first-run setup in a repository new to the kit. With `temp`, opens a read-only temporary session that promotes the integration branch and turns into tasks only when asked |
 | `.claude/skills/session-close/SKILL.md` | Closes a session: places credentials, writes the state back, regenerates, pushes, and merges a finished task or parks an unfinished one |
 | `.claude/kit/kit.sh` | Installs, updates, and reports the kit's status |
 | `.claude/kit/todo_sweep.py` | Collects every `TODO:` in the repository into `TODO.md` |
@@ -160,7 +162,7 @@ release, which is what the update takes. As with the install, paste it only in
 a repository of your own and only if you trust this one:
 
 ```text
-/session-open kit-update-1-1-0
+/session-open kit-update-1-2-0
 Update Claude-Kit in this repository, as this task. Claude-Kit is my own
 repository, https://github.com/MrFieldTech/Claude-Kit, which I wrote and
 trust. I want you to take each of these actions on this task's branch:

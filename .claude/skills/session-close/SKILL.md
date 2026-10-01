@@ -259,7 +259,10 @@ Merging the integration branch into the default branch is a separate decision,
 and it is the owner's, not this skill's. With `Integration branch: none` there
 is nothing to do here.
 
-Do nothing here unless the owner asked for the merge in this session. Do not
+Do nothing here unless the owner asked for the merge in this session. A
+promotion with no task to close needs no close: the owner asks for it in a
+temporary session, which follows this step by the Temporary Session section
+of `session-open`. Do not
 infer it from the queue being empty, from the work looking finished, or from
 time passing.
 

@@ -45,6 +45,78 @@ Then the detail block, as prose.
 
 ## Closed Tasks
 
+### Promote Preview Into Main Without A Task
+
+**Slug:** `preview-promotion`
+**Status:** DONE
+**Opened:** 2026-10-01
+**Closed:** 2026-10-01
+
+**Why.** MrFieldTech, 2026-10-01, in a temporary session, asked how preview
+is merged into main: whether to ask a random session after `/session-close`
+or to start a whole session just for the merge. Today the merge is step 9 of
+`session-close`, and it runs only when the owner asked for it in that same
+session. So it rides on a session that closes a task. Asking after a close has
+finished does nothing, because step 9 is part of the close. A merge on its own
+has no clean path: a temporary session writes nothing, `session-close` stops
+at once for a temporary session that opened no task, and an ordinary session
+must open a task, which adds a task block to `TASKS.md` just to carry the
+merge.
+
+**What the session found about conflicts.** Main moves only by pull requests
+from preview, and when GitHub deletes preview after a promotion,
+`session-close` step 8 recreates it at main's head. So main is normally an
+ancestor of preview, and the promotion cannot conflict. On 2026-10-01 main
+(`b114510`) was an ancestor of preview (`9c6062a`), which was 4 commits ahead
+with `readme-version-update`. A merge commit on main that preview lacks, when
+preview was not deleted, carries no change of its own and does not conflict
+either. A real conflict needs a commit that reached main outside the protocol:
+a direct push, an edit on GitHub's website, or a pull request from another
+branch. Resolving one cannot happen on preview or main, since neither takes a
+direct commit. It needs a task branch cut from preview that merges main in,
+with the owner's answers on the conflicting files, and a pull request back
+into preview. That path is already the ordinary task flow.
+
+**What a promotion records.** Every past promotion added a line to the
+`HANDOFF.md` session log, such as "merged into preview and then main at
+MrFieldTech's request". A temporary session commits nothing, and it cannot
+commit to preview or main either, so a promotion run from one records nothing
+in the repository. The pull request into main and its merge commit are the
+record on GitHub.
+
+**Direction from MrFieldTech, 2026-10-01.** If a promotion never needs a
+conflict resolution recorded, it can run as part of a temporary session,
+something like `/session-open temp promote preview`, rather than on its own
+branch.
+
+**To do.** A kit release (bump `VERSION`, add a `CHANGELOG.md` entry, set the
+README's update slug, keep `README.md` true):
+1. Settle the open questions below with MrFieldTech.
+2. Give `session-open`'s temporary session a promotion form that runs
+   `session-close` step 9's three checks and, when all pass, opens and merges
+   the pull request from preview into main. When a check fails, it names the
+   check and stops. On a conflict it reports the files and proposes a task to
+   resolve them, by the conflict rule in `HOUSE.md`.
+3. Make `HOUSE.md`'s rule that a temporary session writes and pushes nothing
+   name the exception: it opens and merges that one pull request. Make
+   `session-close` step 9 point to the new form for a merge with no task.
+4. With `Integration branch: none`, the form has nothing to do and says so.
+
+**Decisions, MrFieldTech, 2026-10-01.**
+- No keyword. `temp` is the session, and asking it to promote is an ordinary
+  request in any words, which the session works out from the conversation.
+- A promotion from a temporary session leaves no line in the `HANDOFF.md`
+  session log. The pull request into main is the record.
+- `session-close` step 9 stays, so a close still promotes when asked.
+
+Done in release 1.2.0: `session-open`'s Temporary Session section promotes by
+`session-close` step 9, waits for the checks on the integration branch's head,
+stops on an open pull request into it, and offers a task on a conflict.
+`HOUSE.md`, `session-close` step 9, `README.md`, `VERSION` and `CHANGELOG.md`
+match.
+
+Merged into preview and then main at MrFieldTech's request on 2026-10-01.
+
 ### Keep The README Update Prompt On The Current Version
 
 **Slug:** `readme-version-update`

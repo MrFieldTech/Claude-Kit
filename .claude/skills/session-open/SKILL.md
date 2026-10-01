@@ -1,7 +1,7 @@
 ---
 name: session-open
 description: >-
-  Start a Claude Code session in a repository that uses Claude-Kit. Takes an optional task slug: an existing task resumes on its branch, a slug that names no task starts a new task under that name, and with no slug it lists the parked task branches and queued tasks and asks. In a repository that has never used the kit, it proposes the Session Settings and builds TASKS.md and HANDOFF.md first. Reads the authority file, CLAUDE.md, TASKS.md and HANDOFF.md, reports the kit's version and any stray branch, puts the session on the task's own branch, task/<task-slug>, and works the task from the stopping point in its block. With the argument temp it opens a temporary session instead: it reads and reports the same way, answers questions without taking a branch or writing anything, and turns what is to be kept or built into tasks when the owner asks. Runs only when the owner invokes /session-open.
+  Start a Claude Code session in a repository that uses Claude-Kit. Takes an optional task slug: an existing task resumes on its branch, a slug that names no task starts a new task under that name, and with no slug it lists the parked task branches and queued tasks and asks. In a repository that has never used the kit, it proposes the Session Settings and builds TASKS.md and HANDOFF.md first. Reads the authority file, CLAUDE.md, TASKS.md and HANDOFF.md, reports the kit's version and any stray branch, puts the session on the task's own branch, task/<task-slug>, and works the task from the stopping point in its block. With the argument temp it opens a temporary session instead: it reads and reports the same way, answers questions without taking a branch or writing anything, merges the integration branch into the default branch when the owner asks, and turns what is to be kept or built into tasks when the owner asks. Runs only when the owner invokes /session-open.
 disable-model-invocation: true
 ---
 
@@ -276,7 +276,7 @@ does not stop it, because it changes nothing, though every stray is reported.
 
 **It stays read-only.** It stays detached on the base, takes no branch, and
 writes, commits and pushes nothing. It never pushes the branch the cloud
-harness assigned. Report these lines, as one fenced code block with no
+harness assigned. The one exception is a promotion the owner asks for, below. Report these lines, as one fenced code block with no
 backticks inside it, then answer what the owner asked:
 
 ```
@@ -287,6 +287,32 @@ Kit:      <the line kit.sh status printed>
 Parked:   <none | the task branches, each with its task's status>
 Strays:   <none | as in step 6>
 ```
+
+**Promoting the integration branch.** The owner may ask, in any words, for
+the integration branch to merge into the default branch. That is not a
+keyword: work out from the conversation whether it is what they mean, and ask
+when it is not clear. Then read step 9 of `.claude/skills/session-close/SKILL.md`
+and follow it, with these differences:
+
+- With `Integration branch: none`, or when the integration branch is absent
+  or holds nothing the default branch lacks, there is nothing to promote. Say
+  so and stop.
+- Check 1 never holds without waiting, because this session merged nothing
+  into the integration branch. Wait for every check GitHub reports on its
+  head, as `session-close` step 8 waits. If its head moves while waiting,
+  wait again on the new head.
+- An open pull request into the integration branch stops the promotion, named
+  in the reply. GitHub deletes the integration branch after the merge and
+  retargets that pull request at the default branch.
+- On a conflict, name the conflicting files and stop. A commit reached the
+  default branch outside the protocol. Offer a task to resolve it: its branch
+  comes from the integration branch and merges the default branch in, the
+  owner's answers go in its block, and its close merges it into the
+  integration branch, after which the promotion can be asked for again.
+- It records nothing in the repository. The pull request into the default
+  branch and its merge commit are the record.
+
+The session stays temporary afterwards and needs no close for the promotion.
 
 **Watch for what is worth keeping.** A decision the owner makes, a fact the
 session confirms that the state files lack, a request to change or build
