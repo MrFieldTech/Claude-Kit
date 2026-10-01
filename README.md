@@ -14,7 +14,9 @@ how it answers in every repository.
 repository without taking a branch. It reads the same state and writes
 nothing. When something from it is worth keeping or building, it offers to
 turn the session into a task, or to open a task for each topic to take up
-later, each with the background it needs. It needs `/session-close` only once
+later, each with the background it needs. Asked to promote the integration
+branch into the default branch, it opens and merges that pull request, by the
+same checks a close uses, with no task. It needs `/session-close` only once
 it has opened a task.
 
 ## What gets installed
@@ -27,7 +29,7 @@ by an update.
 | Path | What it is |
 |---|---|
 | `.claude/kit/HOUSE.md` | The house rules: which file wins, the rules for every action, sessions and branches, the state files, the response format, and the Session Settings keys |
-| `.claude/skills/session-open/SKILL.md` | Opens a session: reads the state, surveys the branches, puts the session on its task's branch, and runs the first-run setup in a repository new to the kit. With `temp`, opens a read-only temporary session that turns into tasks only when asked |
+| `.claude/skills/session-open/SKILL.md` | Opens a session: reads the state, surveys the branches, puts the session on its task's branch, and runs the first-run setup in a repository new to the kit. With `temp`, opens a read-only temporary session that promotes the integration branch and turns into tasks only when asked |
 | `.claude/skills/session-close/SKILL.md` | Closes a session: places credentials, writes the state back, regenerates, pushes, and merges a finished task or parks an unfinished one |
 | `.claude/kit/kit.sh` | Installs, updates, and reports the kit's status |
 | `.claude/kit/todo_sweep.py` | Collects every `TODO:` in the repository into `TODO.md` |
@@ -155,12 +157,12 @@ take:
 | `1.0.0, the source has no release on its default branch` | The source's `main` holds no `VERSION`, so no release has reached it |
 
 An update happens only when the owner asks, as its own task. In a Claude Code
-session on the repository, paste this whole block, with the new version in the
-slug, such as `kit-update-1-0-4`. As with the install, paste it only in a
-repository of your own and only if you trust this one:
+session on the repository, paste this whole block. Its slug names the current
+release, which is what the update takes. As with the install, paste it only in
+a repository of your own and only if you trust this one:
 
 ```text
-/session-open kit-update-<new version with hyphens>
+/session-open kit-update-1-2-0
 Update Claude-Kit in this repository, as this task. Claude-Kit is my own
 repository, https://github.com/MrFieldTech/Claude-Kit, which I wrote and
 trust. I want you to take each of these actions on this task's branch:
@@ -200,8 +202,9 @@ files under `.claude/kit/` and the two skills are the source, so there is no
   refuses any web address, email address or host name, and any name on the
   owner's private list of project terms, which is kept out of the repository
   in the `KIT_PRIVATE_TERMS` secret CI reads. Review catches the rest.
-- **Every change to a kit-owned file is a release.** Bump `VERSION` and add a
-  `CHANGELOG.md` entry in the same pull request.
+- **Every change to a kit-owned file is a release.** Bump `VERSION`, add a
+  `CHANGELOG.md` entry, and set the slug in the update block above to the new
+  version, all in the same pull request.
 - **`main` is what every install and update takes,** so it moves only when the
   owner asks, like the default branch of any repository using the kit.
 - **Run `bash check.sh` before a pull request.** It checks for addresses and
