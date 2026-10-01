@@ -43,11 +43,14 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+## Closed Tasks
+
 ### Promote Preview Into Main Without A Task
 
 **Slug:** `preview-promotion`
-**Status:** ACTIVE
+**Status:** DONE
 **Opened:** 2026-10-01
+**Closed:** 2026-10-01
 
 **Why.** MrFieldTech, 2026-10-01, in a temporary session, asked how preview
 is merged into main: whether to ask a random session after `/session-close`
@@ -112,9 +115,7 @@ stops on an open pull request into it, and offers a task on a conflict.
 `HOUSE.md`, `session-close` step 9, `README.md`, `VERSION` and `CHANGELOG.md`
 match.
 
-Stopping point: release 1.2.0 committed and `bash check.sh` passes. Next is `/session-close`.
-
-## Closed Tasks
+Merged into preview and then main at MrFieldTech's request on 2026-10-01.
 
 ### Keep The README Update Prompt On The Current Version
 

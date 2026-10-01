@@ -13,6 +13,7 @@ file at the same time.
 
 | Date | Tasks touched | Work commits |
 |---|---|---|
+| 2026-10-01 | `preview-promotion`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.2.0 lets a temporary session promote the integration branch | `c5d170a..19e297c` |
 | 2026-09-30 | `readme-version-update`, DONE, merged into `preview`: the README's update block names the current release, and `check.sh` holds it to `VERSION` | `b7e7ae1..067e760` |
 | 2026-09-30 | `add-session-temp`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.1.0 adds `/session-open temp` | `db3756b..d48c4d3` |
 | 2026-09-28 | `multi-line-secrets`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.0.5 never commits a credential in plaintext | `3e8aa5b..a1a2427` |
@@ -22,7 +23,6 @@ file at the same time.
 | 2026-09-26 | `go-public`, BLOCKED, merged into `preview` and then `main` at MrFieldTech's request: the project terms left `check.sh` for a secret, and the files describe a public repository | `37ee80b..bb1444f` |
 | 2026-09-26 | `first-pilot`, DONE, merged into `preview` and then `main` at MrFieldTech's request: the sixth attempt ran a full round, and 1.0.3 released with its fixes | `37df0d1..0e3e434` |
 | 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at MrFieldTech's request: the install prompt in `README.md` rebuilt as one step per action, after the fifth attempt was blocked at the installer | `7a4320a..4aadb68` |
-| 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at MrFieldTech's request: the install prompt in `README.md` names the kit as the owner's own source, after the fourth attempt was blocked attaching it | `fb705b7..0f48004` |
 
 ## Blocked On
 
@@ -99,15 +99,22 @@ repository it never does.
   repository, so the prompt is pasted as is. The rule is in `CLAUDE.md` and
   `check.sh` enforces it.
 
+- **A temporary session promotes the integration branch when asked, in any
+  words, with no keyword.** MrFieldTech, 2026-10-01. Main only takes merges
+  from preview, so a promotion cannot conflict and has no resolution to
+  record. It leaves no session log line, the pull request is the record, and
+  `session-close` step 9 still promotes when asked during a close.
+
 ## Open Questions For MrFieldTech
 
 None.
 
 ## Flagged As Unverified
 
-**No session has run `/session-open temp`.** 1.1.0 was checked by
-`check.sh` only. The first temporary session verifies that it stays
-read-only and that turning it into a task claims the branch as step 5 says.
+**No temporary session has promoted the integration branch.** 1.2.0 was
+checked by `check.sh` only. The first promotion asked for in a
+`/session-open temp` session verifies that it waits for the checks on the
+integration branch's head and commits nothing.
 
 **No session has run 1.0.3's close.** The sixth pilot attempt ran a full
 round on 1.0.2 on 2026-09-26. The once-a-minute recheck and the skipped second
