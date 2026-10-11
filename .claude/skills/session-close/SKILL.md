@@ -1,7 +1,7 @@
 ---
 name: session-close
 description: >-
-  Close out a Claude Code session in a repository that uses Claude-Kit. For each task branch the session worked on, stops at a clean boundary, places every credential, updates the task's block in TASKS.md and edits HANDOFF.md in place, runs the repository's Regenerate commands, and pushes the branch. A task that is DONE or BLOCKED then merges into the integration branch by pull request and GitHub deletes its branch; a task stopped partway stays parked on its branch. Merges the integration branch into the default branch only when the owner asks. Reports where to see each task's work. Runs only when the owner invokes /session-close.
+  Close out a Claude Code session in a repository that uses Claude-Kit. For each task branch the session worked on, stops at a clean boundary, places every credential, updates the task's block in TASKS.md, looks back over a session that met friction and edits HANDOFF.md in place, runs the repository's Regenerate commands, and pushes the branch. A failing Regenerate command or check is diagnosed before anything parks. A task that is DONE or BLOCKED then merges into the integration branch by a pull request whose body carries evidence and a merge danger call, and GitHub deletes its branch; a task stopped partway stays parked on its branch. Merges the integration branch into the default branch only when the owner asks. Reports where to see each task's work. Runs only when the owner invokes /session-close.
 disable-model-invocation: true
 ---
 
@@ -92,6 +92,10 @@ Set the status:
 
 ## 4. Edit HANDOFF.md
 
+First, when the session met friction, look back over it by the retrospective
+in `.claude/kit/practices/retro.md`. Each proposal it keeps is a question for
+Open Questions below.
+
 Edit the file in place and never replace it, because another session may close
 into it. Change only what this session produced or settled. Keep its format and
 the named headings below, in this order, and add nothing else.
@@ -119,8 +123,9 @@ the named headings below, in this order, and add nothing else.
 - **Open Questions For the owner,** under the heading that names them. Add
   direct questions, each answerable in a sentence and carrying the context
   needed to answer it without reading the rest of the file, and remove the ones
-  this session answered. A question that belongs to one file is a `TODO:` in
-  that file, and is not repeated here.
+  this session answered. Each proposal from the retrospective is one of these
+  questions, offering a task for it. A question that belongs to one file is a
+  `TODO:` in that file, and is not repeated here.
 - **Flagged As Unverified.** Add anything assumed, inferred, or believed but not
   checked, each with what would verify it, and remove what this session
   verified.
@@ -133,8 +138,12 @@ in its block in `TASKS.md`, not here.
 ## 5. Regenerate derived files
 
 Run each Regenerate command, in the order Session Settings gives. If any command
-fails, record the exact command and the exact error under Flagged As Unverified
-and continue. With `Regenerate: none`, skip this step.
+fails, find its cause by `.claude/kit/practices/diagnosing.md`. When the cause is
+in this task's work and the fix fits in this session, fix it on the task
+branch, commit, widen the Session Log row's commit range to include the fix,
+and run the commands again. Otherwise record the exact command, the exact error
+and what the diagnosis found under Flagged As Unverified, and continue. With
+`Regenerate: none`, skip this step.
 
 ## 6. Make the handoff commit
 
@@ -200,15 +209,40 @@ added lines to `TASKS.md` or `HANDOFF.md`, keep both. For anything else, run
 unattended.
 
 **Check the tree.** Run the Regenerate commands, then each command under Checks
-before merge, then `git status --short`. If a check fails, park the task. If the
-Regenerate commands rewrote a generated file, commit it. Push the task branch.
+before merge, then `git status --short`. If a check fails, find its cause by
+`.claude/kit/practices/diagnosing.md`, fix it on the task branch, widen the
+Session Log row's commit range to include the fix, and run the checks again.
+Park the task only when the fix does not fit in this session, with the
+diagnosis's stopping point in its block. If the Regenerate commands rewrote a
+generated file, commit it. Push the task branch.
 
 **Open and merge the pull request.** Through the session's GitHub access, open
 a pull request from `task/<slug>` into the target, titled after the task, with
-a body naming the task slug and what it changed. Wait for every check run
-GitHub reports on the pull request to finish. A combined commit status that
-reads `pending` with no statuses behind it means nothing posted one, not that
-something is still running.
+the body below. Wait for every check run GitHub reports on the pull request to
+finish. A combined commit status that reads `pending` with no statuses behind
+it means nothing posted one, not that something is still running.
+
+**The pull request body.** The session merges its own pull request, so the body
+is the review record: the one place a later reader sees what changed and why
+it was safe to merge. Write three parts, briefly, in the words the repository
+already uses. When the repository has a pull request template, fill it and
+carry the three parts inside it.
+
+- **Summary.** The task slug and what changed, shown as the smallest picture
+  that makes it clear: a short file tree for files added or moved, a `diff`
+  sketch of the shape that changed, pseudocode or a call tree for logic, or a
+  Mermaid diagram for a flow between parts. Usually one, rarely two, and plain
+  prose when none of them helps.
+- **Evidence.** Before and after, from what this session ran: each check with
+  its result, the red command failing and then passing when a diagnosis ran,
+  and for a visible change a screenshot when the container has a browser, or
+  the Task preview address when it is set. Claim only evidence the session
+  produced, and say so when there is none.
+- **Merge danger.** Whether the change is a two-way door, walked back by a
+  revert, or a one-way door, such as deleted data, an address that is already
+  published and now changes, a migration, or anything sent outside the
+  repository. Then its blast radius in a word or two, such as layout, copy,
+  redirects or build, with one line on what could break if it is wrong.
 
 Checks can run for many minutes. Stay with the pull request until they
 finish, reading them again about once a minute. When the session can schedule
@@ -227,9 +261,13 @@ record the difference under Flagged As Unverified.
   of the task stays in the history.
 - GitHub reports it cannot be merged because the target moved: bring the base in
   again from the top of this step.
-- A check fails: fix it on the task branch and push, and the pull request
-  re-runs. If it cannot be fixed in this session, close the pull request
-  unmerged and park the task.
+- A check fails: find its cause by `.claude/kit/practices/diagnosing.md`, fix
+  it on the task branch, widen the Session Log row's commit range, update the
+  body's evidence, and push, and the pull request re-runs. When the fix shows
+  a guard the repository lacks, add the retrospective's proposal for it under
+  Open Questions in `HANDOFF.md` in the same push. If it cannot be fixed in
+  this session, close the pull request unmerged and park the task, with the
+  diagnosis's stopping point in its block.
 
 Never leave a pull request into the integration branch open at the end of a
 session. GitHub retargets an open pull request at the default branch when it
@@ -292,8 +330,11 @@ If any check fails, name which one and stop. Do not merge to tidy the branch.
 When all three pass:
 
 1. Open the pull request from the integration branch into the default branch,
-   titled after what it carries, with a body listing the tasks closed since the
-   last merge.
+   titled after what it carries, with a body in the three parts step 8 gives:
+   the summary lists each task closed since the last merge with its pull
+   request, the evidence is the checks on the integration branch's head, and
+   the merge danger is the riskiest door among those tasks, with the blast
+   radius they share on the default branch.
 2. Merge it with a merge commit: at once when check 1 held with no checks to
    wait for, otherwise once every check on the pull request passes, waiting as
    step 8 waits.
@@ -328,6 +369,7 @@ Branch:  <merged into <target> by <pull request URL>, deleted by GitHub | merged
 Preview: <the Task preview address when parked | the Integration preview address when merged | none>
 Commit:  <handoff commit hash>
 Secrets: <none | where each value was placed | N in this report for the owner to place>
+Retro:   <none | N proposals under Open Questions in HANDOFF.md>
 Parked:  <none | every parked task slug, which is what /session-open takes to resume>
 Strays:  <none | branch names>
 Merged:  <integration branch into default branch pull request URL, or not requested>

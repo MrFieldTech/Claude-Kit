@@ -17,6 +17,7 @@ When two sources disagree, the first of these wins:
 2. The rest of `CLAUDE.md`.
 3. This file.
 4. The `session-open` and `session-close` skills.
+5. The practices in `.claude/kit/practices/`.
 
 Read the authority file rather than working from memory of it. It is
 versioned and it changes. A conflict between it and an instruction from the
@@ -109,6 +110,27 @@ because two sessions may close into them.
 When Generated files lists `TODO.md`, it holds every `TODO:` in the repository
 as a question and is never edited by hand. Answer a question where it is asked
 and run the sweep again.
+
+## Practices
+
+Five practices hold how recurring kinds of work are done. Each is a file in
+`.claude/kit/practices/`, read in full when its case comes up. The session
+reaches for it on its own, and the owner never has to name one.
+
+- **Grilling**, `grilling.md`: before a new task's block is written, and
+  when the owner asks for a plan, a design or an idea to be stress-tested.
+- **Diagnosing**, `diagnosing.md`: when something fails that should pass,
+  such as a check, a build, a Regenerate command or a command the work
+  relies on, when the owner reports something broken, wrong or slow, and
+  for a task whose work is a fix.
+- **Writing for agents**, `writing-for-agents.md`: before writing or editing
+  a file an agent reads as instructions, such as `CLAUDE.md`, the authority
+  file or a skill.
+- **Questionnaire**, `questionnaire.md`: when answers must come from
+  someone other than the owner, or from the owner in a sitting of their
+  own, such as a task about to block on several questions.
+- **Retrospective**, `retro.md`: at close when the session met friction,
+  and when the owner asks what went wrong or what would have prevented it.
 
 ## Response format
 
