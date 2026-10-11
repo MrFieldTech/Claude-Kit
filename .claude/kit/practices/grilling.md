@@ -7,7 +7,7 @@ about every decision the task depends on, so the block records decisions
 rather than assumptions.
 
 `session-open` runs this before it writes a new task's block, and for any
-decision a queued task's block leaves open before its first step. It also
+decision a task's block leaves open before the step that needs it. It also
 runs whenever the owner asks for a plan, a design or an idea to be
 stress-tested, in any words.
 

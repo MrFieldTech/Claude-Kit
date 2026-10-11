@@ -91,8 +91,30 @@ copied into each repository by hand.
 5. `VERSION`, `CHANGELOG.md` and `README.md`, including its update slug.
 6. The source collection's license notice travels with the practices.
 
-**Stopping point.** Not started. First step: write
-`.claude/kit/practices/grilling.md`.
+**Done, 2026-10-11, on the branch.** Release 1.3.0, as planned. The
+practices are `grilling.md`, `diagnosing.md`, `writing-for-agents.md`,
+`questionnaire.md` and `retro.md`. `session-open` grills in step 4 case c,
+which cases d and the temporary session's tasks reach too, and in step 6 for
+a decision a block leaves open. A blocked task gets a questionnaire while
+working. `session-close` runs the retrospective at step 4, diagnoses at step
+5 and at both failure points of step 8, writes the pull request body in
+step 8 and the promotion's in step 9, and reports a `Retro:` line.
+`bash check.sh` passes, each new guard was made to fail on purpose, and a
+scratch repository on 1.2.0 updated to 1.3.0 and reported current.
+
+Two choices made in the session, open to MrFieldTech's review:
+- The license notice, which names the source collection's author, is in
+  `NOTICE.md` at the root and is not installed. Each practice credits the
+  collection without naming it, because the project rule says a kit-owned
+  file names no person.
+- A retrospective's proposals go under Open Questions in `HANDOFF.md`,
+  because its headings are fixed and a proposal is a decision for the
+  owner, not a task the session opens on its own.
+
+**Stopping point.** The work is done and pushed. Next: `/session-close`
+merges it into `preview`. Not yet run in a real session: the first new task
+opened under 1.3.0 tries the grilling, and the first failing check tries the
+diagnosis at close.
 
 ## Closed Tasks
 

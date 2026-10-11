@@ -55,10 +55,12 @@ would have changed the session most:
 ## What comes out
 
 Proposals, most severe first, each one sentence on what to change and one
-on what it would have prevented in this session. Each becomes a direct
-question under Open Questions in `HANDOFF.md` that offers a task for it, so
-the owner decides. The retrospective itself opens no task and changes no
-other file.
+on what it would have prevented in this session. Each is a question that
+offers a task for it, so the owner decides. At close, each becomes a direct
+question under Open Questions in `HANDOFF.md`. Asked for during a session,
+they are the reply's numbered questions, and `session-close` carries any
+still unanswered into `HANDOFF.md`. The retrospective itself opens no task
+and changes no other file.
 
 A proposal to change a kit-owned file is a change for the kit's own
 repository, and its question says so, because kit-owned files change only
