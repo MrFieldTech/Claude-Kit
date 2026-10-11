@@ -1,7 +1,7 @@
 ---
 name: session-open
 description: >-
-  Start a Claude Code session in a repository that uses Claude-Kit. Takes an optional task slug: an existing task resumes on its branch, a slug that names no task starts a new task under that name, and with no slug it lists the parked task branches and queued tasks and asks. In a repository that has never used the kit, it proposes the Session Settings and builds TASKS.md and HANDOFF.md first. Reads the authority file, CLAUDE.md, TASKS.md and HANDOFF.md, reports the kit's version and any stray branch, puts the session on the task's own branch, task/<task-slug>, and works the task from the stopping point in its block. With the argument temp it opens a temporary session instead: it reads and reports the same way, answers questions without taking a branch or writing anything, merges the integration branch into the default branch when the owner asks, and turns what is to be kept or built into tasks when the owner asks. Runs only when the owner invokes /session-open.
+  Start a Claude Code session in a repository that uses Claude-Kit. Takes an optional task slug: an existing task resumes on its branch, a slug that names no task starts a new task under that name, settled by grilling before its block is written, and with no slug it lists the parked task branches and queued tasks and asks. In a repository that has never used the kit, it proposes the Session Settings and builds TASKS.md and HANDOFF.md first. Reads the authority file, CLAUDE.md, TASKS.md and HANDOFF.md, reports the kit's version and any stray branch, puts the session on the task's own branch, task/<task-slug>, and works the task from the stopping point in its block. With the argument temp it opens a temporary session instead: it reads and reports the same way, answers questions without taking a branch or writing anything, merges the integration branch into the default branch when the owner asks, and turns what is to be kept or built into tasks when the owner asks. Runs only when the owner invokes /session-open.
 disable-model-invocation: true
 ---
 
@@ -144,11 +144,14 @@ applies.
 the task is `DONE`, ask whether to reopen it or to open a new task under
 another slug, and stop until they answer.
 
-**c. They named a slug that is no task.** Open a new task under that slug: a
-block under Open Tasks in `TASKS.md` with a title, the slug, status `ACTIVE`,
-today's date, and a detail block recording what they asked for. If their
-message does not say what the task is for, ask before writing the block. If
-the slug breaks the rule below, propose one that keeps it and ask.
+**c. They named a slug that is no task.** Open a new task under that slug.
+First settle it by grilling, `.claude/kit/practices/grilling.md`: look up
+every fact the repository can answer, and put each decision still open to
+the owner, round by round, until none is left. Then step 5 writes its block
+under Open Tasks in `TASKS.md`: a title, the slug, status `ACTIVE`, today's
+date, and a detail block recording what they asked for and each decision
+that settles it. If the slug breaks the rule below, propose one that keeps
+it in the first round.
 
 **d. They named nothing but asked for new work.** Open a new task for it the
 same way, choosing a slug that keeps the rule below.
@@ -238,7 +241,9 @@ so the address works a few minutes later; say so on the `Preview:` line.
 
 Then work the task from its stopping point. Follow its detail block. Do not
 re-plan a task the block already specifies and do not ask the owner to
-re-confirm anything recorded under Decisions Made.
+re-confirm anything recorded under Decisions Made. When the block leaves open
+a decision the next step depends on, settle it first by grilling,
+`.claude/kit/practices/grilling.md`, and record the answer in the block.
 
 ## While working
 
@@ -259,6 +264,11 @@ If a task turns out to be blocked on a decision only the owner can make, mark
 it `BLOCKED` in its block with the question written out, add the question under
 the Open Questions heading in `HANDOFF.md`, and tell the owner. They decide
 whether to close it now or to switch to another task first.
+
+When it is blocked instead on answers someone other than the owner must
+give, or on more than a couple the owner needs time to find, gather them by
+a questionnaire, `.claude/kit/practices/questionnaire.md`, and mark it
+`BLOCKED` the same way, its `Blocked:` line naming the questionnaire.
 
 If a credential is produced or discovered, place it before it is forgotten, by
 the Credentials setting and the credential rule in `.claude/kit/HOUSE.md`. Do
@@ -343,11 +353,13 @@ block records, beyond what case c asks:
   question left open, written out.
 
 A task the owner wants built now is worked from here like any other: report
-step 6's lines and start. A task opened for later stays `ACTIVE` with its
-stopping point `Not started.` and its first step, and the session checks the
-base out again, detached, before the next one. From the moment it opens its
-first task, it is an ordinary session: it ends with `/session-close`, which
-closes every task branch it opened.
+step 6's lines and start. A task opened for later is grilled only as far as
+its block needs to say why it exists and what it is for. The decisions it
+leaves open are written out in its block, for step 6 to settle when a session
+starts it. It stays `ACTIVE` with its stopping point `Not started.` and its
+first step, and the session checks the base out again, detached, before the
+next one. From the moment it opens its first task, it is an ordinary session:
+it ends with `/session-close`, which closes every task branch it opened.
 
 A temporary session that opened no task needs no `/session-close`. If context
 runs low while something worth keeping is still only in the conversation, say

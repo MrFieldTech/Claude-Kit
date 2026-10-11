@@ -4,7 +4,8 @@
 # 1. No kit-owned file holds an address, or a name on the private list of
 #    project terms when one is given.
 # 2. No file in the repository holds an em dash.
-# 3. The scripts parse, each skill's frontmatter is whole, and every
+# 3. The scripts parse, each skill's frontmatter is whole, every practice
+#    is pointed at and every pointer names a practice that exists, and every
 #    kit-owned directory keeps LF line endings.
 # 4. VERSION is a version number, CHANGELOG.md has an entry for it, and the
 #    README's update block names it.
@@ -75,6 +76,21 @@ for skill in session-open session-close; do
   grep -qx "disable-model-invocation: true" "$file" || fail "$file can be invoked by the model"
   grep -q '^description: ' "$file" || fail "$file has no description"
 done
+# A practice is read only when a pointer names it, so a practice no pointer
+# names is never read, and a pointer to a missing file sends a session
+# nowhere. HOUSE.md's Practices section is where every practice is named.
+practices_section="$(sed -n '/^## Practices$/,/^## /p' .claude/kit/HOUSE.md)"
+[ -n "$practices_section" ] || fail "HOUSE.md has no Practices section"
+for file in .claude/kit/practices/*.md; do
+  grep -qF "\`$(basename "$file")\`" <<< "$practices_section" \
+    || fail "HOUSE.md's Practices section does not name $file"
+done
+for name in $(grep -oE '`[a-z-]+\.md`' <<< "$practices_section" | tr -d '`' | sort -u); do
+  [ -f ".claude/kit/practices/$name" ] || fail "HOUSE.md names the practice $name, which does not exist"
+done
+for path in $(grep -rhoE '\.claude/kit/practices/[a-z-]+\.md' "${KIT_OWNED[@]}" | sort -u); do
+  [ -f "$path" ] || fail "a kit-owned file points at $path, which does not exist"
+done
 for dir in "${KIT_OWNED[@]}"; do
   grep -qx '\* text eol=lf' "$dir/.gitattributes" 2>/dev/null \
     || fail "$dir has no .gitattributes keeping LF line endings"
@@ -82,7 +98,7 @@ done
 if grep -rlI $'\r' "${KIT_OWNED[@]}"; then
   fail "the files above hold a carriage return"
 fi
-echo "check: scripts parse, skills are whole, and line endings stay LF"
+echo "check: scripts parse, skills are whole, practices are pointed at, and line endings stay LF"
 
 # 4. Every release is numbered and recorded.
 version="$(tr -d '[:space:]' < VERSION)"
