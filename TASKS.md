@@ -99,7 +99,14 @@ document, the default in `HOUSE.md`, `session-close` and the `CLAUDE.md`
 template, tests in `check.sh` with CI installing `age`, and `VERSION`,
 `CHANGELOG.md` and `README.md` to match.
 
-**Stopping point.** Not started.
+**Stopping point.** Built and passing `bash check.sh` locally, release 1.4.0:
+`.claude/kit/credentials.md`, `.claude/kit/secrets.py`, `HOUSE.md`, both
+skills, the `CLAUDE.md` template (`Credentials: kit standard`), `check.sh`
+section 6, CI installing `age`, `VERSION`, `CHANGELOG.md` and `README.md`.
+This repository's own Credentials setting stays `none`, because it is public.
+Next: the owner reviews, then `/session-close` marks it `DONE` and merges it
+into `preview`. The first CI run is the first proof that `apt-get install age`
+works on the runner.
 
 ## Closed Tasks
 
