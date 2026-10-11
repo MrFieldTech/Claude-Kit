@@ -43,11 +43,14 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+## Closed Tasks
+
 ### Fold Six Workflow Practices Into The Session Protocol
 
 **Slug:** `workflow-practices`
-**Status:** ACTIVE
+**Status:** DONE
 **Opened:** 2026-10-11
+**Closed:** 2026-10-11
 
 **Why.** MrFieldTech, 2026-10-11, in a session outside any repository using
 the kit, had a public collection of agent skills reviewed against the kit,
@@ -102,21 +105,22 @@ step 8 and the promotion's in step 9, and reports a `Retro:` line.
 `bash check.sh` passes, each new guard was made to fail on purpose, and a
 scratch repository on 1.2.0 updated to 1.3.0 and reported current.
 
-Two choices made in the session, open to MrFieldTech's review:
-- The license notice, which names the source collection's author, is in
-  `NOTICE.md` at the root and is not installed. Each practice credits the
-  collection without naming it, because the project rule says a kit-owned
-  file names no person.
-- A retrospective's proposals go under Open Questions in `HANDOFF.md`,
-  because its headings are fixed and a proposal is a decision for the
-  owner, not a task the session opens on its own.
+A retrospective's proposals go under Open Questions in `HANDOFF.md`,
+because its headings are fixed and a proposal is a decision for the owner,
+not a task the session opens on its own.
 
-**Stopping point.** The work is done and pushed. Next: `/session-close`
-merges it into `preview`. Not yet run in a real session: the first new task
-opened under 1.3.0 tries the grilling, and the first failing check tries the
-diagnosis at close.
+**Decided by MrFieldTech, 2026-10-11.**
+- The license notice, which names the source collection's author, stays
+  only in `NOTICE.md` at the root and is not installed. Each practice
+  credits the collection without naming it, by the project rule that a
+  kit-owned file names no person.
+- 1.3.0 goes to `main` at this close.
+- MrFieldTech updates the repositories using the kit by the README's update
+  prompt, in a session on each, rather than this session doing it.
 
-## Closed Tasks
+**Closed, 2026-10-11.** Closed by 1.3.0's own `session-close`, whose pull
+request bodies and retrospective ran for the first time here. Merged into
+`preview` and then `main` at MrFieldTech's request.
 
 ### Promote Preview Into Main Without A Task
 
