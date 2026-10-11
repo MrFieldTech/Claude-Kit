@@ -45,6 +45,83 @@ Then the detail block, as prose.
 
 ## Closed Tasks
 
+### Fold Six Workflow Practices Into The Session Protocol
+
+**Slug:** `workflow-practices`
+**Status:** DONE
+**Opened:** 2026-10-11
+**Closed:** 2026-10-11
+
+**Why.** MrFieldTech, 2026-10-11, in a session outside any repository using
+the kit, had a public collection of agent skills reviewed against the kit,
+a documentation repository and a static site, and accepted six of them as
+worth adopting: an interview that settles a plan before it is built, a
+disciplined loop for diagnosing failures, a pull request body with evidence
+and a merge danger call, a reference for writing documents agents read, a
+retrospective on the session's environment, and a questionnaire for
+knowledge someone else holds. The rest were declined because they bring a
+second work queue, a second handoff, or a second branch model.
+
+**What MrFieldTech asked for, 2026-10-11.**
+1. Integrate the six into the kit, so every repository using it has them.
+2. Run the interview in the new task flow, before a task's block is
+   written.
+3. Have the diagnosis loop run on its own from the checks the protocol
+   already runs, when one fails.
+4. Copy the useful parts of the pull request body into `session-close`.
+5. The aim: no new command to remember. Each practice runs at a point the
+   existing workflow already reaches, or when the situation it covers
+   comes up.
+
+**Decided by MrFieldTech, 2026-10-11.** The practices live in the kit, as
+part of its pinned copy, rather than as a self-updating plugin or as files
+copied into each repository by hand.
+
+**Plan.** A kit release, 1.3.0:
+1. Plain reference files under `.claude/kit/practices/`, one per practice
+   except the pull request body, which goes into `session-close` itself.
+   They sit inside an existing kit directory, so `kit.sh` and the install
+   are unchanged, and they are not skills, so no name can collide with a
+   skill a repository or a harness already has.
+2. `HOUSE.md` gains a short section of pointers naming when each practice
+   applies, because it is the one file every turn has loaded.
+3. `session-open` runs the interview before writing a new task's block;
+   `session-close` diagnoses a failing Regenerate command or check before
+   parking, writes the pull request body, and looks back over the session
+   before writing `HANDOFF.md`.
+4. `check.sh` fails when a practice file is missing, or is pointed at by
+   nothing.
+5. `VERSION`, `CHANGELOG.md` and `README.md`, including its update slug.
+6. The source collection's license notice travels with the practices.
+
+**Done, 2026-10-11, on the branch.** Release 1.3.0, as planned. The
+practices are `grilling.md`, `diagnosing.md`, `writing-for-agents.md`,
+`questionnaire.md` and `retro.md`. `session-open` grills in step 4 case c,
+which cases d and the temporary session's tasks reach too, and in step 6 for
+a decision a block leaves open. A blocked task gets a questionnaire while
+working. `session-close` runs the retrospective at step 4, diagnoses at step
+5 and at both failure points of step 8, writes the pull request body in
+step 8 and the promotion's in step 9, and reports a `Retro:` line.
+`bash check.sh` passes, each new guard was made to fail on purpose, and a
+scratch repository on 1.2.0 updated to 1.3.0 and reported current.
+
+A retrospective's proposals go under Open Questions in `HANDOFF.md`,
+because its headings are fixed and a proposal is a decision for the owner,
+not a task the session opens on its own.
+
+**Decided by MrFieldTech, 2026-10-11.**
+- The license notice, which names the source collection's author, stays
+  only in `NOTICE.md` at the root and is not installed. Each practice
+  credits the collection without naming it, by the project rule that a
+  kit-owned file names no person.
+- 1.3.0 goes to `main` at this close.
+- MrFieldTech updates the repositories using the kit by the README's update
+  prompt, in a session on each, rather than this session doing it.
+
+**Closed, 2026-10-11.** Closed by 1.3.0's own `session-close`, whose pull
+request bodies and retrospective ran for the first time here. Merged into
+`preview` and then `main` at MrFieldTech's request.
+
 ### Promote Preview Into Main Without A Task
 
 **Slug:** `preview-promotion`

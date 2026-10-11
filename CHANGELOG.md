@@ -4,6 +4,33 @@ Every change to a kit-owned file is a release, recorded here with the version
 `VERSION` carries. A project's `/session-open` reports when a newer release
 exists, and the project takes it by `kit.sh update` when its owner asks.
 
+## 1.3.0
+
+Five practices, and a pull request body, run inside the existing workflow.
+
+- `.claude/kit/practices/` holds five practices, each read when its case
+  comes up rather than by a command of its own: grilling, diagnosing,
+  writing for agents, questionnaire, and retrospective. `HOUSE.md` names
+  each one and when it applies, and ranks them last under Which file wins.
+- `session-open` settles a new task by grilling before it writes the task's
+  block, and settles a decision a block leaves open before the step that
+  needs it. A task blocked on answers someone other than the owner must give
+  gets a questionnaire.
+- `session-close` diagnoses a failing Regenerate command or check before it
+  parks a task, and writes each pull request body as a summary, evidence and
+  a merge danger call, the promotion into the default branch included. It
+  looks back over a session that met friction, turns each proposal into an
+  open question offering a task, and reports the count on a new `Retro:`
+  line.
+- The practices are plain files inside `.claude/kit/`, so `kit.sh` and the
+  install are unchanged, and no name can collide with a skill a repository
+  or a harness already has. They are adapted under the MIT License from a
+  public collection of agent skills, whose notice is in `NOTICE.md`.
+- `check.sh` fails when a practice is named by nothing, or a pointer names a
+  practice that does not exist.
+
+After updating: nothing is required.
+
 ## 1.2.0
 
 A temporary session promotes the integration branch.

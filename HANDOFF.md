@@ -13,6 +13,7 @@ file at the same time.
 
 | Date | Tasks touched | Work commits |
 |---|---|---|
+| 2026-10-11 | `workflow-practices`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.3.0 folds five practices and a pull request body into the session protocol | `c5394a9..f342a7b` |
 | 2026-10-01 | `preview-promotion`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.2.0 lets a temporary session promote the integration branch | `c5d170a..19e297c` |
 | 2026-09-30 | `readme-version-update`, DONE, merged into `preview`: the README's update block names the current release, and `check.sh` holds it to `VERSION` | `b7e7ae1..067e760` |
 | 2026-09-30 | `add-session-temp`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.1.0 adds `/session-open temp` | `db3756b..d48c4d3` |
@@ -22,7 +23,6 @@ file at the same time.
 | 2026-09-26 | `go-public`, BLOCKED, merged into `preview`: the repository's own files name the owner MrFieldTech | `e0c3699..4d5c913` |
 | 2026-09-26 | `go-public`, BLOCKED, merged into `preview` and then `main` at MrFieldTech's request: the project terms left `check.sh` for a secret, and the files describe a public repository | `37ee80b..bb1444f` |
 | 2026-09-26 | `first-pilot`, DONE, merged into `preview` and then `main` at MrFieldTech's request: the sixth attempt ran a full round, and 1.0.3 released with its fixes | `37df0d1..0e3e434` |
-| 2026-09-25 | `first-pilot`, BLOCKED, merged into `preview` and then `main` at MrFieldTech's request: the install prompt in `README.md` rebuilt as one step per action, after the fifth attempt was blocked at the installer | `7a4320a..4aadb68` |
 
 ## Blocked On
 
@@ -104,12 +104,40 @@ repository it never does.
   from preview, so a promotion cannot conflict and has no resolution to
   record. It leaves no session log line, the pull request is the record, and
   `session-close` step 9 still promotes when asked during a close.
+- **Recurring kinds of work are plain files the protocol reaches, not
+  skills.** MrFieldTech, 2026-10-11, adopted six skills from a public
+  collection and asked that none need a command to remember. Five are
+  practices in `.claude/kit/practices/`, named in `HOUSE.md` and run by the
+  session skills at fixed points, and the pull request body is written into
+  `session-close`. Plain files sit in an existing kit directory, so the
+  install is unchanged and no name can collide with a skill a repository or
+  harness has. The collection's skills that bring a second work queue, a
+  second handoff or a second branch model were declined.
+- **The source collection's license notice is not installed.** MrFieldTech,
+  2026-10-11. It names the collection's author, so it stays in `NOTICE.md`
+  at the root, and each practice credits the collection without a name.
 
 ## Open Questions For MrFieldTech
 
-None.
+- **Should the kit make every remote branch tracked from the start?** A
+  session working from a single-branch clone pushed its task branch, but git
+  recorded no `origin/task/<slug>`, so the cloud end-of-turn hook reported
+  the branch as unpushed and `session-close` step 7's check that
+  `origin/task/<slug>` matches `HEAD` had nothing to compare. Setting
+  `remote.origin.fetch` to every branch in `session-open` step 1 would
+  prevent it. This is a change to a kit-owned file. Open a task for it?
+- **Should `check.sh` refuse to run on uncommitted kit-owned changes?**
+  Section 5 installs from a clone of `HEAD`, so run before committing it
+  failed with "status after install reads '1.2.0, current', not '1.3.0,
+  current'", which reads as a broken installer rather than "commit first".
+  Open a task for it?
 
 ## Flagged As Unverified
+
+**No session has grilled a new task or diagnosed a failure under 1.3.0.**
+The close of `workflow-practices` ran the new pull request body and the
+retrospective. The first task opened under 1.3.0 tries the grilling, and the
+first failing check or Regenerate command tries the diagnosis.
 
 **No temporary session has promoted the integration branch.** 1.2.0 was
 checked by `check.sh` only. The first promotion asked for in a

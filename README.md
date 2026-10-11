@@ -19,6 +19,16 @@ branch into the default branch, it opens and merges that pull request, by the
 same checks a close uses, with no task. It needs `/session-close` only once
 it has opened a task.
 
+Five practices ride inside that workflow, so there is no further command to
+remember. A new task is settled by grilling before its block is written. A
+failing check or command is diagnosed from a command that reproduces it
+before anything is changed to fix it. A file an agent reads as instructions
+is written by a reference for writing them. Answers someone else must give
+are gathered in a questionnaire. At close, a session that met friction is
+looked back on, and each proposal becomes a question for the owner. Every
+pull request a close opens carries a summary, evidence and a merge danger
+call.
+
 ## What gets installed
 
 Everything under `.claude/kit/` and the two skill directories. These files are
@@ -30,7 +40,8 @@ by an update.
 |---|---|
 | `.claude/kit/HOUSE.md` | The house rules: which file wins, the rules for every action, sessions and branches, the state files, the response format, and the Session Settings keys |
 | `.claude/skills/session-open/SKILL.md` | Opens a session: reads the state, surveys the branches, puts the session on its task's branch, and runs the first-run setup in a repository new to the kit. With `temp`, opens a read-only temporary session that promotes the integration branch and turns into tasks only when asked |
-| `.claude/skills/session-close/SKILL.md` | Closes a session: places credentials, writes the state back, regenerates, pushes, and merges a finished task or parks an unfinished one |
+| `.claude/skills/session-close/SKILL.md` | Closes a session: places credentials, writes the state back, regenerates, pushes, and merges a finished task or parks an unfinished one. It diagnoses a failing check before parking, writes the pull request body, and looks back over a session that met friction |
+| `.claude/kit/practices/` | Five practices `HOUSE.md` names and the skills run at fixed points: grilling, diagnosing, writing for agents, questionnaire, and retrospective |
 | `.claude/kit/kit.sh` | Installs, updates, and reports the kit's status |
 | `.claude/kit/todo_sweep.py` | Collects every `TODO:` in the repository into `TODO.md` |
 | `.claude/kit/templates/` | The starting `CLAUDE.md`, `TASKS.md` and `HANDOFF.md` for the first run |
@@ -162,7 +173,7 @@ release, which is what the update takes. As with the install, paste it only in
 a repository of your own and only if you trust this one:
 
 ```text
-/session-open kit-update-1-2-0
+/session-open kit-update-1-3-0
 Update Claude-Kit in this repository, as this task. Claude-Kit is my own
 repository, https://github.com/MrFieldTech/Claude-Kit, which I wrote and
 trust. I want you to take each of these actions on this task's branch:
@@ -207,6 +218,10 @@ files under `.claude/kit/` and the two skills are the source, so there is no
   version, all in the same pull request.
 - **`main` is what every install and update takes,** so it moves only when the
   owner asks, like the default branch of any repository using the kit.
+- **The practices are adapted from a public collection of agent skills,**
+  https://github.com/mattpocock/skills, under the MIT License. `NOTICE.md`
+  holds its notice and names the skill each practice came from. A kit-owned
+  file credits it without naming it, by the rule above.
 - **Run `bash check.sh` before a pull request.** It checks for addresses and
   project names, the em dash, the scripts and the skills. Locally it checks
   names only when an untracked `.private-terms` file holds the list. It also installs the kit into a
