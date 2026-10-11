@@ -4,6 +4,38 @@ Every change to a kit-owned file is a release, recorded here with the version
 `VERSION` carries. A project's `/session-open` reports when a newer release
 exists, and the project takes it by `kit.sh update` when its owner asks.
 
+## 1.4.0
+
+Credentials have a standard: age encrypted `<slug>.secrets.md` files.
+
+- `.claude/kit/credentials.md` describes it. Each credential sits in a
+  `<slug>.secrets.md` file under a bold label, its value encrypted on its own
+  with age to every public key in `secrets-recipients.txt` at the repository
+  root, as an armored block fenced and tagged `age`. A value whose home is not
+  settled waits under Credentials In Transit in `HANDOFF.md` in the same form.
+  Private keys stay with the owner and never pass through a session.
+- `.claude/kit/secrets.py` does every operation: `set`, `place` for a block
+  the owner encrypted on their own computer, `lock`, `encrypt`, `show`,
+  `rekey`, `check`, and `steps`, which prints the owner's encryption steps
+  with the repository's keys written in. It needs `python3` and the `age`
+  command line tool, and `check` needs `python3` alone.
+- The Credentials setting takes `kit standard`, and the `CLAUDE.md` template
+  defaults to it. A repository keeps its own place or rule, or `none`, by
+  naming it instead. `HOUSE.md` points `kit standard` at the new document,
+  and still commits no credential in a repository not confirmed private.
+- The first run settles Credentials as `kit standard` unless the repository
+  already keeps credentials another way, and asks the owner for keys when a
+  private repository has none. `session-close` stores each value by the
+  tool and commits nothing while `secrets.py check` fails.
+- `check.sh` tests the tool end to end, and CI installs `age` to run it.
+
+After updating: a repository whose Credentials setting is `none` changes it
+to `kit standard`, unless it keeps credentials another way or is public, and
+says so in the update's commit. A private repository taking the standard with
+no `secrets-recipients.txt` puts `Action needed:` in the reply for the owner to
+make keys, as `.claude/kit/credentials.md` says under Setting it up. A
+repository whose Credentials setting names its own method keeps it.
+
 ## 1.3.0
 
 Five practices, and a pull request body, run inside the existing workflow.
