@@ -43,6 +43,64 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+### Make Age-Encrypted Secrets Files The Kit's Standard For Credentials
+
+**Slug:** `age-secrets`
+**Status:** ACTIVE
+**Opened:** 2026-10-11
+
+**Why.** MrFieldTech, 2026-10-11, in a temporary session, asked whether the
+kit uses age-encrypted `<slug>.secrets.md` files for credentials. It does not:
+`HOUSE.md` and `session-close` leave the method to each repository's
+Credentials setting, and the kit only knows the filename, in that
+`todo_sweep.py` skips `*.secrets.md`. The owner decided the process becomes
+the standard way every repository installing the kit handles secrets,
+tokens and credentials, and that a repository may replace it with its own.
+
+**Background.** The owner pointed at one of their private repositories, which
+already runs the process, as the model. It is not named here, because this
+repository is public. What it does:
+
+- Each credential sits beside what it belongs to in `<slug>.secrets.md`: two
+  frontmatter fields, `slug` and `updated`, then one bold label per value,
+  the value as an ASCII armored age block fenced and tagged `age`, and an
+  optional plaintext note. The label and note never hold a value.
+- Every value is encrypted on its own to every public key listed in
+  `secrets-recipients.txt` at the repository root, one key per line under a
+  comment naming who holds the private half. Encrypting needs only the public
+  keys. Any one private key reads every value. A private key is never
+  committed, never written into a state file, and never passed through a
+  session.
+- One script does every operation: `set` (value on standard input, never on
+  the command line), `place` (store a block the owner encrypted on their own
+  computer, refusing one that is not armored age, is passphrase-locked, or
+  has a different number of recipients), `lock` (encrypt plaintext values in
+  place), `encrypt` (print a block for Credentials In Transit in
+  `HANDOFF.md`), `show` (decrypt with a key), and `rekey` (re-encrypt every
+  value, `HANDOFF.md` included, after a recipient changes).
+- An audit fails on a value outside an encrypted block, in a table, or in a
+  fence not tagged `age`, and on an `age` block that is not armored age.
+- A value with no home yet goes under Credentials In Transit in `HANDOFF.md`
+  as a label and an encrypted block.
+- The owner can encrypt a value on their own computer with the `age` command
+  line tool and hand the session only the armored file, so the plaintext never
+  enters the conversation.
+
+**Decisions.**
+
+- MrFieldTech, 2026-10-11: the age process is the kit's default for every
+  repository, and a repository overrides it through its Credentials setting.
+- MrFieldTech, 2026-10-11: the earlier rule stands that nothing is committed
+  in a repository not confirmed private, encrypted or not.
+
+**Plan.** A release of the kit: a stdlib Python tool in `.claude/kit/` that
+calls the `age` command line tool, the format and the steps in a kit
+document, the default in `HOUSE.md`, `session-close` and the `CLAUDE.md`
+template, tests in `check.sh` with CI installing `age`, and `VERSION`,
+`CHANGELOG.md` and `README.md` to match.
+
+**Stopping point.** Not started.
+
 ## Closed Tasks
 
 ### Fold Six Workflow Practices Into The Session Protocol
