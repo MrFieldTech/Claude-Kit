@@ -43,6 +43,57 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+### Fold Six Workflow Practices Into The Session Protocol
+
+**Slug:** `workflow-practices`
+**Status:** ACTIVE
+**Opened:** 2026-10-11
+
+**Why.** MrFieldTech, 2026-10-11, in a session outside any repository using
+the kit, had a public collection of agent skills reviewed against the kit,
+a documentation repository and a static site, and accepted six of them as
+worth adopting: an interview that settles a plan before it is built, a
+disciplined loop for diagnosing failures, a pull request body with evidence
+and a merge danger call, a reference for writing documents agents read, a
+retrospective on the session's environment, and a questionnaire for
+knowledge someone else holds. The rest were declined because they bring a
+second work queue, a second handoff, or a second branch model.
+
+**What MrFieldTech asked for, 2026-10-11.**
+1. Integrate the six into the kit, so every repository using it has them.
+2. Run the interview in the new task flow, before a task's block is
+   written.
+3. Have the diagnosis loop run on its own from the checks the protocol
+   already runs, when one fails.
+4. Copy the useful parts of the pull request body into `session-close`.
+5. The aim: no new command to remember. Each practice runs at a point the
+   existing workflow already reaches, or when the situation it covers
+   comes up.
+
+**Decided by MrFieldTech, 2026-10-11.** The practices live in the kit, as
+part of its pinned copy, rather than as a self-updating plugin or as files
+copied into each repository by hand.
+
+**Plan.** A kit release, 1.3.0:
+1. Plain reference files under `.claude/kit/practices/`, one per practice
+   except the pull request body, which goes into `session-close` itself.
+   They sit inside an existing kit directory, so `kit.sh` and the install
+   are unchanged, and they are not skills, so no name can collide with a
+   skill a repository or a harness already has.
+2. `HOUSE.md` gains a short section of pointers naming when each practice
+   applies, because it is the one file every turn has loaded.
+3. `session-open` runs the interview before writing a new task's block;
+   `session-close` diagnoses a failing Regenerate command or check before
+   parking, writes the pull request body, and looks back over the session
+   before writing `HANDOFF.md`.
+4. `check.sh` fails when a practice file is missing, or is pointed at by
+   nothing.
+5. `VERSION`, `CHANGELOG.md` and `README.md`, including its update slug.
+6. The source collection's license notice travels with the practices.
+
+**Stopping point.** Not started. First step: write
+`.claude/kit/practices/grilling.md`.
+
 ## Closed Tasks
 
 ### Promote Preview Into Main Without A Task
