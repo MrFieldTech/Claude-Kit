@@ -317,7 +317,9 @@ if command -v age >/dev/null 2>&1 && command -v age-keygen >/dev/null 2>&1; then
   [ "$(cd "$srepo" && git status --porcelain --untracked-files=all | grep -c build-secrets)" = 0 ] \
     || fail "the decrypted copy is not ignored by git"
   rm -rf "$srepo/build-secrets"
-  SECRETS_CHECK_BUILD=1 PATH="/usr/bin/nonexistent:$(dirname "$(command -v python3)"):$(dirname "$(command -v git)")" \
+  mkdir "$scratch/noage"
+  ln -s "$(command -v python3)" "$(command -v git)" "$scratch/noage/"
+  SECRETS_CHECK_BUILD=1 PATH="$scratch/noage" \
     secrets decrypt --out "$srepo/build-secrets" >/dev/null \
     || fail "a check build needed a key or the age tool"
   grep -q 'check-value' "$copy" && fail "a check build wrote a real value"
