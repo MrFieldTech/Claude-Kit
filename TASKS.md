@@ -125,33 +125,68 @@ What 1.4.0 already provides toward the other two parts:
   live in a new Session Settings key in `CLAUDE.md`, one command per check,
   run by `session-close` and CI beside `secrets.py check`.
 
-**Open decisions, second round, asked 2026-10-12.** The recommended answer
-is listed first.
+- MrFieldTech, 2026-10-12, second round: a repository marks the kit's
+  secrets standard unused by naming its own method in the Credentials
+  setting in place of `kit standard`, with the reason the kit's decrypters
+  do not serve. Every secrets command, check and setup step applies only
+  under `kit standard`.
+- MrFieldTech, 2026-10-12, second round: `secrets.py decrypt` writes a copy
+  of each `<slug>.secrets.md` at the same path under a gitignored output
+  directory, `--out <dir>`, with every value in plaintext, and the build
+  reads the copy in place of the encrypted file.
+- MrFieldTech, 2026-10-12, second round: setup adds `secrets.py check` and
+  the repository's own secrets checks to its CI configuration on the task
+  branch when it has one, and otherwise puts `Action needed:` at the top of
+  part 1.
 
-1. How a repository marks the kit's secrets standard unused.
-   a. Credentials names the repository's own method in place of `kit
-      standard`, as `HOUSE.md` already allows, with the reason the kit's
-      decrypters do not serve. Every secrets command, check and setup step
-      applies only under `kit standard`.
-   b. A new Credentials value, such as `own method`, plus a line naming
-      where the method is described.
-2. What `secrets.py decrypt` writes.
-   a. A copy of each `<slug>.secrets.md` at the same path under a gitignored
-      output directory, `--out <dir>`, with every value in plaintext, so a
-      build reads the copy in place of the encrypted file.
-   b. One JSON file mapping each file's slug and label to its value.
-   c. Both, a `--format` option choosing.
-3. How CI comes to run `secrets.py check` and the repository's own secrets
-   checks, since the kit installs no CI configuration.
-   a. Setup adds them to the repository's CI configuration on its task
-      branch when it has one, and otherwise puts `Action needed:` at the top
-      of part 1 for the owner.
-   b. Setup adds them to Checks before merge only, and CI is left to the
-      owner.
+**Plan.** One release, 1.5.0.
 
-**Stopping point:** First round answered and recorded. Next: get
-MrFieldTech's answers to the second round above, record them under
-Decisions, then write the plan here.
+1. `secrets.py decrypt --out <dir>`: every `<slug>.secrets.md`, never
+   `HANDOFF.md`, copied to the same relative path under `<dir>` with each
+   value written as `show` writes it. The key comes from `SECRETS_AGE_KEY`
+   or `--identity`. It refuses a missing key, an output directory git does
+   not ignore, and a value that will not decrypt, naming the file and label
+   and never the value. With `SECRETS_CHECK_BUILD=1` it needs no key and no
+   `age` tool and writes a fixed placeholder for every value. Windows line
+   endings and one trailing line break are dropped, as `show` already does.
+2. `.claude/kit/secrets-decrypt.mjs`: the same command for Node, with the
+   same output, refusals and check build, using the `age-encryption`
+   package the repository pins. `credentials.md` says a session offers it
+   only when `secrets.py decrypt` cannot run in the build environment.
+3. `secrets.py keys [<holder>...]`: prints the steps for making the keys on
+   the owner's own computer, Windows and macOS or Linux, one per holder,
+   `owner`, `build` and `recovery` by default, and what to send back. The
+   session writes `secrets-recipients.txt` from the public lines returned.
+   A repository that names another set in its authority file or `CLAUDE.md`
+   overrules the default.
+4. A new Session Settings key, **Secrets checks**, after Credentials: one
+   command per check particular to the repository, or `none`. Defined at the
+   end of `HOUSE.md`, given `none` in `templates/CLAUDE.md` and in this
+   repository's `CLAUDE.md`. `session-close` runs `secrets.py check` and
+   each of them when Credentials is `kit standard`.
+5. Credentials: the template default becomes `none`. The first run sets
+   `none` unless the repository already holds credentials or the owner says
+   it will. `HOUSE.md` says a repository whose needs the kit's decrypters do
+   not serve names its own method there, with the reason, and that every
+   secrets command, check and setup step applies only under `kit standard`.
+6. `credentials.md`, Setting it up, becomes the setup run when Credentials
+   switches to `kit standard`: the keys by `secrets.py keys`; then a review
+   of the repository that writes Secrets checks; then `secrets.py check`
+   and those checks added to its CI configuration, or `Action needed:`;
+   then, when a build reads the values, its first step `secrets.py decrypt`
+   with the build's key as `SECRETS_AGE_KEY` on the host, a check build
+   with `SECRETS_CHECK_BUILD=1`, and the output directory gitignored. When a
+   person asks how to encrypt a value, the session gives `secrets.py steps`
+   with that repository's keys.
+7. `check.sh` fixtures for decrypt, the check build, the refusals, and
+   `keys`, and for the Node decrypter when `node` and the package are
+   present.
+8. `VERSION` 1.5.0, a `CHANGELOG.md` entry saying what an updated
+   repository must do (add the Secrets checks key; one keeping credentials
+   runs setup's review), and `README.md`, its update slug `kit-update-1-5-0`.
+
+**Stopping point:** Decisions settled and plan written. Next: plan step 1,
+`secrets.py decrypt`.
 
 ## Closed Tasks
 
