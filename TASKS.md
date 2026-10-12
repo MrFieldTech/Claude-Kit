@@ -43,6 +43,72 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+### Make The Kit's Secrets Standard Self-Sufficient
+
+**Slug:** `secrets-self-sufficient`
+**Status:** ACTIVE
+**Opened:** 2026-10-12
+
+**Why.** MrFieldTech, 2026-10-12, while switching the private repository
+whose process became the 1.4.0 standard over to `kit standard`. That
+repository decrypts credentials in its own site build, and `secrets.py` has
+no command for it, so it could not switch without keeping its own script.
+The owner wants the kit to be self-sufficient: whatever the kit encrypts, the
+kit can decrypt, so a repository takes the whole standard and keeps only what
+is particular to it. One task, one release, covers all three parts below.
+
+**Background.** What that repository's build does today, which the owner
+wants the kit's default to resemble so its switch changes little:
+
+- The build's first step decrypts every value in every `<slug>.secrets.md`
+  into a gitignored directory, reading the private key from the environment
+  variable `SECRETS_AGE_KEY`. Later steps read the decrypted copy in place of
+  the encrypted one.
+- It fails the build when the variable is missing or a value will not
+  decrypt, naming the file and label and never the value, because a build
+  without its credentials looks complete and is not.
+- A check build, asked for with `SECRETS_CHECK_BUILD=1`, holds no key and
+  writes a fixed placeholder for every value, so continuous integration can
+  build without a key.
+- Decryption drops `\r\n` line endings and one trailing line break, so a
+  value typed into Windows Command Prompt reads as typed.
+- It decrypts in Node with the `age-encryption` package, pinned in the
+  lockfile, because its build host has Node and may not have the `age`
+  command line tool. `secrets.py` calls the `age` tool.
+- A separate output check fails the build when a decrypted value reaches the
+  search index or an encrypted block reaches a page. That one is particular
+  to a repository that publishes a site.
+
+What 1.4.0 already provides toward the other two parts:
+
+- `secrets.py steps` prints the Windows and macOS or Linux encryption steps
+  with the repository's own keys from `secrets-recipients.txt` written in.
+- `credentials.md`, Setting it up, and the first run have the session ask the
+  owner for keys when a private repository taking `kit standard` has none.
+
+**Decisions.**
+
+- MrFieldTech, 2026-10-12: the kit carries decryption. The default resembles
+  the build described above, with options to decrypt another way. The owner
+  is not sure what the other ways are, so the session lists them.
+- MrFieldTech, 2026-10-12: in every repository, when a person asks how to
+  encrypt a value to hand to a session, the session gives the steps with
+  that repository's keys, never a fixed set from the kit.
+- MrFieldTech, 2026-10-12: when a repository has no keys yet, the kit
+  provides the process to create them and give the public halves to the
+  repository, and only for a repository that is going to keep credentials.
+  Some repositories never need the feature.
+- MrFieldTech, 2026-10-12: every secrets check comes from the kit. Because
+  repositories differ, installing the secrets standard has the session review
+  the repository and write a list of checks particular to it, which are then
+  run alongside the kit's.
+
+**Open decisions, to settle with MrFieldTech before the work.** See the
+stopping point.
+
+**Stopping point:** Not started. Next: settle the first round of open
+decisions with MrFieldTech, then write the plan here.
+
 ## Closed Tasks
 
 ### Make Age-Encrypted Secrets Files The Kit's Standard For Credentials
