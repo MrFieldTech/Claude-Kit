@@ -38,10 +38,11 @@ owner is not resolved by picking one. Say so plainly and stop.
 - A credential is never left only in the conversation and never written
   anywhere the Credentials setting does not send it. It is never committed in
   plaintext: a value committed to the repository is encrypted first, by the
-  method the Credentials setting names. With no rule set, with no method named
-  or none the container can run, or in a repository not confirmed private, it
-  is committed nowhere: it goes in the reply for the owner to place, and the
-  reply says it is the only copy.
+  method the Credentials setting names. With `kit standard`, that is an age
+  encrypted `<slug>.secrets.md` file, by `.claude/kit/credentials.md`. With no
+  rule set, with no method named or none the container can run, or in a
+  repository not confirmed private, it is committed nowhere: it goes in the
+  reply for the owner to place, and the reply says it is the only copy.
 
 ## Sessions and branches
 
@@ -234,10 +235,12 @@ never in a kit-owned file.
 - **Checks before merge.** Commands run before a task's pull request is
   opened, or `none`. Only commands the session's container can run. The pull
   request's own checks run as well.
-- **Credentials.** Where a credential goes, or the rule that says so, or
-  `none`, which means nowhere in the repository. A place inside the repository
-  also names how a value is encrypted there: the tool, and the public key or
-  recipient it encrypts to. The key that decrypts is never in the repository
-  or the session.
+- **Credentials.** Where a credential goes. `kit standard`, the default,
+  means age encrypted `<slug>.secrets.md` files, as
+  `.claude/kit/credentials.md` describes. A repository replaces it with its
+  own place or rule, or with `none`, which means nowhere in the repository. A
+  place of its own inside the repository also names how a value is encrypted
+  there: the tool, and the public key or recipient it encrypts to. The key
+  that decrypts is never in the repository or the session.
 - **State file format.** The format `TASKS.md` and `HANDOFF.md` keep: `kit
   templates`, or a rule in the authority file.

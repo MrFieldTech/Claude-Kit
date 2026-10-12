@@ -13,6 +13,7 @@ file at the same time.
 
 | Date | Tasks touched | Work commits |
 |---|---|---|
+| 2026-10-12 | `age-secrets`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.4.0 makes age encrypted `<slug>.secrets.md` files the kit standard for credentials | `471e2b4..c5c5162` |
 | 2026-10-11 | `workflow-practices`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.3.0 folds five practices and a pull request body into the session protocol | `c5394a9..f342a7b` |
 | 2026-10-01 | `preview-promotion`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.2.0 lets a temporary session promote the integration branch | `c5d170a..19e297c` |
 | 2026-09-30 | `readme-version-update`, DONE, merged into `preview`: the README's update block names the current release, and `check.sh` holds it to `VERSION` | `b7e7ae1..067e760` |
@@ -22,7 +23,6 @@ file at the same time.
 | 2026-09-27 | `go-public`, BLOCKED, merged into `preview`: the pre-public review's fixes, with release 1.0.4 | `d5ef770..ef64e39` |
 | 2026-09-26 | `go-public`, BLOCKED, merged into `preview`: the repository's own files name the owner MrFieldTech | `e0c3699..4d5c913` |
 | 2026-09-26 | `go-public`, BLOCKED, merged into `preview` and then `main` at MrFieldTech's request: the project terms left `check.sh` for a secret, and the files describe a public repository | `37ee80b..bb1444f` |
-| 2026-09-26 | `first-pilot`, DONE, merged into `preview` and then `main` at MrFieldTech's request: the sixth attempt ran a full round, and 1.0.3 released with its fixes | `37df0d1..0e3e434` |
 
 ## Blocked On
 
@@ -116,6 +116,15 @@ repository it never does.
 - **The source collection's license notice is not installed.** MrFieldTech,
   2026-10-11. It names the collection's author, so it stays in `NOTICE.md`
   at the root, and each practice credits the collection without a name.
+- **Age encrypted `<slug>.secrets.md` files are the kit standard for
+  credentials.** MrFieldTech, 2026-10-11. The setting `kit standard` is the
+  default, and a repository keeps its own method by naming it, because one
+  of the owner's private repositories already ran the process and it should
+  be the same everywhere. A public repository still commits no credential.
+- **Every repository uses the kit for whatever the kit supports, unless it
+  has a use case that needs otherwise.** MrFieldTech, 2026-10-12. The
+  private repository whose process became the standard keeps its own script
+  until the owner updates its kit and switches it by hand.
 
 ## Open Questions For MrFieldTech
 
@@ -133,6 +142,12 @@ repository it never does.
   Open a task for it?
 
 ## Flagged As Unverified
+
+**No repository has kept a credential by `kit standard` yet.** `check.sh`
+section 6 tests `secrets.py` in a scratch repository. The steps `secrets.py
+steps` prints for Windows Command Prompt and for macOS or Linux have not been
+run on either. The first repository to take 1.4.0 and store a value verifies
+them.
 
 **No session has grilled a new task or diagnosed a failure under 1.3.0.**
 The close of `workflow-practices` ran the new pull request body and the

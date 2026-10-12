@@ -23,7 +23,7 @@ here, never in a kit-owned file.
 - **Regenerate:** `python3 .claude/kit/todo_sweep.py`
 - **Generated files:** `TODO.md`
 - **Checks before merge:** none
-- **Credentials:** none
+- **Credentials:** kit standard
 - **State file format:** kit templates
 
 ## Project rules

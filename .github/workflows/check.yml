@@ -18,8 +18,12 @@ jobs:
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
-      # bash, git and python3 come with the runner. check.sh needs nothing
-      # else, which is the same promise the kit makes to every repository.
+      # bash, git and python3 come with the runner, and are all the kit needs
+      # in every repository. age is needed only where a repository keeps
+      # credentials by the kit standard, and check.sh tests the tool with it.
+      - name: Install age
+        run: sudo apt-get update -q && sudo apt-get install -y -q age
+
       # KIT_PRIVATE_TERMS is a repository secret listing the names of the
       # owner's projects, which kit-owned files must never hold. It is a
       # secret so the public repository does not publish the list.
