@@ -23,6 +23,12 @@ Commands, run from anywhere in the repository:
       Encrypt standard input and print the fenced block.
   secrets.py show <file> [--identity <key file>]
       Print the file with its values decrypted.
+  secrets.py decrypt --out <dir> [--identity <key file>]
+      For a build: copy every <slug>.secrets.md to the same path under <dir>,
+      which git must ignore, with each value in plaintext. Fails on a missing
+      key or a value that will not decrypt, naming the file and label and
+      never the value. With SECRETS_CHECK_BUILD=1 it needs no key and no age
+      tool, and writes a placeholder for every value.
   secrets.py rekey [--identity <key file>]
       Re-encrypt every value, HANDOFF.md included, to the keys now listed in
       secrets-recipients.txt, after one is added or removed.
@@ -33,6 +39,9 @@ Commands, run from anywhere in the repository:
   secrets.py steps
       Print the steps the owner follows to encrypt a value on their own
       computer, with the keys from secrets-recipients.txt written in.
+  secrets.py keys [<holder>...]
+      Print the steps the owner follows to make the keys on their own
+      computer, one per holder, owner, build and recovery unless named.
 
 Encrypting needs only secrets-recipients.txt. Reading needs a private key,
 from the SECRETS_AGE_KEY environment variable or from --identity <key file>.
@@ -40,7 +49,8 @@ A value is never passed on the command line, where it would land in shell
 history: set and encrypt read it from standard input. Nothing here prints a
 value except show, which exists to print one.
 
-Needs python3 and the age command line tool. check needs python3 alone.
+Needs python3 and the age command line tool. check, keys, and decrypt in a
+check build need python3 alone.
 """
 
 import base64
@@ -61,6 +71,9 @@ ARMOR_END = "-----END AGE ENCRYPTED FILE-----"
 # The first line of every age file. Written in two parts so the kit's check
 # for addresses does not read the format's name as one.
 AGE_MAGIC = "age-encryption" + ".org/v1"
+# What a check build writes in place of every value.
+PLACEHOLDER = "secrets-check-build-placeholder"
+DEFAULT_HOLDERS = ["owner", "build", "recovery"]
 
 AGE_FENCE = re.compile(r"^```age\s*$")
 ANY_FENCE = re.compile(r"^\s*(`{3,}|~{3,})\s*([^`]*?)\s*$")
@@ -542,9 +555,88 @@ def cmd_steps(args, ids):
           "what it unlocks and where it belongs." % ("\n".join(windows), "\n".join(unix)))
 
 
+def label_of(lines, unit):
+    """The bold label above a value, without its asterisks, or its line."""
+    before = next((lines[n] for n in range(unit["start"] - 1, -1, -1) if lines[n].strip()), "")
+    if LABEL_LINE.match(before):
+        return before.strip()[2:-2]
+    return "the value on line %d" % (unit["start"] + 1)
+
+
+def cmd_decrypt(args, ids):
+    if len(args) != 2 or args[0] != "--out":
+        raise Refusal("decrypt needs an output directory: decrypt --out <dir>")
+    top = root()
+    out = os.path.abspath(args[1])
+    inside = os.path.relpath(out, top)
+    if not inside.startswith(".."):
+        if inside == ".":
+            raise Refusal("the output directory cannot be the repository itself")
+        ignored = subprocess.run(["git", "check-ignore", "-q", "--no-index", inside + "/"], cwd=top)
+        if ignored.returncode:
+            raise Refusal("%s is inside the repository and git does not ignore it. Add it to .gitignore" % inside)
+    check_build = os.environ.get("SECRETS_CHECK_BUILD") == "1"
+    if not check_build:
+        if not ids:
+            raise Refusal("no private key. Set SECRETS_AGE_KEY, or SECRETS_CHECK_BUILD=1 for a check build")
+        age_tool()
+    written = []
+    total = 0
+    for path in secrets_files(top):
+        rel = os.path.relpath(path, top)
+        lines = read(path)
+        reps = []
+        for u in units(lines):
+            if u["kind"] != "block":
+                raise Refusal("%s: %s is not encrypted. Run lock on the file" % (rel, label_of(lines, u)))
+            if check_build:
+                value = PLACEHOLDER
+            else:
+                try:
+                    value = decrypt_armor(u["armor"], ids)
+                except Refusal:
+                    raise Refusal("%s: %s will not decrypt with the key given" % (rel, label_of(lines, u)))
+            reps.append(dict(u, **{"with": value_lines(value)}))
+        written.append((rel, splice(lines, reps)))
+        total += len(reps)
+    for rel, lines in written:
+        target = os.path.join(out, rel)
+        os.makedirs(os.path.dirname(target), exist_ok=True)
+        fd = os.open(target, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+        with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as handle:
+            handle.write("\n".join(lines))
+    print("%s %d value(s) in %d file(s) to %s" % (
+        "Wrote a placeholder for" if check_build else "Decrypted", total, len(written), args[1]))
+
+
+def cmd_keys(args, ids):
+    holders = args or DEFAULT_HOLDERS
+    bad = [h for h in holders if not re.match(r"^[A-Za-z0-9][A-Za-z0-9_-]*$", h)]
+    if bad:
+        raise Refusal("a holder is one word of letters, digits, hyphens and underscores: %s" % ", ".join(bad))
+    names = ["age-key-%s.txt" % h for h in holders]
+    windows = ["cd %userprofile%"] + ["age-keygen -o %s" % n for n in names]
+    unix = ["cd ~"] + ["age-keygen -o %s" % n for n in names]
+    listing = "\n".join("  %s, held by: %s" % (n, h) for n, h in zip(names, holders))
+    print("Make the keys on your own computer, so no private key ever enters a session.\n"
+          "The age tool must be installed there.\n\n"
+          "On Windows, open Command Prompt and paste:\n\n```\n%s\n```\n\n"
+          "On macOS or Linux, open a terminal and paste:\n\n```\n%s\n```\n\n"
+          "Each command makes one key file in your home folder:\n\n%s\n\n"
+          "Each prints a line beginning \"Public key: age1\". Send the session those\n"
+          "lines and who holds each key. Nothing else from the files is ever sent: the\n"
+          "line beginning AGE-SECRET-KEY-1 in each is its private half.\n\n"
+          "Then move each private key to its holder. The build's goes into the build\n"
+          "host as the encrypted variable SECRETS_AGE_KEY. The recovery key is kept\n"
+          "apart from yours, for whoever continues without you. Keep your own where\n"
+          "only you can read it, and delete the copies you moved."
+          % ("\n".join(windows), "\n".join(unix), listing))
+
+
 COMMANDS = {
     "set": cmd_set, "place": cmd_place, "lock": cmd_lock, "encrypt": cmd_encrypt,
     "show": cmd_show, "rekey": cmd_rekey, "check": cmd_check, "steps": cmd_steps,
+    "decrypt": cmd_decrypt, "keys": cmd_keys,
 }
 
 

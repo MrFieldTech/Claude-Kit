@@ -12,8 +12,11 @@
 # 5. An install into a scratch repository works end to end: the manifest,
 #    the status line, the guard against overwriting local edits, and the
 #    TODO sweep.
-# 6. The secrets tool stores, places, locks, checks, shows and rekeys
-#    values with age. Skipped when age is not installed, except in CI.
+# 6. The secrets tool stores, places, locks, checks, shows, rekeys and
+#    decrypts values with age, and prints the steps for keys. Skipped when
+#    age is not installed, except in CI. The Node decrypter is tested when
+#    node is installed, fully when CHECK_NODE_MODULES names a node_modules
+#    directory holding the age-encryption package.
 # 7. This repository's own TODO.md is current.
 #
 # Exits non-zero on the first section that fails, after printing why.
@@ -73,6 +76,9 @@ bash -n .claude/kit/kit.sh
 for script in todo_sweep.py secrets.py; do
   python3 -c 'import ast, sys; ast.parse(open(sys.argv[1]).read())' ".claude/kit/$script"
 done
+if command -v node >/dev/null 2>&1; then
+  node --check .claude/kit/secrets-decrypt.mjs
+fi
 for skill in session-open session-close; do
   file=".claude/skills/$skill/SKILL.md"
   [ "$(sed -n 1p "$file")" = "---" ] || fail "$file does not open with frontmatter"
@@ -283,6 +289,73 @@ if command -v age >/dev/null 2>&1 && command -v age-keygen >/dev/null 2>&1; then
     fail "a removed key still reads a value after rekey"
   fi
   grep -qF "$(pub three)" <<< "$(secrets steps)" || fail "secrets steps does not write the keys in"
+
+  # Decrypt for a build: a copy at the same path under a gitignored
+  # directory, the check build's placeholders, and every refusal.
+  printf '/build-secrets/\n' > "$srepo/.gitignore"
+  if secrets decrypt --out "$srepo/build-secrets" >/dev/null 2>&1; then
+    fail "secrets decrypt ran with no key"
+  fi
+  if SECRETS_AGE_KEY="$(cat "$keys/three")" secrets decrypt --out "$srepo/tracked" >/dev/null 2>&1; then
+    fail "secrets decrypt wrote into a directory git does not ignore"
+  fi
+  if SECRETS_AGE_KEY="$(cat "$keys/one")" secrets decrypt --out "$srepo/build-secrets" >"$scratch/out" 2>&1; then
+    fail "secrets decrypt passed with a key that reads no value"
+  fi
+  grep -qF 'svc.secrets.md: Token will not decrypt' "$scratch/out" \
+    || fail "secrets decrypt did not name the file and label that would not decrypt: $(cat "$scratch/out")"
+  [ -e "$srepo/build-secrets" ] && fail "secrets decrypt wrote files before every value decrypted"
+  SECRETS_AGE_KEY="$(cat "$keys/three")" secrets decrypt --out "$srepo/build-secrets" >/dev/null \
+    || fail "secrets decrypt failed with a key that reads every value"
+  copy="$srepo/build-secrets/secrets/svc.secrets.md"
+  for want in '`check-value-two`' 'check-line-a' '`check-value-placed`' '**Token**' 'slug: svc'; do
+    grep -qF -- "$want" "$copy" || fail "secrets decrypt did not write $want"
+  done
+  grep -q 'BEGIN AGE' "$copy" && fail "secrets decrypt left an encrypted block in its copy"
+  grep -qF 'check-code-1' "$srepo/build-secrets/old.secrets.md" || fail "secrets decrypt missed a file"
+  [ -e "$srepo/build-secrets/HANDOFF.md" ] && fail "secrets decrypt wrote HANDOFF.md"
+  [ "$(cd "$srepo" && git status --porcelain --untracked-files=all | grep -c build-secrets)" = 0 ] \
+    || fail "the decrypted copy is not ignored by git"
+  rm -rf "$srepo/build-secrets"
+  SECRETS_CHECK_BUILD=1 PATH="/usr/bin/nonexistent:$(dirname "$(command -v python3)"):$(dirname "$(command -v git)")" \
+    secrets decrypt --out "$srepo/build-secrets" >/dev/null \
+    || fail "a check build needed a key or the age tool"
+  grep -q 'check-value' "$copy" && fail "a check build wrote a real value"
+  grep -qF '`secrets-check-build-placeholder`' "$copy" || fail "a check build wrote no placeholder"
+
+  keys_out="$(secrets keys)"
+  for want in age-key-owner.txt age-key-build.txt age-key-recovery.txt SECRETS_AGE_KEY; do
+    grep -qF "$want" <<< "$keys_out" || fail "secrets keys does not mention $want"
+  done
+  grep -qF age-key-ops.txt <<< "$(secrets keys owner ops)" || fail "secrets keys ignored the holders named"
+  grep -q age-key-build <<< "$(secrets keys owner ops)" && fail "secrets keys added a holder not named"
+
+  # The Node decrypter must write what secrets.py writes.
+  if command -v node >/dev/null 2>&1; then
+    rm -rf "$srepo/build-secrets"
+    (cd "$srepo" && SECRETS_CHECK_BUILD=1 node .claude/kit/secrets-decrypt.mjs --out build-secrets >/dev/null) \
+      || fail "the Node decrypter failed a check build"
+    grep -qF '`secrets-check-build-placeholder`' "$copy" || fail "the Node check build wrote no placeholder"
+    if (cd "$srepo" && node .claude/kit/secrets-decrypt.mjs --out build-secrets >/dev/null 2>&1); then
+      fail "the Node decrypter ran with no key"
+    fi
+    if (cd "$srepo" && SECRETS_CHECK_BUILD=1 node .claude/kit/secrets-decrypt.mjs --out tracked >/dev/null 2>&1); then
+      fail "the Node decrypter wrote into a directory git does not ignore"
+    fi
+    if [ -n "${CHECK_NODE_MODULES:-}" ]; then
+      ln -s "$CHECK_NODE_MODULES" "$srepo/node_modules"
+      printf 'node_modules\n' >> "$srepo/.gitignore"
+      SECRETS_AGE_KEY="$(cat "$keys/three")" secrets decrypt --out "$scratch/py-out" >/dev/null
+      rm -rf "$srepo/build-secrets"
+      (cd "$srepo" && SECRETS_AGE_KEY="$(cat "$keys/three")" node .claude/kit/secrets-decrypt.mjs --out build-secrets >/dev/null) \
+        || fail "the Node decrypter failed with a key that reads every value"
+      diff -r "$scratch/py-out" "$srepo/build-secrets" >&2 \
+        || fail "the Node decrypter wrote something other than secrets.py decrypt, diff above"
+      if (cd "$srepo" && SECRETS_AGE_KEY="$(cat "$keys/one")" node .claude/kit/secrets-decrypt.mjs --out build-secrets >/dev/null 2>&1); then
+        fail "the Node decrypter passed with a key that reads no value"
+      fi
+    fi
+  fi
   echo "check: the secrets tool works"
 elif [ -n "${CI:-}" ]; then
   fail "age is not installed, and CI must test the secrets tool"
