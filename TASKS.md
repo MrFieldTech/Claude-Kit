@@ -185,8 +185,10 @@ What 1.4.0 already provides toward the other two parts:
    repository must do (add the Secrets checks key; one keeping credentials
    runs setup's review), and `README.md`, its update slug `kit-update-1-5-0`.
 
-**Stopping point:** Decisions settled and plan written. Next: plan step 1,
-`secrets.py decrypt`.
+**Stopping point:** Every plan step is done and `bash check.sh` passes,
+with the Node decrypter tested in full against a local `age-encryption`
+0.3.1. Next: `/session-close`, which marks this task `DONE` and merges it
+into `preview`.
 
 ## Closed Tasks
 

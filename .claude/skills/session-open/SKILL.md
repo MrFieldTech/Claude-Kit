@@ -416,9 +416,10 @@ first, by the command in the kit's README.
    - **Credentials** is `none` unless the repository already holds
      credentials or the owner has said it will. When it keeps them its own
      way, it is asked, with keeping that way as one option and `kit
-     standard` as another. Otherwise it is `kit standard`, and item 5 runs
-     the setup in `.claude/kit/credentials.md`. **Secrets checks** is `none`
-     until that setup writes it.
+     standard` as another. Otherwise it is `kit standard`, item 4 runs the
+     setup in `.claude/kit/credentials.md` on the first task's branch, and
+     item 5 reports what it leaves for the owner. **Secrets checks** is
+     `none` until that setup writes it.
 
    Every other key the repository does not show takes the default in
    `.claude/kit/templates/CLAUDE.md`. A value the repository shows more than
