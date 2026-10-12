@@ -13,6 +13,8 @@ file at the same time.
 
 | Date | Tasks touched | Work commits |
 |---|---|---|
+| 2026-10-12 | `secrets-self-sufficient`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.5.0 adds `secrets.py decrypt` and `keys`, a Node decrypter, the Secrets checks setting, and the setup a repository runs to take the secrets standard, and makes Credentials default to `none` | `7f3de9e..a96379a` |
+| 2026-10-12 | `secrets-self-sufficient`, ACTIVE, parked: opened from a private repository taking 1.4.0, with the owner's four decisions and the first round of open decisions in its block | `e3c86fe..083f57b` |
 | 2026-10-12 | `age-secrets`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.4.0 makes age encrypted `<slug>.secrets.md` files the kit standard for credentials | `471e2b4..c5c5162` |
 | 2026-10-11 | `workflow-practices`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.3.0 folds five practices and a pull request body into the session protocol | `c5394a9..f342a7b` |
 | 2026-10-01 | `preview-promotion`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.2.0 lets a temporary session promote the integration branch | `c5d170a..19e297c` |
@@ -21,8 +23,6 @@ file at the same time.
 | 2026-09-28 | `multi-line-secrets`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.0.5 never commits a credential in plaintext | `3e8aa5b..a1a2427` |
 | 2026-09-27 | `go-public`, DONE, merged into `preview`: the repository is public | none, the handoff alone |
 | 2026-09-27 | `go-public`, BLOCKED, merged into `preview`: the pre-public review's fixes, with release 1.0.4 | `d5ef770..ef64e39` |
-| 2026-09-26 | `go-public`, BLOCKED, merged into `preview`: the repository's own files name the owner MrFieldTech | `e0c3699..4d5c913` |
-| 2026-09-26 | `go-public`, BLOCKED, merged into `preview` and then `main` at MrFieldTech's request: the project terms left `check.sh` for a secret, and the files describe a public repository | `37ee80b..bb1444f` |
 
 ## Blocked On
 
@@ -118,15 +118,30 @@ repository it never does.
   at the root, and each practice credits the collection without a name.
 - **Age encrypted `<slug>.secrets.md` files are the kit standard for
   credentials.** MrFieldTech, 2026-10-11. The setting `kit standard` is the
-  default, and a repository keeps its own method by naming it, because one
+  default (superseded 2026-10-12: the default is now `none`, below), and a repository keeps its own method by naming it, because one
   of the owner's private repositories already ran the process and it should
   be the same everywhere. A public repository still commits no credential.
 - **Every repository uses the kit for whatever the kit supports, unless it
   has a use case that needs otherwise.** MrFieldTech, 2026-10-12. The
   private repository whose process became the standard keeps its own script
   until the owner updates its kit and switches it by hand.
+- **The kit's secrets standard is self-sufficient, and opt-in.**
+  MrFieldTech, 2026-10-12. Whatever the kit encrypts it decrypts, makes keys
+  for and checks, so a repository keeps only what is particular to it.
+  Credentials defaults to `none`, because some repositories never need the
+  feature. A repository whose build neither kit decrypter serves names its
+  own method, because finding another way is not the kit's job. The full
+  decisions are in the `secrets-self-sufficient` block in `TASKS.md`.
 
 ## Open Questions For MrFieldTech
+
+- **Should grilling write each round into the task's block before asking
+  it?** `grilling.md` says every open question is written out in the block,
+  but only when the session stops. In the session that opened
+  `secrets-self-sufficient`, the first round was asked only in the reply and
+  reached the block after the owner asked where the questions lived. Asking
+  a round only after it is committed would have prevented that. Open a task
+  for it?
 
 - **Should the kit make every remote branch tracked from the start?** A
   session working from a single-branch clone pushed its task branch, but git
@@ -142,6 +157,18 @@ repository it never does.
   Open a task for it?
 
 ## Flagged As Unverified
+
+**The Node decrypter has been checked against one version of
+`age-encryption`.** Locally, `check.sh` matched its output to `secrets.py
+decrypt` with the package at 0.3.1, given by `CHECK_NODE_MODULES`. CI has no
+package, so it tests only the check build and the refusals. A repository
+that pins another version and decrypts with it verifies that version.
+
+**No repository has run the 1.5.0 setup or `secrets.py keys`.** The keys
+steps have not been run on Windows or macOS, and no session has written a
+repository's Secrets checks or wired `decrypt` into a build. The private
+repository whose build was the model, switching to `kit standard`, verifies
+them.
 
 **No repository has kept a credential by `kit standard` yet.** `check.sh`
 section 6 tests `secrets.py` in a scratch repository. The steps `secrets.py

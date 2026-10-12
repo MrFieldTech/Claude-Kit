@@ -3,8 +3,12 @@
 The kit standard for credentials: passwords, tokens, API keys, private keys,
 recovery codes, account numbers, and anything else that unlocks something.
 It applies wherever the Credentials setting in `CLAUDE.md` reads
-`kit standard`. A repository replaces it by naming its own place or rule in
-that setting instead, and then nothing here applies to it.
+`kit standard`. A repository that keeps no credentials leaves the setting at
+`none`. One that keeps them its own way, or whose build neither decrypter
+below can serve, names its own place or rule in that setting, with the
+reason the kit standard does not serve, and then nothing here applies to
+it. Finding another way to decrypt is that repository's work, not the
+kit's.
 
 The standard commits credentials only in a repository confirmed private.
 `HOUSE.md` says what happens to a value anywhere else: it is committed
@@ -65,16 +69,21 @@ line, each under a comment naming who holds the private half. A public key
 can only encrypt, so the file is committed. Any one matching private key
 decrypts every value.
 
-Three keys is the usual set: the owner's own, a recovery key kept apart from
-it for whoever continues without the owner, and, when a build or a deploy
-reads the values, one held by that host as an encrypted variable. One key
-works. A key lost with no other left loses every value in the repository.
+Three keys is the default set: the owner's own, one held by the build or
+deploy host as the encrypted variable `SECRETS_AGE_KEY`, and a recovery key
+kept apart from the owner's for whoever continues without the owner. A
+repository that names another set, in its authority file or `CLAUDE.md`,
+overrules the default. One key works. A key lost with no other left loses
+every value in the repository.
 
 A private key is a line beginning `AGE-SECRET-KEY-1`. It is never committed,
 never written into a state file, never pasted into a conversation, and never
-held by a session. The owner makes each key on their own computer, with
-`age-keygen -o <file outside the repository>`, which prints the public key,
-and gives the session only that public line.
+held by a session. The owner makes each key on their own computer and gives
+the session only its public line, with who holds it. `secrets.py keys`
+prints the steps, for the default set or for the holders named after it,
+such as `secrets.py keys owner build`, and the session gives the owner its
+output whole. The session then writes `secrets-recipients.txt` from the
+lines returned, each under a comment naming its holder.
 
 ## The tool
 
@@ -91,6 +100,8 @@ and gives the session only that public line.
 | Print one encrypted block | `secrets.py encrypt`, the value on standard input |
 | Check every value is encrypted | `secrets.py check` |
 | Give the owner the steps to encrypt on their own computer | `secrets.py steps` |
+| Give the owner the steps to make the keys | `secrets.py keys`, or `secrets.py keys <holder>...` |
+| Decrypt for a build | `secrets.py decrypt --out <dir>`, as Decrypting for a build says |
 | Read the values | `secrets.py show <file> --identity <key file>`, on the owner's computer |
 | Change who can read | Edit `secrets-recipients.txt`, then `secrets.py rekey --identity <key file>`, on the owner's computer |
 
@@ -113,6 +124,51 @@ better never given in plaintext: the session runs `secrets.py steps` and
 gives the owner its output whole. The owner encrypts the value on their own
 computer, attaches the armored file it writes, and says what it unlocks, and
 the session stores it with `place`.
+
+Whenever anyone asks how to encrypt a value to hand to a session, the
+answer is `secrets.py steps`, run in that repository, so the steps carry
+its own keys. Never give steps written from memory or copied from another
+repository: a value encrypted to the wrong keys reads nowhere.
+
+## Decrypting for a build
+
+A build that reads the values runs, as its first step:
+
+```
+python3 .claude/kit/secrets.py decrypt --out <dir>
+```
+
+It copies every `<slug>.secrets.md` to the same path under `<dir>` with each
+value in plaintext, written as `show` writes it, and later steps read the
+copy in place of the encrypted file. `HANDOFF.md` is never decrypted.
+
+- The private key comes from `SECRETS_AGE_KEY`, set on the build host as
+  an encrypted variable holding the build's key.
+- `<dir>` must be outside the repository or ignored by git, and it refuses
+  otherwise, so a decrypted copy is never committed.
+- It fails, writing nothing, when the key is missing or a value will not
+  decrypt, naming the file and label and never the value. A build without
+  its credentials looks complete and is not.
+- With `SECRETS_CHECK_BUILD=1` it needs no key and no `age` tool, and writes
+  `secrets-check-build-placeholder` for every value, so continuous
+  integration can build without a key.
+- A value encrypted on Windows has its `\r\n` line endings and one trailing
+  line break dropped, so it reads as typed.
+
+It needs `python3`, and the `age` tool except in a check build. A build host
+that lacks `age` installs it in the build's first step, from its package
+manager.
+
+**The Node decrypter.** Offer it only when `secrets.py decrypt` cannot run
+on the build host, such as a host with Node and no `python3`, or one where
+`age` cannot be installed. `node .claude/kit/secrets-decrypt.mjs --out <dir>`
+does the same, with the same output, refusals and check build. It needs the
+`age-encryption` package, which the repository adds to its own
+`package.json`, pinned in its lockfile.
+
+When neither can run on the build host, the kit standard does not serve that
+repository. The owner decides whether it keeps its credentials its own way,
+named in the Credentials setting with that reason.
 
 ## Reading a value without the kit
 
@@ -140,12 +196,40 @@ source, not only re-encrypted.
 
 ## Setting it up
 
-A repository whose Credentials setting is `kit standard` and that has no
-`secrets-recipients.txt` cannot encrypt yet, so a value goes in the reply as
-`HOUSE.md` says. The session then puts `Action needed:` at the top of part 1:
-make the keys on your own computer and give the session the public line of
-each, with who holds it. The session writes `secrets-recipients.txt` from
-them on a task branch.
+Setup runs when the Credentials setting becomes `kit standard`: at the
+first run, or later when the owner asks to keep credentials in the
+repository. A session that meets a credential in a repository set to `none`
+puts it in the reply, as `HOUSE.md` says, and asks the owner whether to
+switch. Setup runs on a task branch, in this order, and each step that waits
+on the owner is an `Action needed:` line at the top of part 1 of the reply
+until it is done.
+
+1. **Confirm the repository is private,** through the session's GitHub
+   access. A public repository, or one whose visibility cannot be
+   confirmed, stays at `none`, and setup stops there.
+2. **The keys.** When there is no `secrets-recipients.txt`, run
+   `secrets.py keys`, naming the holders when the repository names its own
+   set, and give the owner its output whole. Write the file from the public
+   lines returned. Until then, a credential goes in the reply rather than
+   the repository.
+3. **The repository's own checks.** Read the repository for what could
+   expose a credential that `secrets.py check` cannot see: a build that
+   publishes files, a search index, logs, an output directory, a
+   configuration file that takes a value. For each, write a command that
+   fails when a value or an encrypted block reaches it, as a script in the
+   repository, and list each command under the Secrets checks setting. With
+   nothing to check, the setting is `none`.
+4. **Continuous integration.** When the repository has CI configuration, add
+   a step running `python3 .claude/kit/secrets.py check` and each Secrets
+   checks command, with no key, after a check build when a check reads the
+   build's output. When it has none, the line is
+   `Action needed:` run those commands on every pull request.
+5. **The build,** when one reads the values. Make its first step
+   `secrets.py decrypt`, as Decrypting for a build says, and point the
+   steps after it at the decrypted copy. Add the output directory to
+   `.gitignore`. Use `SECRETS_CHECK_BUILD=1` wherever the build runs without
+   a key, such as in CI. Then `Action needed:` set the build's private key as
+   the encrypted variable `SECRETS_AGE_KEY` on the build host.
 
 When a container lacks the `age` tool, the session installs it with the
 system's package manager if it can, and otherwise puts the value in the

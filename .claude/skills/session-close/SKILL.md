@@ -56,8 +56,9 @@ access. Then:
   standard`,** the method is `.claude/kit/credentials.md`: store each value
   in its `<slug>.secrets.md` with `python3 .claude/kit/secrets.py set`, or,
   when where it belongs is not settled, under Credentials In Transit in
-  `HANDOFF.md` with a task opened to place it. Then run `python3 .claude/kit/secrets.py check`, and commit nothing
-  while it fails. With no `secrets-recipients.txt`, or no `age` tool the
+  `HANDOFF.md` with a task opened to place it. Then run `python3 .claude/kit/secrets.py check`
+  and each command under the Secrets checks setting, and commit nothing
+  while one fails. With no `secrets-recipients.txt`, or no `age` tool the
   session can install, the next case applies.
 - **Otherwise,** when the setting is `none`, or the repository is public, or its
   visibility cannot be confirmed, or a value bound for a committed file has no

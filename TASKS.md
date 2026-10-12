@@ -45,6 +45,153 @@ Then the detail block, as prose.
 
 ## Closed Tasks
 
+### Make The Kit's Secrets Standard Self-Sufficient
+
+**Slug:** `secrets-self-sufficient`
+**Status:** DONE
+**Opened:** 2026-10-12
+**Closed:** 2026-10-12
+
+**Why.** MrFieldTech, 2026-10-12, while switching the private repository
+whose process became the 1.4.0 standard over to `kit standard`. That
+repository decrypts credentials in its own site build, and `secrets.py` has
+no command for it, so it could not switch without keeping its own script.
+The owner wants the kit to be self-sufficient: whatever the kit encrypts, the
+kit can decrypt, so a repository takes the whole standard and keeps only what
+is particular to it. One task, one release, covers all three parts below.
+
+**Background.** What that repository's build does today, which the owner
+wants the kit's default to resemble so its switch changes little:
+
+- The build's first step decrypts every value in every `<slug>.secrets.md`
+  into a gitignored directory, reading the private key from the environment
+  variable `SECRETS_AGE_KEY`. Later steps read the decrypted copy in place of
+  the encrypted one.
+- It fails the build when the variable is missing or a value will not
+  decrypt, naming the file and label and never the value, because a build
+  without its credentials looks complete and is not.
+- A check build, asked for with `SECRETS_CHECK_BUILD=1`, holds no key and
+  writes a fixed placeholder for every value, so continuous integration can
+  build without a key.
+- Decryption drops `\r\n` line endings and one trailing line break, so a
+  value typed into Windows Command Prompt reads as typed.
+- It decrypts in Node with the `age-encryption` package, pinned in the
+  lockfile, because its build host has Node and may not have the `age`
+  command line tool. `secrets.py` calls the `age` tool.
+- A separate output check fails the build when a decrypted value reaches the
+  search index or an encrypted block reaches a page. That one is particular
+  to a repository that publishes a site.
+
+What 1.4.0 already provides toward the other two parts:
+
+- `secrets.py steps` prints the Windows and macOS or Linux encryption steps
+  with the repository's own keys from `secrets-recipients.txt` written in.
+- `credentials.md`, Setting it up, and the first run have the session ask the
+  owner for keys when a private repository taking `kit standard` has none.
+
+**Decisions.**
+
+- MrFieldTech, 2026-10-12: the kit carries decryption. The default resembles
+  the build described above, with options to decrypt another way. The owner
+  is not sure what the other ways are, so the session lists them.
+- MrFieldTech, 2026-10-12: in every repository, when a person asks how to
+  encrypt a value to hand to a session, the session gives the steps with
+  that repository's keys, never a fixed set from the kit.
+- MrFieldTech, 2026-10-12: when a repository has no keys yet, the kit
+  provides the process to create them and give the public halves to the
+  repository, and only for a repository that is going to keep credentials.
+  Some repositories never need the feature.
+- MrFieldTech, 2026-10-12: every secrets check comes from the kit. Because
+  repositories differ, installing the secrets standard has the session review
+  the repository and write a list of checks particular to it, which are then
+  run alongside the kit's.
+
+- MrFieldTech, 2026-10-12, first round: the kit ships both a
+  `secrets.py decrypt` command, the default, matching the build described
+  above, and a Node decrypter. A session offers the Node decrypter only when
+  `secrets.py decrypt` cannot run in the repository's build environment.
+- MrFieldTech, 2026-10-12, first round: the kit documents no other way of
+  decrypting. A repository that neither decrypter serves implements its own
+  encryption and decryption, and the kit's secrets standard is marked unused
+  there for that reason. Finding it another way is not the kit's job.
+- MrFieldTech, 2026-10-12, first round: the first run sets Credentials to
+  `none` unless the repository already holds credentials or the owner says
+  it will. Switching to `kit standard` later runs setup: first the keys, then
+  the repository's own list of checks.
+- MrFieldTech, 2026-10-12, first round: a `secrets.py` command prints the
+  steps for making the keys on the owner's own computer, three by default,
+  the owner's, the build's and a recovery key, and the session writes
+  `secrets-recipients.txt` from the public halves the owner returns. A
+  repository that says otherwise, in its authority file or `CLAUDE.md`,
+  overrules the default set.
+- MrFieldTech, 2026-10-12, first round: a repository's own secrets checks
+  live in a new Session Settings key in `CLAUDE.md`, one command per check,
+  run by `session-close` and CI beside `secrets.py check`.
+
+- MrFieldTech, 2026-10-12, second round: a repository marks the kit's
+  secrets standard unused by naming its own method in the Credentials
+  setting in place of `kit standard`, with the reason the kit's decrypters
+  do not serve. Every secrets command, check and setup step applies only
+  under `kit standard`.
+- MrFieldTech, 2026-10-12, second round: `secrets.py decrypt` writes a copy
+  of each `<slug>.secrets.md` at the same path under a gitignored output
+  directory, `--out <dir>`, with every value in plaintext, and the build
+  reads the copy in place of the encrypted file.
+- MrFieldTech, 2026-10-12, second round: setup adds `secrets.py check` and
+  the repository's own secrets checks to its CI configuration on the task
+  branch when it has one, and otherwise puts `Action needed:` at the top of
+  part 1.
+
+**Plan.** One release, 1.5.0.
+
+1. `secrets.py decrypt --out <dir>`: every `<slug>.secrets.md`, never
+   `HANDOFF.md`, copied to the same relative path under `<dir>` with each
+   value written as `show` writes it. The key comes from `SECRETS_AGE_KEY`
+   or `--identity`. It refuses a missing key, an output directory git does
+   not ignore, and a value that will not decrypt, naming the file and label
+   and never the value. With `SECRETS_CHECK_BUILD=1` it needs no key and no
+   `age` tool and writes a fixed placeholder for every value. Windows line
+   endings and one trailing line break are dropped, as `show` already does.
+2. `.claude/kit/secrets-decrypt.mjs`: the same command for Node, with the
+   same output, refusals and check build, using the `age-encryption`
+   package the repository pins. `credentials.md` says a session offers it
+   only when `secrets.py decrypt` cannot run in the build environment.
+3. `secrets.py keys [<holder>...]`: prints the steps for making the keys on
+   the owner's own computer, Windows and macOS or Linux, one per holder,
+   `owner`, `build` and `recovery` by default, and what to send back. The
+   session writes `secrets-recipients.txt` from the public lines returned.
+   A repository that names another set in its authority file or `CLAUDE.md`
+   overrules the default.
+4. A new Session Settings key, **Secrets checks**, after Credentials: one
+   command per check particular to the repository, or `none`. Defined at the
+   end of `HOUSE.md`, given `none` in `templates/CLAUDE.md` and in this
+   repository's `CLAUDE.md`. `session-close` runs `secrets.py check` and
+   each of them when Credentials is `kit standard`.
+5. Credentials: the template default becomes `none`. The first run sets
+   `none` unless the repository already holds credentials or the owner says
+   it will. `HOUSE.md` says a repository whose needs the kit's decrypters do
+   not serve names its own method there, with the reason, and that every
+   secrets command, check and setup step applies only under `kit standard`.
+6. `credentials.md`, Setting it up, becomes the setup run when Credentials
+   switches to `kit standard`: the keys by `secrets.py keys`; then a review
+   of the repository that writes Secrets checks; then `secrets.py check`
+   and those checks added to its CI configuration, or `Action needed:`;
+   then, when a build reads the values, its first step `secrets.py decrypt`
+   with the build's key as `SECRETS_AGE_KEY` on the host, a check build
+   with `SECRETS_CHECK_BUILD=1`, and the output directory gitignored. When a
+   person asks how to encrypt a value, the session gives `secrets.py steps`
+   with that repository's keys.
+7. `check.sh` fixtures for decrypt, the check build, the refusals, and
+   `keys`, and for the Node decrypter when `node` and the package are
+   present.
+8. `VERSION` 1.5.0, a `CHANGELOG.md` entry saying what an updated
+   repository must do (add the Secrets checks key; one keeping credentials
+   runs setup's review), and `README.md`, its update slug `kit-update-1-5-0`.
+
+**Outcome:** Every plan step is done and `bash check.sh` passes, with the
+Node decrypter tested in full against a local `age-encryption` 0.3.1.
+Release 1.5.0.
+
 ### Make Age-Encrypted Secrets Files The Kit's Standard For Credentials
 
 **Slug:** `age-secrets`
