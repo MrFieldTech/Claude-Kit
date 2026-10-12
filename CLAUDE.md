@@ -30,6 +30,7 @@ here, never in a kit-owned file.
 - **Checks before merge:** `bash check.sh`
 - **Credentials:** none. Nothing here needs one, and this repository is
   public.
+- **Secrets checks:** none
 - **State file format:** kit templates
 
 ## Project rules

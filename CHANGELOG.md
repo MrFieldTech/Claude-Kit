@@ -4,6 +4,47 @@ Every change to a kit-owned file is a release, recorded here with the version
 `VERSION` carries. A project's `/session-open` reports when a newer release
 exists, and the project takes it by `kit.sh update` when its owner asks.
 
+## 1.5.0
+
+The secrets standard is self-sufficient: whatever the kit encrypts, the kit
+decrypts, makes keys for, and checks.
+
+- `secrets.py decrypt --out <dir>` decrypts for a build. It copies every
+  `<slug>.secrets.md` to the same path under a directory git ignores, with
+  each value in plaintext, reading the key from `SECRETS_AGE_KEY`. It fails,
+  writing nothing, on a missing key or a value that will not decrypt, naming
+  the file and label and never the value. With `SECRETS_CHECK_BUILD=1` it
+  needs no key and no `age` tool and writes a placeholder for every value.
+- `.claude/kit/secrets-decrypt.mjs` does the same in Node, with the
+  `age-encryption` package, offered only when `secrets.py decrypt` cannot
+  run on the build host. No other way of decrypting is documented: a
+  repository neither serves names its own method in Credentials, with the
+  reason.
+- `secrets.py keys` prints the steps for making the keys on the owner's
+  computer, three by default, the owner's, the build's and a recovery key,
+  or the holders named after it. A repository that names another set
+  overrules the default.
+- A new Session Settings key, Secrets checks, holds the repository's own
+  checks on its handling of credentials. `session-close` runs them with
+  `secrets.py check`.
+- Credentials defaults to `none`. The first run sets `kit standard` only
+  when the repository already holds credentials or the owner says it will.
+  Switching runs the setup in `.claude/kit/credentials.md`: privacy, the
+  keys, the repository's own checks, CI, and the build.
+- When anyone asks how to encrypt a value, the session gives
+  `secrets.py steps` from that repository, never a fixed set of keys.
+- `check.sh` tests `decrypt`, the check build, its refusals and `keys`, and
+  the Node decrypter when `node` is installed.
+
+After updating: add `- **Secrets checks:** none` after the Credentials line
+in Session Settings. A repository whose Credentials is `kit standard` runs
+steps 3 to 5 of Setting it up in `.claude/kit/credentials.md`, writing its
+Secrets checks, adding them and `secrets.py check` to its CI, and wiring
+`secrets.py decrypt` into its build when one reads the values. A repository
+with Credentials `kit standard` that holds no credentials and will hold none
+may change it to `none`, and says so in the update's commit. One whose
+Credentials names its own method keeps it.
+
 ## 1.4.0
 
 Credentials have a standard: age encrypted `<slug>.secrets.md` files.

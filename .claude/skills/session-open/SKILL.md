@@ -413,10 +413,13 @@ first, by the command in the kit's README.
      needs a tool the container lacks is left to CI, which runs it on the pull
      request anyway, because listed here it would fail and park every task at
      close.
-   - **Credentials** is `kit standard`, the age encrypted `<slug>.secrets.md`
-     files `.claude/kit/credentials.md` describes, unless the repository
-     already keeps credentials another way. Then it is asked, with keeping
-     that way as one option.
+   - **Credentials** is `none` unless the repository already holds
+     credentials or the owner has said it will. When it keeps them its own
+     way, it is asked, with keeping that way as one option and `kit
+     standard` as another. Otherwise it is `kit standard`, item 4 runs the
+     setup in `.claude/kit/credentials.md` on the first task's branch, and
+     item 5 reports what it leaves for the owner. **Secrets checks** is
+     `none` until that setup writes it.
 
    Every other key the repository does not show takes the default in
    `.claude/kit/templates/CLAUDE.md`. A value the repository shows more than
@@ -475,11 +478,9 @@ first, by the command in the kit's README.
      cannot delete a branch.
    - When there is a preview host, add `task/*` and the integration branch to
      its list of branches that build previews.
-   - When Credentials is `kit standard`, the repository is confirmed private,
-     and it has no `secrets-recipients.txt`: make the age keys on your own
-     computer, as `.claude/kit/credentials.md` says under The keys, and give
-     a session the public line of each with who holds it. Until then, a
-     credential goes in the reply rather than the repository.
+   - When Credentials is `kit standard`, whatever the setup in
+     `.claude/kit/credentials.md`, Setting it up, leaves for the owner, such
+     as making the keys.
 
    Then ask, as numbered questions, about each rule in the repository's own
    files that contradicts `HOUSE.md`, such as a release process that pushes

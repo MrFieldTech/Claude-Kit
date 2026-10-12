@@ -235,12 +235,20 @@ never in a kit-owned file.
 - **Checks before merge.** Commands run before a task's pull request is
   opened, or `none`. Only commands the session's container can run. The pull
   request's own checks run as well.
-- **Credentials.** Where a credential goes. `kit standard`, the default,
-  means age encrypted `<slug>.secrets.md` files, as
-  `.claude/kit/credentials.md` describes. A repository replaces it with its
-  own place or rule, or with `none`, which means nowhere in the repository. A
-  place of its own inside the repository also names how a value is encrypted
-  there: the tool, and the public key or recipient it encrypts to. The key
-  that decrypts is never in the repository or the session.
+- **Credentials.** Where a credential goes. `none`, the default, means
+  nowhere in the repository. `kit standard` means age encrypted
+  `<slug>.secrets.md` files, as `.claude/kit/credentials.md` describes, and
+  switching to it runs the setup there. A repository that keeps credentials
+  its own way, or whose build neither of the kit's decrypters serves, names
+  its own place or rule instead, with the reason the kit standard does not
+  serve. A place of its own inside the repository also names how a value is
+  encrypted there: the tool, and the public key or recipient it encrypts
+  to. Every secrets command, check and setup step in the kit applies only
+  under `kit standard`. The key that decrypts is never in the repository or
+  the session.
+- **Secrets checks.** Commands that check this repository's own handling of
+  credentials, beyond `secrets.py check`, one per check, or `none`. The
+  setup in `.claude/kit/credentials.md` writes them, and `session-close`
+  runs them under `kit standard`.
 - **State file format.** The format `TASKS.md` and `HANDOFF.md` keep: `kit
   templates`, or a rule in the authority file.
