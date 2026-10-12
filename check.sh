@@ -302,7 +302,7 @@ if command -v age >/dev/null 2>&1 && command -v age-keygen >/dev/null 2>&1; then
   if SECRETS_AGE_KEY="$(cat "$keys/one")" secrets decrypt --out "$srepo/build-secrets" >"$scratch/out" 2>&1; then
     fail "secrets decrypt passed with a key that reads no value"
   fi
-  grep -qF 'svc.secrets.md: Token will not decrypt' "$scratch/out" \
+  grep -qF 'old.secrets.md: Password will not decrypt' "$scratch/out" \
     || fail "secrets decrypt did not name the file and label that would not decrypt: $(cat "$scratch/out")"
   [ -e "$srepo/build-secrets" ] && fail "secrets decrypt wrote files before every value decrypted"
   SECRETS_AGE_KEY="$(cat "$keys/three")" secrets decrypt --out "$srepo/build-secrets" >/dev/null \
