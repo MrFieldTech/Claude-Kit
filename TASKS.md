@@ -103,11 +103,50 @@ What 1.4.0 already provides toward the other two parts:
   the repository and write a list of checks particular to it, which are then
   run alongside the kit's.
 
-**Open decisions, to settle with MrFieldTech before the work.** See the
-stopping point.
+**Open decisions, first round, asked 2026-10-12.** The recommended answer
+is listed first.
 
-**Stopping point:** Not started. Next: settle the first round of open
-decisions with MrFieldTech, then write the plan here.
+1. How the kit decrypts for a build by default.
+   a. A `secrets.py decrypt` command matching the build described above:
+      the key from `SECRETS_AGE_KEY`, failing on a missing key or a value that
+      will not decrypt, placeholders in a check build, and Windows line
+      endings dropped. The build installs the `age` tool when its host lacks
+      it.
+   b. A small Node decrypter shipped in the kit, for hosts with Node and no
+      `age` tool.
+   c. Both, `secrets.py decrypt` by default and the Node decrypter as an
+      option.
+2. Which other ways of decrypting the kit documents as options.
+   a. On a deploy host that holds the key and has `age`.
+   b. In continuous integration, with the key as a CI secret, deploying the
+      built output.
+   c. On the server, per request.
+   d. In the browser, with a passphrase. The repository that is the model
+      considered and declined it.
+   e. Values kept in a secrets manager or host environment variables instead
+      of in files.
+3. How a repository opts in to keeping credentials.
+   a. The first run sets Credentials to `none` unless the repository already
+      holds credentials or the owner says it will. Switching to `kit
+      standard` later runs setup: the keys, then the repository's own list
+      of checks.
+   b. `kit standard` stays the default everywhere, and keys are asked for
+      only when the first credential arrives.
+4. What the kit's key creation process gives the owner.
+   a. A `secrets.py` command printing the steps for the owner's own
+      computer, three keys by default, the owner's, the build's and a
+      recovery key, with the session writing `secrets-recipients.txt` from
+      the public halves the owner returns.
+   b. The same, with the owner choosing the number of keys and who holds
+      each, every time.
+5. Where a repository's own list of secrets checks lives.
+   a. A new Session Settings key in `CLAUDE.md`, one command per check, run
+      by `session-close` and CI beside `secrets.py check`.
+   b. A file at the repository root that `secrets.py check` reads and runs.
+
+**Stopping point:** Not started. Next: get MrFieldTech's answers to the first
+round above, record them under Decisions, ask any round they open, then write
+the plan here.
 
 ## Closed Tasks
 
