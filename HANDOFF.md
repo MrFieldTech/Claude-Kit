@@ -13,6 +13,7 @@ file at the same time.
 
 | Date | Tasks touched | Work commits |
 |---|---|---|
+| 2026-10-12 | `secrets-self-sufficient`, ACTIVE, parked: opened from a private repository taking 1.4.0, with the owner's four decisions and the first round of open decisions in its block | `e3c86fe..083f57b` |
 | 2026-10-12 | `age-secrets`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.4.0 makes age encrypted `<slug>.secrets.md` files the kit standard for credentials | `471e2b4..c5c5162` |
 | 2026-10-11 | `workflow-practices`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.3.0 folds five practices and a pull request body into the session protocol | `c5394a9..f342a7b` |
 | 2026-10-01 | `preview-promotion`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.2.0 lets a temporary session promote the integration branch | `c5d170a..19e297c` |
@@ -22,7 +23,6 @@ file at the same time.
 | 2026-09-27 | `go-public`, DONE, merged into `preview`: the repository is public | none, the handoff alone |
 | 2026-09-27 | `go-public`, BLOCKED, merged into `preview`: the pre-public review's fixes, with release 1.0.4 | `d5ef770..ef64e39` |
 | 2026-09-26 | `go-public`, BLOCKED, merged into `preview`: the repository's own files name the owner MrFieldTech | `e0c3699..4d5c913` |
-| 2026-09-26 | `go-public`, BLOCKED, merged into `preview` and then `main` at MrFieldTech's request: the project terms left `check.sh` for a secret, and the files describe a public repository | `37ee80b..bb1444f` |
 
 ## Blocked On
 
@@ -127,6 +127,14 @@ repository it never does.
   until the owner updates its kit and switches it by hand.
 
 ## Open Questions For MrFieldTech
+
+- **Should grilling write each round into the task's block before asking
+  it?** `grilling.md` says every open question is written out in the block,
+  but only when the session stops. In the session that opened
+  `secrets-self-sufficient`, the first round was asked only in the reply and
+  reached the block after the owner asked where the questions lived. Asking
+  a round only after it is committed would have prevented that. Open a task
+  for it?
 
 - **Should the kit make every remote branch tracked from the start?** A
   session working from a single-branch clone pushed its task branch, but git
