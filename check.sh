@@ -12,7 +12,9 @@
 # 5. An install into a scratch repository works end to end: the manifest,
 #    the status line, the guard against overwriting local edits, and the
 #    TODO sweep.
-# 6. This repository's own TODO.md is current.
+# 6. The secrets tool stores, places, locks, checks, shows and rekeys
+#    values with age. Skipped when age is not installed, except in CI.
+# 7. This repository's own TODO.md is current.
 #
 # Exits non-zero on the first section that fails, after printing why.
 
@@ -68,7 +70,9 @@ echo "check: no em dash"
 # turns LF into CRLF unless .gitattributes says otherwise, and bash cannot
 # run kit.sh with CRLF endings.
 bash -n .claude/kit/kit.sh
-python3 -c 'import ast, sys; ast.parse(open(sys.argv[1]).read())' .claude/kit/todo_sweep.py
+for script in todo_sweep.py secrets.py; do
+  python3 -c 'import ast, sys; ast.parse(open(sys.argv[1]).read())' ".claude/kit/$script"
+done
 for skill in session-open session-close; do
   file=".claude/skills/$skill/SKILL.md"
   [ "$(sed -n 1p "$file")" = "---" ] || fail "$file does not open with frontmatter"
@@ -203,6 +207,89 @@ if (cd "$repo" && python3 .claude/kit/todo_sweep.py >/dev/null 2>&1); then
 fi
 echo "check: the TODO sweep works"
 
-# 6. This repository keeps its own TODO.md by the sweep it ships. This file is
+# 6. The secrets tool, in a scratch repository of its own, with keys made
+# outside it as the owner would make them. Values are fixed strings, so a
+# grep for one proves it never reached a file in plaintext.
+if command -v age >/dev/null 2>&1 && command -v age-keygen >/dev/null 2>&1; then
+  srepo="$scratch/srepo"
+  keys="$scratch/keys"
+  mkdir -p "$keys"
+  git init --quiet "$srepo"
+  cp -R "$repo/.claude" "$srepo/"
+  cp "$scratch/kit/.claude/kit/templates/HANDOFF.md" "$srepo/HANDOFF.md"
+  for k in one two three; do age-keygen -o "$keys/$k" 2>/dev/null; done
+  pub() { age-keygen -y "$keys/$1"; }
+  secrets() { (cd "$srepo" && python3 .claude/kit/secrets.py "$@"); }
+
+  (cd "$srepo" && python3 .claude/kit/secrets.py check >/dev/null) \
+    || fail "secrets check fails on a repository with no secrets"
+  if printf 'v' | secrets set secrets/svc.secrets.md "Token" >/dev/null 2>&1; then
+    fail "secrets set encrypted with no secrets-recipients.txt"
+  fi
+  printf '# Owner\n%s\n# Recovery\n%s\n' "$(pub one)" "$(pub two)" > "$srepo/secrets-recipients.txt"
+
+  secrets set secrets/svc.secrets.md "Token" >/dev/null <<< 'check-value-one'
+  printf 'check-line-a\ncheck-line-b' | secrets set secrets/svc.secrets.md "Private key" >/dev/null
+  secrets set secrets/svc.secrets.md "Token" >/dev/null <<< 'check-value-two'
+  secrets set HANDOFF.md "Pending token" >/dev/null <<< 'check-value-transit'
+  age -a -r "$(pub one)" -r "$(pub two)" > "$scratch/block" <<< 'check-value-placed'
+  secrets place secrets/svc.secrets.md "Placed" < "$scratch/block" >/dev/null
+  age -a -r "$(pub one)" > "$scratch/block" <<< 'x'
+  if secrets place secrets/svc.secrets.md "Short" < "$scratch/block" >/dev/null 2>&1; then
+    fail "secrets place took a block encrypted to fewer keys than secrets-recipients.txt lists"
+  fi
+  if printf 'v' | secrets set notes.md "Token" >/dev/null 2>&1; then
+    fail "secrets set wrote to a file that is not a .secrets.md file"
+  fi
+  if grep -rq 'check-value\|check-line' "$srepo/secrets" "$srepo/HANDOFF.md"; then
+    fail "a value reached a file in plaintext"
+  fi
+  secrets check >/dev/null || fail "secrets check fails on values set and placed by the tool"
+
+  shown="$(secrets show secrets/svc.secrets.md --identity "$keys/two")"
+  for want in '`check-value-two`' 'check-line-a' 'check-line-b' '`check-value-placed`'; do
+    grep -qF -- "$want" <<< "$shown" || fail "secrets show did not give back $want"
+  done
+  grep -q 'check-value-one' <<< "$shown" && fail "secrets set kept a replaced value"
+  [ "$(grep -c '^\*\*Token\*\*$' "$srepo/secrets/svc.secrets.md")" = 1 ] \
+    || fail "secrets set added a second Token label instead of replacing its value"
+  grep -qF '`check-value-transit`' <<< "$(SECRETS_AGE_KEY="$(cat "$keys/one")" secrets show HANDOFF.md)" \
+    || fail "secrets show did not read a value in transit with SECRETS_AGE_KEY"
+
+  printf -- '---\nslug: old\nupdated: 2026-01-01\n---\n\n**Password**\n\n`check-plain`\n\n**Codes**\n\n```\ncheck-code-1\ncheck-code-2\n```\n' \
+    > "$srepo/old.secrets.md"
+  if secrets check >/dev/null 2>&1; then fail "secrets check passed a file holding plaintext"; fi
+  secrets lock old.secrets.md >/dev/null
+  grep -q 'check-plain\|check-code' "$srepo/old.secrets.md" && fail "secrets lock left plaintext behind"
+  secrets check >/dev/null || fail "secrets check fails after lock"
+  grep -qF 'check-code-2' <<< "$(secrets show old.secrets.md --identity "$keys/one")" \
+    || fail "secrets lock lost a value of more than one line"
+
+  cp "$srepo/HANDOFF.md" "$scratch/handoff"
+  sed -i.bak 's/^\*\*Pending token\*\*$/&\n\n`check-leak`/' "$srepo/HANDOFF.md"
+  if secrets check >/dev/null 2>&1; then fail "secrets check passed plaintext under Credentials In Transit"; fi
+  cp "$scratch/handoff" "$srepo/HANDOFF.md"
+  printf -- '---\nslug: other\nupdated: 2026-01-01\n---\n' > "$srepo/wrong.secrets.md"
+  if secrets check >/dev/null 2>&1; then fail "secrets check passed a file whose slug is not its name"; fi
+  rm "$srepo/wrong.secrets.md" "$srepo/HANDOFF.md.bak"
+
+  printf '%s\n' "$(pub three)" > "$srepo/secrets-recipients.txt"
+  secrets rekey --identity "$keys/one" >/dev/null
+  grep -qF '`check-value-transit`' <<< "$(secrets show HANDOFF.md --identity "$keys/three")" \
+    || fail "secrets rekey did not re-encrypt HANDOFF.md to the new key"
+  grep -qF 'check-code-1' <<< "$(secrets show old.secrets.md --identity "$keys/three")" \
+    || fail "secrets rekey did not re-encrypt to the new key"
+  if secrets show secrets/svc.secrets.md --identity "$keys/one" >/dev/null 2>&1; then
+    fail "a removed key still reads a value after rekey"
+  fi
+  grep -qF "$(pub three)" <<< "$(secrets steps)" || fail "secrets steps does not write the keys in"
+  echo "check: the secrets tool works"
+elif [ -n "${CI:-}" ]; then
+  fail "age is not installed, and CI must test the secrets tool"
+else
+  echo "check: the secrets tool was not tested (age is not installed)"
+fi
+
+# 7. This repository keeps its own TODO.md by the sweep it ships. This file is
 # excluded because the fixtures above are TODOs by design.
 python3 .claude/kit/todo_sweep.py --exclude check.sh --check

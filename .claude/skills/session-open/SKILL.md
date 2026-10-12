@@ -395,8 +395,11 @@ first, by the command in the kit's README.
      regenerate them.
    - Every remote branch. Each one either belongs under Other branches or will
      be reported as a stray from now on.
+   - Where the repository keeps credentials now: encrypted files, a
+     `secrets-recipients.txt`, a secrets manager, or notes on where values
+     live.
 
-   Three keys are settled by rule rather than asked:
+   Four keys are settled by rule rather than asked:
    - **Owner** is the account that owns the repository on its host, the path
      segment before the repository's name in `git remote get-url origin`, or
      `the owner` when the URL shows none. It names whoever answers the
@@ -410,6 +413,10 @@ first, by the command in the kit's README.
      needs a tool the container lacks is left to CI, which runs it on the pull
      request anyway, because listed here it would fail and park every task at
      close.
+   - **Credentials** is `kit standard`, the age encrypted `<slug>.secrets.md`
+     files `.claude/kit/credentials.md` describes, unless the repository
+     already keeps credentials another way. Then it is asked, with keeping
+     that way as one option.
 
    Every other key the repository does not show takes the default in
    `.claude/kit/templates/CLAUDE.md`. A value the repository shows more than
@@ -468,6 +475,11 @@ first, by the command in the kit's README.
      cannot delete a branch.
    - When there is a preview host, add `task/*` and the integration branch to
      its list of branches that build previews.
+   - When Credentials is `kit standard`, the repository is confirmed private,
+     and it has no `secrets-recipients.txt`: make the age keys on your own
+     computer, as `.claude/kit/credentials.md` says under The keys, and give
+     a session the public line of each with who holds it. Until then, a
+     credential goes in the reply rather than the repository.
 
    Then ask, as numbered questions, about each rule in the repository's own
    files that contradicts `HOUSE.md`, such as a release process that pushes

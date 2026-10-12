@@ -52,6 +52,13 @@ access. Then:
   repository commits, `HANDOFF.md` included, encrypt the value by the method
   the setting names and commit only what the encryption prints. Check that
   the output does not contain the value before it is written anywhere.
+- **When the repository is confirmed private and the setting is `kit
+  standard`,** the method is `.claude/kit/credentials.md`: store each value
+  in its `<slug>.secrets.md` with `python3 .claude/kit/secrets.py set`, or,
+  when where it belongs is not settled, under Credentials In Transit in
+  `HANDOFF.md` with a task opened to place it. Then run `python3 .claude/kit/secrets.py check`, and commit nothing
+  while it fails. With no `secrets-recipients.txt`, or no `age` tool the
+  session can install, the next case applies.
 - **Otherwise,** when the setting is `none`, or the repository is public, or its
   visibility cannot be confirmed, or a value bound for a committed file has no
   encryption method named or none this session's container can run, commit
@@ -113,6 +120,9 @@ the named headings below, in this order, and add nothing else.
 - **Credentials In Transit.** Values held here only when the Credentials
   setting sends them here, each encrypted by step 2 and never in plaintext,
   with a label, the method that encrypted it, and the task that will place it.
+  Under `kit standard` the label and the age block are the whole record, in
+  the form `.claude/kit/credentials.md` gives, and the task is named in the
+  label's note.
   Each value is whole in a fenced code block of its own. Otherwise `None`. If
   the file has a `has_secrets` field, set it to match.
 - **Decisions Made.** Add the decisions taken this session that are recorded

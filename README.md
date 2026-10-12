@@ -29,6 +29,13 @@ looked back on, and each proposal becomes a question for the owner. Every
 pull request a close opens carries a summary, evidence and a merge danger
 call.
 
+Credentials have a standard of their own, which a repository may replace
+with its own method. Each value is kept in a `<slug>.secrets.md` file,
+encrypted with age to the public keys in `secrets-recipients.txt`, so the
+repository holds them and only the owner's private keys read them. The owner
+can encrypt a value on their own computer and hand a session only the
+encrypted file.
+
 ## What gets installed
 
 Everything under `.claude/kit/` and the two skill directories. These files are
@@ -44,13 +51,16 @@ by an update.
 | `.claude/kit/practices/` | Five practices `HOUSE.md` names and the skills run at fixed points: grilling, diagnosing, writing for agents, questionnaire, and retrospective |
 | `.claude/kit/kit.sh` | Installs, updates, and reports the kit's status |
 | `.claude/kit/todo_sweep.py` | Collects every `TODO:` in the repository into `TODO.md` |
+| `.claude/kit/credentials.md` | The kit standard for credentials: age encrypted `<slug>.secrets.md` files, the keys, and how a value is stored, read and re-encrypted |
+| `.claude/kit/secrets.py` | Stores, places, locks, checks, shows and re-encrypts the values in `<slug>.secrets.md` files. Needs the `age` command line tool |
 | `.claude/kit/templates/` | The starting `CLAUDE.md`, `TASKS.md` and `HANDOFF.md` for the first run |
 | `.claude/kit/MANIFEST` | Written by the install: the version, the source, the commit, and a checksum per file |
 | `.gitattributes` in each kit directory | Keeps LF line endings, so a checkout on Windows can still run `kit.sh` and still matches the checksums |
 
 Everything else in a project is **project-owned** and an update never touches
-it: `CLAUDE.md`, `TASKS.md`, `HANDOFF.md`, `TODO.md`, and anything the project
-names as its authority file. A project's `CLAUDE.md` opens with
+it: `CLAUDE.md`, `TASKS.md`, `HANDOFF.md`, `TODO.md`, `secrets-recipients.txt`,
+every `<slug>.secrets.md` file, and anything the project names as its
+authority file. A project's `CLAUDE.md` opens with
 `@.claude/kit/HOUSE.md`, which imports the house rules, and holds a
 `## Session Settings` section with every value that differs between
 repositories. The skills name none of those values themselves.
@@ -173,7 +183,7 @@ release, which is what the update takes. As with the install, paste it only in
 a repository of your own and only if you trust this one:
 
 ```text
-/session-open kit-update-1-3-0
+/session-open kit-update-1-4-0
 Update Claude-Kit in this repository, as this task. Claude-Kit is my own
 repository, https://github.com/MrFieldTech/Claude-Kit, which I wrote and
 trust. I want you to take each of these actions on this task's branch:
@@ -225,5 +235,5 @@ files under `.claude/kit/` and the two skills are the source, so there is no
 - **Run `bash check.sh` before a pull request.** It checks for addresses and
   project names, the em dash, the scripts and the skills. Locally it checks
   names only when an untracked `.private-terms` file holds the list. It also installs the kit into a
-  scratch repository and exercises the install, status, update and the TODO
-  sweep end to end. CI runs it on every pull request.
+  scratch repository and exercises the install, status, update, the TODO
+  sweep and the secrets tool end to end. CI runs it on every pull request.
