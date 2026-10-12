@@ -43,11 +43,14 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+## Closed Tasks
+
 ### Make The Kit's Secrets Standard Self-Sufficient
 
 **Slug:** `secrets-self-sufficient`
-**Status:** ACTIVE
+**Status:** DONE
 **Opened:** 2026-10-12
+**Closed:** 2026-10-12
 
 **Why.** MrFieldTech, 2026-10-12, while switching the private repository
 whose process became the 1.4.0 standard over to `kit standard`. That
@@ -185,12 +188,9 @@ What 1.4.0 already provides toward the other two parts:
    repository must do (add the Secrets checks key; one keeping credentials
    runs setup's review), and `README.md`, its update slug `kit-update-1-5-0`.
 
-**Stopping point:** Every plan step is done and `bash check.sh` passes,
-with the Node decrypter tested in full against a local `age-encryption`
-0.3.1. Next: `/session-close`, which marks this task `DONE` and merges it
-into `preview`.
-
-## Closed Tasks
+**Outcome:** Every plan step is done and `bash check.sh` passes, with the
+Node decrypter tested in full against a local `age-encryption` 0.3.1.
+Release 1.5.0.
 
 ### Make Age-Encrypted Secrets Files The Kit's Standard For Credentials
 
