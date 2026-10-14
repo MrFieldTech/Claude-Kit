@@ -115,9 +115,60 @@ into a repository that asks for them and turns them into its own content.
 - Version 1.5.0 is current; this is 1.6.0, new features with no breaking
   change.
 
-**Decisions made.** None yet beyond what was asked.
+**Decisions made.** MrFieldTech, 2026-10-14, round 1 of grilling.
 
-**Open, round 1 of grilling** (asked 2026-10-14, recommended answer first):
+- The import reads each source's default branch, so only promoted work is
+  imported.
+- `REFERENCES.md` records, per source, the last reference imported and the
+  source commit it was read at. Newer means every reference added to the
+  source since that commit, so a late-merging reference is still caught.
+- Every repository writes references at every close, with no setting:
+  little cost in tokens or storage, and they may help later in ways not
+  yet seen.
+- A companion holds every value the session produced, was given or
+  changed, as a dated copy beside its home.
+- The first import from a new source imports every reference it holds.
+- The import task's own reference records each source and reference it
+  imported, by name, and only facts its session verified, never the
+  imported facts, so two repositories importing each other cannot loop.
+- When the importing repository is not `kit standard`, no value is copied.
+  The import names each credential by id with a TODO and asks the owner
+  what to do with it, recommending the kit's credentials setup.
+- `secrets.py decrypt` and the Node decrypter skip `.claude/references/`,
+  so a build never holds a second plaintext copy.
+- `check.sh` extends its private-terms check to `.claude/references/` in
+  this repository. The owner asked that private text found there be hashed
+  out; how is round 2.
+
+**Open, round 2 of grilling** (asked 2026-10-14, recommended answer first):
+
+1. Credentials In Transit, now that companions hold every value: a) remove
+   the heading from the `HANDOFF.md` template and `session-close`; a value
+   with no home yet lives only in its session's companion, and the task
+   opened to place it names that companion. `secrets.py` still reads the
+   heading where an older `HANDOFF.md` has one, and an updating repository
+   moves any value held there into a companion (recommended); b) keep it
+   as it is.
+2. An import must turn a reference's facts into the repository's own
+   content, such as a page per subject or lines in a notes file, by a
+   procedure written in the authority file or `CLAUDE.md`. When the
+   repository has written none: a) the setup asks the owner how facts
+   become content there and writes the answer into `CLAUDE.md` under a
+   heading of its own, and the import refuses to run until it exists
+   (recommended); b) the kit gives a default, such as adding each
+   reference's facts to one `IMPORTED.md`.
+3. Hashing out private text in this repository's references: a cloud
+   session has no list of terms, which lives only in the CI secret, so it
+   cannot check a reference before the push that publishes it on this
+   public repository. a) the owner adds `KIT_PRIVATE_TERMS` to the cloud
+   environment's variables; a project rule in `CLAUDE.md` has the close
+   replace each match with `[redacted]` before committing the reference,
+   and `check.sh` fails on any match left (recommended); b) the close
+   writes references here naming no other project, and a match CI finds
+   after the push is redacted by a new commit, the history keeping it;
+   c) both.
+
+**Round 1, as asked** (answered above):
 
 1. Which branch of a source the import reads: a) its default branch, so
    only work the owner promoted is imported (recommended); b) its
@@ -155,8 +206,8 @@ into a repository that asks for them and turns them into its own content.
     `.claude/references/` here (recommended); b) also its address check;
     c) neither.
 
-**Stopping point.** Waiting on round 1. Next: record the answers above,
-ask any round they open, then build.
+**Stopping point.** Waiting on round 2. Next: record the answers, then
+build release 1.6.0.
 
 ## Closed Tasks
 
