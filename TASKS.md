@@ -43,6 +43,121 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+### Write Session References And Import Them Into Other Repositories
+
+**Slug:** `session-references`
+**Status:** ACTIVE
+**Opened:** 2026-10-14
+
+**Why.** MrFieldTech, 2026-10-14. Facts a session learns in one repository
+should reach another without a person carrying them, in any repository that
+uses the kit, inside or outside the organization. The writer leaves a dated,
+immutable record of each session's facts; the reader pulls those records
+into a repository that asks for them and turns them into its own content.
+
+**What was asked, as given.**
+
+1. *Session references, the writer.* At every close, `session-close` writes
+   one file to `.claude/references/<yymmddhhmmss>-<task-slug>.md`, time in
+   UTC, in addition to `HANDOFF.md`, which stays unchanged. It is written
+   once and never edited; a task spanning several sessions gets one per
+   session. It records facts, not finished documentation, in a generic shape
+   roughly molded on a chat handoff: the task and its commit range, current
+   state, decisions with who made them, verified facts each with its source,
+   exact values (paths, addresses, commands, versions), artifacts, gotchas,
+   flagged as unverified, open questions, and one block of facts per subject
+   (each system, account, service, process or project the session worked
+   on). With nothing worth recording, its facts say None. It names no
+   importer and copies no other repository's rules. `.claude/references/`
+   sits outside `.claude/kit/` and the TODO sweep skips it. A reference names
+   each credential by id, never a value. With Credentials `none`, the session
+   says the repository has no credential method, offers to set one up, and
+   commits no value. With a method, the values go encrypted, one labelled
+   block each, in a companion `<yymmddhhmmss>-<task-slug>.secrets.md`. A
+   value given in plaintext in the session draws a warning at close that the
+   conversation holds it and should be erased.
+2. *The import system, the reader.* A setup step a repository runs to turn
+   it on, which builds `REFERENCES.md` at its root: each source repository in
+   scope, those excluded with the reason, and the last reference imported
+   from each. `/session-open import` (`import` becomes a reserved word, like
+   `temp`) reads `REFERENCES.md`, attaches each source read-only, and lists
+   the references newer than the last import. With none it stops and writes
+   nothing. Otherwise it opens task `import-<yymmddhhmmss>` on its task
+   branch and imports each reference by the procedure the repository's
+   authority file or `CLAUDE.md` gives for turning facts into its own
+   content, asking about anything it cannot settle, then records the last
+   import per source. Under `kit standard`, it compares the source's
+   `secrets-recipients.txt` with its own. On a match it copies each block as
+   it stands. On a difference it copies none, writes a TODO asking for the
+   value encrypted to its own keys, and the setup warns of this up front.
+3. Both are a release: `VERSION`, `CHANGELOG.md` and `README.md`, with what
+   an updating repository must do.
+
+**Facts looked up, 2026-10-14.**
+
+- `todo_sweep.py` already skips every path under `.claude/`, so
+  `.claude/references/` needs no change to the sweep.
+- `kit.sh` owns only `.claude/kit/` and the two skill directories, so an
+  install or update never touches `.claude/references/` or `REFERENCES.md`.
+- `secrets.py check` reads every tracked `*.secrets.md`, wherever it sits,
+  and requires frontmatter of `slug` and `updated` alone, the slug matching
+  the filename. A companion passes as `slug: <yymmddhhmmss>-<task-slug>`.
+  `rekey` re-encrypts it in place, and `decrypt` (and the Node decrypter)
+  would copy it into a build's output as it stands.
+- `secrets.py place` refuses a block encrypted to a different number of keys
+  than `secrets-recipients.txt` lists, and cannot tell the right keys from
+  the wrong ones of the same count.
+- `check.sh` checks addresses and the private terms only in kit-owned
+  directories, so a reference committed in this public repository is not
+  checked for the owner's other projects.
+- The slug `import-<yymmddhhmmss>` is 19 characters, inside the default
+  Task slug limit of 23.
+- Version 1.5.0 is current; this is 1.6.0, new features with no breaking
+  change.
+
+**Decisions made.** None yet beyond what was asked.
+
+**Open, round 1 of grilling** (asked 2026-10-14, recommended answer first):
+
+1. Which branch of a source the import reads: a) its default branch, so
+   only work the owner promoted is imported (recommended); b) its
+   integration branch; c) both.
+2. How "newer than the last import" is found: a) `REFERENCES.md` records,
+   per source, the last reference imported and the source commit it was
+   read at, and newer means every reference added since that commit, so a
+   parked task's reference with an older timestamp that merges late is
+   still caught (recommended); b) by filename timestamp alone.
+3. Whether every repository writes references: a) always, no setting, as
+   asked (recommended); b) a new Session Settings key that can turn it off.
+4. Which credentials go in a companion: a) every value the session
+   produced, was given or changed, a dated copy beside its home
+   (recommended); b) only values with no other home in the repository.
+5. When neither the authority file nor `CLAUDE.md` gives an import
+   procedure: a) the setup asks the owner for it and writes it into
+   `CLAUDE.md` under a heading of its own, and an import refuses to run
+   without one (recommended); b) the kit supplies a default procedure.
+6. The first import from a new source: a) imports every reference it holds
+   (recommended); b) the setup marks the newest as imported, and only later
+   ones import.
+7. The import task's own reference: a) records what it imported, each
+   source and reference by name, and only facts the session itself
+   verified, never re-copying imported facts, so two repositories importing
+   each other do not loop (recommended); b) records the imported facts too.
+8. Credentials when the importing repository is not `kit standard`: a) copy
+   no value; name each id with a TODO asking the owner to place it by the
+   repository's own method, or to set one up (recommended); b) refuse to
+   import a reference whose companion holds values.
+9. `secrets.py decrypt` and the Node decrypter: a) skip
+   `.claude/references/`, so a build never holds a second plaintext copy
+   (recommended); b) decrypt companions like any secrets file.
+10. This public repository's own references may name the owner's other
+    projects: a) extend `check.sh`'s private-terms check to
+    `.claude/references/` here (recommended); b) also its address check;
+    c) neither.
+
+**Stopping point.** Waiting on round 1. Next: record the answers above,
+ask any round they open, then build.
+
 ## Closed Tasks
 
 ### Make The Kit's Secrets Standard Self-Sufficient
