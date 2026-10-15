@@ -146,42 +146,42 @@ grilling.
   happen.
 - **Fix the promotion race** found above, whatever else is decided.
 
-**Stopping point.** Round 2 of grilling, below, is asked and waits on
-MrFieldTech, together with which of this task and `session-references` goes
-first. Next: record the answers, ask round 3 if anything opens, then change
-`HOUSE.md`, both skills, the templates, `check.sh`, `VERSION`,
-`CHANGELOG.md` and `README.md`.
+**Decisions made.** MrFieldTech (prefix `grm`), 2026-10-15, round 2 of
+grilling. The frontier is empty after it.
 
-**Round 2 of grilling, asked 2026-10-15.**
+- **This task goes before `session-references`,** so references carry the
+  prefix and handle from their first release. This is 1.6.0, and
+  `session-references` moves to the next version.
+- **The prefix is the part before the first `/` of the branch checked out
+  when `session-open` starts,** read before step 2 detaches, when that branch
+  is not the default branch, the integration branch, an Other branch or a
+  task branch. With no prefix, the line leaves it out:
+  `ACTIVE | <HANDLE> | <date>`, never `NONE`.
+- **When the GitHub access names no account,** the session asks the developer
+  for their GitHub handle, the one case it asks. With no answer, the handle
+  is `UNKNOWN` and the report says so.
+- **Holder lines date in UTC as `YYMMDD HHMMSS` on both ACTIVE and
+  INACTIVE,** in place of the formats first given. Within a block the newest
+  line is the top one, so nothing sorts there; the format lets the lines of
+  several tasks be compared or sorted as text, across years, and matches the
+  `session-references` file names.
+- **The warning stops the session.** It names who holds the task and since
+  when, and waits for the developer to say take it over.
+- **The `session-open` report gains a `Questions:` line** with the open
+  questions that concern the task being worked and a count of the rest.
+  Today `session-open` reads `HANDOFF.md` in full but no step shows its Open
+  Questions, so a question surfaces only if a session happens to mention it.
+- **The heading becomes `## Open Questions`,** which every updating
+  repository applies.
+- **The Owner setting stays as the account that owns the repository,** for
+  First Run and the README. "The owner" in the rules means the developer
+  running the session.
 
-1. Which task goes first? (a, recommended) `multi-dev-setup`, so the
-   references `session-references` writes carry the prefix and handle from
-   their first release. (b) `session-references` first.
-2. Where does the session find the prefix? (a, recommended) The part before
-   the first `/` of the branch checked out when `session-open` starts, when it
-   is not the default, integration or a task branch; otherwise `NONE`. (b) A
-   new Session Settings key per repository, which a shared file cannot hold
-   per developer.
-3. When the GitHub access names no account? (a, recommended) `UNKNOWN` in
-   place of the handle, and the report says so. (b) Stop until GitHub access
-   is connected.
-4. Date format on the holder lines? (a, recommended) `YYMMDD HHMMSS` in UTC on
-   both lines, which sorts and matches the `session-references` file names.
-   (b) As given: `MMDDYY HHMMSS` on ACTIVE and `MMDDYY` on INACTIVE, in UTC.
-5. Does the warning stop the session? (a, recommended) Yes: it names who
-   holds the task and since when, and waits for the developer to say take it
-   over. (b) It is a line in the report and the session carries on.
-6. Where does a developer see open questions? (a, recommended) The step 6
-   report gains a `Questions:` line with the open questions that concern the
-   task being worked, and the count of the rest. (b) Every open question at
-   every open.
-7. The `HANDOFF.md` heading `Open Questions For <Owner>`, now that every
-   developer is an owner? (a, recommended) Rename it `Open Questions`, which
-   every updating repository applies. (b) Keep it, naming the repository's
-   account.
-8. What does the Owner setting mean now? (a, recommended) The account that
-   owns the repository, kept for First Run and the README; "the owner" in the
-   rules means the developer running the session. (b) Remove the setting.
+**Stopping point.** Grilling is done. Next: change `HOUSE.md`, both skills,
+the `HANDOFF.md` template, `check.sh` where it reads either, `VERSION` to
+1.6.0, `CHANGELOG.md` with what an updating repository must do, and
+`README.md`'s update block to `kit-update-1-6-0`; then this repository's own
+`HANDOFF.md` heading and Session Log column.
 
 ## Closed Tasks
 
