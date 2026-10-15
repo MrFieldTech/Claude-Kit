@@ -287,8 +287,53 @@ this task by MrFieldTech's decision and was merged onto this branch.
 - Every developer is an owner, so the import's questions go to whichever
   developer runs the session.
 
-**Open, after folding in 1.6.0** (asked 2026-10-15, recommended answer
-first):
+**Decisions made.** MrFieldTech, `GRM / MRFIELDTECH`, 2026-10-15, after
+folding in 1.6.0.
+
+- An import refuses to start while another `import-` task branch exists,
+  naming its holder, and offers to take that task over. Built.
+- An imported question names the source's developer and repository, as
+  `<PREFIX> / <HANDLE> in <owner>/<repository>`. Built.
+- **New request: references for sessions that closed without one.** The
+  developer needs a way, a prompt or a recovery part of a skill, to have a
+  session write a reference for a session that already closed, even after
+  `session-close` ran and its task branch was deleted.
+
+**Facts looked up, 2026-10-15, for that request.**
+
+- Every close makes one commit whose message begins `handoff: `, and no
+  other commit may, so `git log --grep='^handoff: '` on the default branch
+  lists every past close: 21 here.
+- A merged task branch's commits survive its deletion, in the merge into
+  the integration branch, as do the task's block in `TASKS.md`, its Session
+  Log row with its commit range, and the pull request with its body.
+- What a session said and decided in its conversation is in no file. Only
+  a session running in that same conversation still holds it.
+- Before 1.6.0 the Session Log kept ten rows, so older closes are found by
+  their `handoff:` commits, not by the log.
+
+**Open, round on backfilling references** (asked 2026-10-15, recommended
+answer first):
+
+1. How a developer asks for it: a) `/session-open backfill`, with
+   `backfill` reserved like `temp` and `import`, opening a task
+   `backfill-<yymmddhhmmss>` that writes one reference per past close that
+   has none. Run in the old session's own conversation, it writes that
+   session's reference from the conversation; run anywhere else, it
+   reconstructs from the repository (recommended); b) a prompt in the
+   README alone, with no keyword; c) both.
+2. Which past closes a backfill covers: a) every `handoff:` commit with no
+   reference, back to the first (recommended); b) only the tasks the
+   developer names; c) only those after a date the developer gives.
+3. How a reconstructed reference is marked: a) a `Reconstructed:` line
+   naming its sources, and every fact that no commit or committed file
+   shows goes under Flagged As Unverified, so an import turns it into a
+   `TODO:` (recommended); b) no mark.
+4. The time in its file name: a) the original close's, the UTC commit time
+   of its `handoff:` commit, so references sort in the order the sessions
+   ran (recommended); b) the time of the backfill.
+
+**After folding in 1.6.0, as asked** (answered below):
 
 1. Two developers running `/session-open import` at once would import the
    same references and both edit the same `REFERENCES.md` rows, which
@@ -305,8 +350,9 @@ first):
 **Stopping point.** 1.6.0 is merged onto this branch, renumbered to 1.7.0,
 and the two merge conflicts it raised, both sides only adding (the
 `session-open` description and the top `CHANGELOG.md` entry), keep both.
-Next: add the developer to the reference template and `references.md`,
-record the answers above, run `bash check.sh`, then `/session-close`.
+The developer is in the reference template and `references.md`, and the
+import's two answers are built. Next: settle the backfill round above,
+build it into this release, run `bash check.sh`, then `/session-close`.
 Before the first real import, the private repository whose procedure the
 default follows needs its authority file to name an import procedure, its
 own or the kit default, and it copies no credential until it switches to

@@ -102,6 +102,14 @@ ordinary task, and ends with `REFERENCES.md` at the repository root, from
 `/session-open import` runs the import, by the Import section of
 `session-open`. The rules it applies are here.
 
+**One at a time.** Two imports at once would import the same references and
+edit the same rows of `REFERENCES.md`, and the second would conflict at
+merge. While any `task/import-<yymmddhhmmss>` branch exists on the remote,
+an import does not start: it names that task and the developer in its top
+holder line, read from the branch's own `TASKS.md`, with the line's time,
+and offers to take that task over instead, as `session-open` takes over a
+held task.
+
 **What is new.** For each source, fetch its default branch. The new
 references are the files under `.claude/references/` ending in `.md` but not
 `.secrets.md` that the branch added since the Read at commit:
@@ -188,8 +196,10 @@ For each reference:
    `TODO:` asking to confirm it, quoting what the reference gave, never a
    fact.
 4. **Above any one subject.** The reference's Open Questions and Flagged As
-   Unverified go to the same headings in `HANDOFF.md`, each naming its
-   source. Its decisions are facts about the source and stay with its
+   Unverified go to the same headings in `HANDOFF.md`, each naming the
+   developer from the reference's Developer line and its repository, as
+   `<PREFIX> / <HANDLE> in <owner>/<repository>`, with the reference's
+   name. Its decisions are facts about the source and stay with its
    subjects. They govern nothing here.
 5. **Credentials** by the rules above, into
    `imported/<subject-slug>.secrets.md`.

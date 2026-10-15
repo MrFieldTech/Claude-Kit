@@ -409,15 +409,18 @@ each step.
 1. **Turned on?** Read `REFERENCES.md` on the base. With none, say imports
    are not turned on, offer the setup in `.claude/kit/references.md` as a
    numbered question, and stop. Nothing is written.
-2. **Attach each source** under Sources, read-only, through the session's
+2. **One at a time.** When a `task/import-` branch exists on the remote,
+   follow One at a time in `.claude/kit/references.md` and stop until the
+   developer answers. Nothing is written.
+3. **Attach each source** under Sources, read-only, through the session's
    GitHub access: in a cloud session, attach it with read access and clone
    it, never registering it as one of the session's repositories. Fetch the
    branch its row names. A source that cannot be reached is reported, and
    its row is left as it is.
-3. **List what is new** in each source by What is new in
+4. **List what is new** in each source by What is new in
    `.claude/kit/references.md`. Done when every reachable source has its
    list, empty or not.
-4. **Report** these lines, as one fenced code block with no backticks
+5. **Report** these lines, as one fenced code block with no backticks
    inside it:
 
    ```
@@ -431,11 +434,11 @@ each step.
 
    With nothing new in any source, stop here. Nothing is written and no
    branch is taken.
-5. **Open the task** `import-<yymmddhhmmss>`, the time in UTC now, by step 4
+6. **Open the task** `import-<yymmddhhmmss>`, the time in UTC now, by step 4
    case c with no grilling: its block lists each source and each new
    reference, oldest first, each `not imported`, and the Import procedure
    `REFERENCES.md` names. Claim it by step 5.
-6. **Import** each reference by The import in `.claude/kit/references.md`,
+7. **Import** each reference by The import in `.claude/kit/references.md`,
    by the Import procedure `REFERENCES.md` names, one commit per reference
    holding the import, its source's row in `REFERENCES.md`, and the
    reference marked `imported` in the task's block, pushed after each. Done
