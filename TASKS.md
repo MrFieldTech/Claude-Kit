@@ -52,13 +52,17 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+## Closed Tasks
+
 ### Run The Session Protocol With Several Developers
 
+INACTIVE | GRM / MRFIELDTECH | 261015 214746
 ACTIVE | GRM / MRFIELDTECH | 261015 004741
 
 **Slug:** `multi-dev-setup`
-**Status:** ACTIVE
+**Status:** DONE
 **Opened:** 2026-10-15
+**Closed:** 2026-10-15
 
 **Why.** MrFieldTech, 2026-10-15: "Right now the session open/close mechanic
 is mainly built around a single dev handling multiple tasks/branches. How can
@@ -188,19 +192,17 @@ grilling. The frontier is empty after it.
   First Run and the README. "The owner" in the rules means the developer
   running the session.
 
-**Stopping point.** The work is done and `bash check.sh` passes: `HOUSE.md`
-gains Developers and redefines the owner, both skills and both templates
+**Outcome.** Release 1.6.0, checked by `bash check.sh`: `HOUSE.md` gains
+Developers and makes every developer an owner, both skills and both templates
 carry the holder lines, the `Holder:` and `Questions:` report lines, the
-Developer column and the `Open Questions` heading, `session-close` step 9
-gains check 4 against an open pull request into the integration branch, and
-1.6.0 is recorded in `VERSION`, `CHANGELOG.md` and `README.md`. This
-repository's own `HANDOFF.md` has the new heading and column. Next:
-`/session-close`, which adds the two notes the owner asked for under Open
-Questions (a review option for pull requests later, a more distinctive name
-for the kit) and flags as unverified that two developers sharing one account
-with no branch prefix look like one developer, so neither is warned.
+Developer column and the `Open Questions` heading, and `session-close` step 9
+gains check 4 against an open pull request into the integration branch. This
+repository's own `HANDOFF.md` took the new heading and column.
 
-## Closed Tasks
+**Decision at close.** MrFieldTech (prefix `grm`), 2026-10-15: two people
+sharing one GitHub account with no branch prefix look like one developer, and
+the kit does nothing about it. Adding a collaborator is easy, so sharing an
+account is their own responsibility.
 
 ### Make The Kit's Secrets Standard Self-Sufficient
 
