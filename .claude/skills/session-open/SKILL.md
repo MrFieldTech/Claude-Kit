@@ -1,7 +1,7 @@
 ---
 name: session-open
 description: >-
-  Start a Claude Code session in a repository that uses Claude-Kit. Takes an optional task slug: an existing task resumes on its branch, a slug that names no task starts a new task under that name, settled by grilling before its block is written, and with no slug it lists the parked task branches and queued tasks and asks. In a repository that has never used the kit, it proposes the Session Settings and builds TASKS.md and HANDOFF.md first. Names the developer running it from their GitHub account and Claude Code branch prefix, warns before taking a task another developer still holds, and records who took each task. Reads the authority file, CLAUDE.md, TASKS.md and HANDOFF.md, reports the kit's version and any stray branch, puts the session on the task's own branch, task/<task-slug>, and works the task from the stopping point in its block. With the argument temp it opens a temporary session instead: it reads and reports the same way, answers questions without taking a branch or writing anything, merges the integration branch into the default branch when the owner asks, and turns what is to be kept or built into tasks when the owner asks. With the argument import it imports the session references of the repositories REFERENCES.md names, on a task of its own. Runs only when the owner invokes /session-open.
+  Start a Claude Code session in a repository that uses Claude-Kit. Takes an optional task slug: an existing task resumes on its branch, a slug that names no task starts a new task under that name, settled by grilling before its block is written, and with no slug it lists the parked task branches and queued tasks and asks. In a repository that has never used the kit, it proposes the Session Settings and builds TASKS.md and HANDOFF.md first. Names the developer running it from their GitHub account and Claude Code branch prefix, warns before taking a task another developer still holds, and records who took each task. Reads the authority file, CLAUDE.md, TASKS.md and HANDOFF.md, reports the kit's version and any stray branch, puts the session on the task's own branch, task/<task-slug>, and works the task from the stopping point in its block. With the argument temp it opens a temporary session instead: it reads and reports the same way, answers questions without taking a branch or writing anything, merges the integration branch into the default branch when the owner asks, and turns what is to be kept or built into tasks when the owner asks. With the argument import it imports the session references of the repositories REFERENCES.md names, on a task of its own. With the argument backfill it writes a session reference for every past close that has none, on a task of its own that closes itself. Runs only when the owner invokes /session-open.
 disable-model-invocation: true
 ---
 
@@ -21,8 +21,9 @@ branch and the integration branch are what Session Settings says they are.
 Every session works on the branch of one task, `task/<task-slug>`. Run these
 steps in order. Do not skip ahead to the work. The exceptions are
 `/session-open temp`, which opens a temporary session by Temporary Session,
-and `/session-open import`, which imports by Import, both at the end of this
-file.
+`/session-open import`, which imports by Import, and `/session-open
+backfill`, which writes missing references by Backfill, all at the end of
+this file.
 
 ## 1. Find the developer and fetch everything
 
@@ -140,7 +141,8 @@ owner already answered for in this session's First Run.
 
 If the owner named `temp`, with or without `task/` in front, stop following
 these steps here and follow Temporary Session at the end of this file. If they
-named `import`, follow Import at the end of this file.
+named `import`, follow Import, and if `backfill`, follow Backfill, both at
+the end of this file.
 
 The owner names a task by its slug, after `/session-open` or in their message,
 with or without `task/` in front: `/session-open footer-rebuild` and
@@ -173,8 +175,9 @@ to list, say so and ask what the new task is. Do not invent work. Stop until
 they answer.
 
 A task slug is lowercase letters, digits and hyphens, no longer than the Task
-slug limit, unique among tasks, none of the Reserved slugs, never `temp` or
-`import`, and of the form `import-<yymmddhhmmss>` only when Import opens it.
+slug limit, unique among tasks, none of the Reserved slugs, never `temp`,
+`import` or `backfill`, and of the form `import-<yymmddhhmmss>` or
+`backfill-<yymmddhhmmss>` only when Import or Backfill opens it.
 
 A task branch the owner did not name or choose is never taken. A parked branch
 and one another session is working look the same, and two sessions on one task
@@ -446,6 +449,28 @@ each step.
    on a question by the usual rules.
 
 It then ends with `/session-close`, like any task.
+
+## Backfill
+
+For `/session-open backfill`. It ran steps 1 to 3 like any session, and a
+stray stops it there. In a repository new to the kit it does not run First
+Run: say so and stop. Read Backfilling in `.claude/kit/references.md`
+before anything below.
+
+1. **One at a time.** When a `task/backfill-` branch exists on the remote,
+   name its task and the developer in its top holder line, offer to take it
+   over, and stop until the developer answers.
+2. **List the past closes with no reference,** by Past closes. With none,
+   say so and stop. Nothing is written and no branch is taken.
+3. **Open the task** `backfill-<yymmddhhmmss>`, the time in UTC now, by
+   step 4 case c with no grilling: its block lists each close by its
+   `handoff:` commit, oldest first, each `not written`. Claim it by step 5
+   and report step 6's lines.
+4. **Write each reference** by Backfilling: from this conversation for a
+   close it ran, otherwise from the repository. One commit per reference,
+   with the close marked `written` in the task's block, pushed after each.
+   Done when every close is `written`.
+5. **Close** by `session-close`, steps 1 to 11, with no `/session-close`.
 
 ## First Run
 

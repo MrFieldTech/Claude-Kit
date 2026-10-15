@@ -42,6 +42,15 @@ can import them.
   the owner dismisses the warning or writes their own. Credentials copy as
   they stand only when the source encrypts to the same keys; otherwise
   each arrives as a `TODO:`.
+- `/session-open backfill` writes a reference for every past close that
+  has none, found by its `handoff:` commit even after its branch is gone,
+  on a task `backfill-<yymmddhhmmss>` that closes itself. A close the
+  conversation ran is written from the conversation. Any other is
+  transcribed from what committed files say about it, marked
+  `Reconstructed:`, with every unsourced fact under Flagged As Unverified.
+  `backfill` is never a task slug.
+- One import runs at a time, and an imported question names the source's
+  developer and repository.
 - In a public repository a reference holds nothing the repository's rules
   keep private, and the first run asks the owner to turn on secret
   scanning with push protection.
@@ -54,7 +63,9 @@ Delete the Credentials In Transit heading from `HANDOFF.md` when it holds
 standard`, move each into a companion with `secrets.py place`, or into its
 home, and delete the heading after. Keep the heading when the authority
 file requires it. A public repository turns on secret scanning with push
-protection. Imports stay off until the owner asks for them.
+protection. Imports stay off until the owner asks for them. Run
+`/session-open backfill` once to give past sessions references, if an
+importing repository should see them.
 
 ## 1.6.0
 

@@ -65,6 +65,9 @@ that opened no task needs no close.
 
 `/session-open import` imports the session references of the repositories
 `REFERENCES.md` names, on a task of its own, `import-<yymmddhhmmss>`.
+`/session-open backfill` writes a session reference for every past close
+that has none, on a task of its own, `backfill-<yymmddhhmmss>`, which closes
+itself.
 
 There are three kinds of branch, and no others.
 
@@ -157,8 +160,8 @@ may close into them.
 task branch at every close, under `.claude/references/`, with the session's
 credentials in a companion file. Another repository imports them by
 `/session-open import`. `.claude/kit/references.md` holds the rules: read it
-before writing one at close, before turning imports on, and before an
-import.
+before writing one at close, before turning imports on, before an import,
+and before a backfill.
 
 When Generated files lists `TODO.md`, it holds every `TODO:` in the repository
 as a question and is never edited by hand. Answer a question where it is asked
@@ -278,10 +281,11 @@ never in a kit-owned file.
 - **Task slug limit.** The longest a task slug may be. 23 unless a repository
   needs otherwise: Cloudflare Pages cuts a branch's preview address at 28
   characters, and `task-` takes five, so 23 keeps every address whole.
-- **Reserved slugs.** Names a task slug may not take, or `none`. `temp` and
-  `import` are never task slugs, whatever this setting says, because they
-  open a temporary session and an import, and only an import takes a slug
-  of the form `import-<yymmddhhmmss>`.
+- **Reserved slugs.** Names a task slug may not take, or `none`. `temp`,
+  `import` and `backfill` are never task slugs, whatever this setting says,
+  because they open a temporary session, an import and a backfill, and
+  only those take slugs of the form `import-<yymmddhhmmss>` and
+  `backfill-<yymmddhhmmss>`.
 - **Regenerate.** Commands that rewrite the generated files, run in the order
   given, or `none`.
 - **Generated files.** The paths those commands write, or `none`.

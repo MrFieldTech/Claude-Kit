@@ -331,8 +331,17 @@ round.
   is worth having. The reply of 2026-10-15 answered in full; question 1
   below puts the choice.
 
-**Open, second backfill round** (asked 2026-10-15, recommended answer
-first):
+**Decisions made.** MrFieldTech, `GRM / MRFIELDTECH`, 2026-10-15, second
+backfill round. Built.
+
+- A backfill with no conversation to draw on still writes references, as
+  transcription only: what the task's block, its Decisions Made and Session
+  Log entries, its commit messages and its pull request body say, each
+  fact citing its file, nothing inferred.
+- A backfill task closes itself by `session-close`'s steps when its
+  references are written, with no `/session-close`.
+
+**Second backfill round, as asked** (answered below):
 
 1. A reference rebuilt with no conversation holds nothing the repository
    does not, but an import reads only `.claude/references/`, so without
@@ -385,8 +394,7 @@ first):
 and the two merge conflicts it raised, both sides only adding (the
 `session-open` description and the top `CHANGELOG.md` entry), keep both.
 The developer is in the reference template and `references.md`, and the
-import's two answers are built. Next: settle the second backfill round above,
-build the backfill into this release, run `bash check.sh`, then `/session-close`.
+import's two answers are built. The backfill is built into this release. Next: `/session-close`.
 Before the first real import, the private repository whose procedure the
 default follows needs its authority file to name an import procedure, its
 own or the kit default, and it copies no credential until it switches to

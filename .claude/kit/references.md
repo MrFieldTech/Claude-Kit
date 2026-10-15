@@ -68,6 +68,52 @@ A value given to the session in plaintext stays in the conversation after
 it is placed. The close report says so for each one, by label, and that the
 conversation should be erased once the value is placed.
 
+## Backfilling
+
+`/session-open backfill` writes a reference for every past close that has
+none, by the Backfill section of `session-open`, on a task of its own,
+`backfill-<yymmddhhmmss>`. The rules it applies are here.
+
+**Past closes.** Every close made one commit whose message begins
+`handoff: `, so `git log --grep='^handoff: '` on the base lists them all,
+back to the first, whether or not their task branches still exist. A close
+already has a reference when its `handoff:` commit added one under
+`.claude/references/`, or when a file there is named for it, below. A
+`handoff:` commit only on a parked task branch is left alone: that task's
+next close writes its reference.
+
+**Its name.** `<yymmddhhmmss>-<task-slug>.md`, the time the UTC commit time
+of the `handoff:` commit, so it sorts where the session ran. The slug is
+the task the Session Log row that commit added names, or else the task
+whose block it changed. When neither names one, the slug is `unknown` and
+Current State says so.
+
+**From a conversation.** A close this conversation itself ran is written
+from the conversation, by The reference above, as its own close would have
+written it.
+
+**From the repository.** Any other is transcribed, never reconstructed by
+inference. It holds only what committed files say about that close: the
+task's block in `TASKS.md` as that `handoff:` commit left it, the Session
+Log row and Decisions Made entries the commit added, the messages of the
+commits in its range, and the body of the pull request that merged it,
+each fact citing its file or commit. Under the Companion line it adds:
+
+```
+**Reconstructed:** from <the files and commits it read>, <YYYY-MM-DD>
+```
+
+A fact those files state without a source of their own goes under Flagged
+As Unverified, which an import turns into a `TODO:`. With no developer
+recorded, as before release 1.6.0, the Developer line reads
+`not recorded`. A credential is named by its label and never copied: a
+backfill writes no companion.
+
+**It closes itself.** Once every past close has a reference, the backfill
+task runs `session-close`'s steps for itself, as `DONE`, without waiting
+for `/session-close`. Its own reference lists each reference it wrote
+under Artifacts and records no other facts.
+
 ## Turning imports on
 
 The owner asks for it in any words. The setup runs on a task branch, as an
