@@ -96,46 +96,92 @@ overwriting each other's state, or merging into each other's way.
   references would record who ran each session if this task adds identity.
   Whichever merges second merges the other in.
 
-**Decisions made.** None yet.
+**Facts looked up, 2026-10-15, after round 1.**
 
-**Stopping point.** Round 1 of grilling, below, is asked and waits on
-MrFieldTech. Next: record the answers here, recompute the frontier, ask round
-2 (expected: the release number and what an updating repository must do, the
-name and format of any new setting or task line), then change `HOUSE.md`, both
-skills, the templates, `check.sh`, `VERSION`, `CHANGELOG.md` and `README.md`.
+- The GitHub connector's `get_me` returns the account behind the session,
+  `MrFieldTech` here. `git config user.name` in a cloud container reads
+  `Claude`, so it names no one and is no fallback.
+- The Claude Code Branch prefix setting is not in the session's environment
+  or in any settings file the container holds. A cloud session sees it only
+  in the branch the harness assigned and checked out before any skill runs:
+  this session started on `grm/elegant-hypatia-o6xu3r`, so the prefix is the
+  part before the first `/`. `session-open` must read it before step 2
+  detaches. A local session, or a prefix left empty, shows none.
+- The Status line (`TODO | ACTIVE | BLOCKED | DONE`) and the new holder lines
+  both use the word ACTIVE. They are different lines and stay so.
 
-**Round 1 of grilling, asked 2026-10-15.**
+**Decisions made.** MrFieldTech (prefix `grm`), 2026-10-15, round 1 of
+grilling.
 
-1. Who decides what? (a, recommended) The Owner keeps promotion to the default
-   branch, kit updates and any decision that changes a rule; each developer
-   answers the grilling for, closes and merges their own tasks. (b) Every
-   developer can do everything the Owner does. (c) A new setting lists each
-   developer with a role.
-2. Who counts as a developer? (a, recommended) Anyone with push access; no
-   setting to keep up. (b) Only the accounts a new Developers setting lists.
-3. How does a session know who is running it? (a, recommended) The GitHub
-   account behind the session's GitHub access, then `git config user.name`,
-   then it asks, recorded as the GitHub handle. (b) It always asks at open.
-4. How is a task held? (a, recommended) A `**Held by:** <handle>` line in the
-   block, set at claim; `session-open` lists other developers' tasks but
-   resumes one only when the developer says they are taking it over, which
-   rewrites the line. (b) Any developer resumes any parked task. (c) The branch
-   name carries the developer, `task/<handle>/<slug>`, which breaks the slug
-   limit and preview addresses.
-5. Is a task's pull request reviewed by another developer? (a, recommended) A
-   new setting, default `none`, keeps today's self-merge; set to a number of
-   approvals, the close leaves the pull request open for review and parks the
-   task under a new status until it merges. (b) Always self-merge. (c) Always
-   wait for one approval.
-6. How does `HANDOFF.md` take many closes? (a, recommended) One file: the
-   Session Log gains a Developer column and stops dropping old rows inside a
-   close, each open question names who it is for, and a close edits only
-   lines it added or answered. (b) A handoff file per developer. (c) Move the
-   Session Log out into per-session files, shared with `session-references`.
-7. Who answers for a stray? (a, recommended) A stray still stops the session,
-   but Other branches takes patterns such as `<handle>/*`, and a stray whose
-   commits are all by the developer running the session is theirs to answer.
-   (b) Only the Owner, as today.
+- **The organization is flat.** Every developer is the owner: anyone may
+  promote, take a kit update, answer any question and answer for a stray.
+  The kit builds in no hierarchy and no list of employees.
+- **A developer is anyone with push access** who works the repository with
+  Claude Code and the kit. No setting lists them.
+- **The session finds who runs it and never asks.** The handle is the GitHub
+  account behind the session's GitHub access. Developers given one shared
+  account are treated as that account. The Branch prefix from Claude Code
+  settings is recorded beside the handle, never added to a branch name.
+- **Any developer may resume any task,** with a warning when the task's
+  newest holder line is ACTIVE for another developer, meaning they never
+  dropped it by `session-close`. When `session-open` takes a task, it adds at
+  the top of the task's block a line `ACTIVE | <PREFIX> / <HANDLE> | <MMDDYY
+  HHMMSS>`, all in capitals. `session-close` adds above it, whatever the
+  task's status, `INACTIVE | <PREFIX> / <HANDLE> | <MMDDYY>`. The lines are
+  a running log of who touched the task, newest first.
+- **Pull requests are not reviewed.** Sessions keep merging their own. A
+  review option is a possible later feature of the kit, noted under Open
+  Questions in `HANDOFF.md` when this task closes.
+- **The kit may need a more distinctive name,** because Claude-Kit used
+  publicly is too generic. Noted under Open Questions in `HANDOFF.md` when
+  this task closes.
+- **One `HANDOFF.md`.** The Session Log gains a column for who worked and
+  stops dropping old rows inside a close, each open question names who
+  raised it or who it is for, and a close edits only the lines it added or
+  answered. No question is hidden from any developer: one looking into open
+  questions, or working the task a question concerns, is shown it whoever it
+  was for.
+- **The owners answer for a stray,** meaning whichever developer runs the
+  session, since every developer is an owner. Strays should still never
+  happen.
+- **Fix the promotion race** found above, whatever else is decided.
+
+**Stopping point.** Round 2 of grilling, below, is asked and waits on
+MrFieldTech, together with which of this task and `session-references` goes
+first. Next: record the answers, ask round 3 if anything opens, then change
+`HOUSE.md`, both skills, the templates, `check.sh`, `VERSION`,
+`CHANGELOG.md` and `README.md`.
+
+**Round 2 of grilling, asked 2026-10-15.**
+
+1. Which task goes first? (a, recommended) `multi-dev-setup`, so the
+   references `session-references` writes carry the prefix and handle from
+   their first release. (b) `session-references` first.
+2. Where does the session find the prefix? (a, recommended) The part before
+   the first `/` of the branch checked out when `session-open` starts, when it
+   is not the default, integration or a task branch; otherwise `NONE`. (b) A
+   new Session Settings key per repository, which a shared file cannot hold
+   per developer.
+3. When the GitHub access names no account? (a, recommended) `UNKNOWN` in
+   place of the handle, and the report says so. (b) Stop until GitHub access
+   is connected.
+4. Date format on the holder lines? (a, recommended) `YYMMDD HHMMSS` in UTC on
+   both lines, which sorts and matches the `session-references` file names.
+   (b) As given: `MMDDYY HHMMSS` on ACTIVE and `MMDDYY` on INACTIVE, in UTC.
+5. Does the warning stop the session? (a, recommended) Yes: it names who
+   holds the task and since when, and waits for the developer to say take it
+   over. (b) It is a line in the report and the session carries on.
+6. Where does a developer see open questions? (a, recommended) The step 6
+   report gains a `Questions:` line with the open questions that concern the
+   task being worked, and the count of the rest. (b) Every open question at
+   every open.
+7. The `HANDOFF.md` heading `Open Questions For <Owner>`, now that every
+   developer is an owner? (a, recommended) Rename it `Open Questions`, which
+   every updating repository applies. (b) Keep it, naming the repository's
+   account.
+8. What does the Owner setting mean now? (a, recommended) The account that
+   owns the repository, kept for First Run and the README; "the owner" in the
+   rules means the developer running the session. (b) Remove the setting.
 
 ## Closed Tasks
 
