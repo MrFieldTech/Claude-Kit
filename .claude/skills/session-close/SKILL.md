@@ -84,6 +84,16 @@ Set an `updated` field to today if there is one. Edit this task's block, and the
 block of any task this session opened or changed, and nothing else. Another
 session may be editing the rest.
 
+Directly under the task's heading, above its other holder lines, add one for
+this session, whatever the status below, with the UTC time now and the
+developer `session-open` named, by Developers in `.claude/kit/HOUSE.md`:
+
+```
+INACTIVE | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
+```
+
+It drops the task, so the next developer to open it finds it free.
+
 Set the status:
 
 - `DONE` when the work is finished. Move the block from Open Tasks to Closed
@@ -109,13 +119,15 @@ into it. Change only what this session produced or settled. Keep its format and
 the named headings below, in this order, and add nothing else.
 
 - **Purpose.** Unchanged between sessions.
-- **Session Log.** Add one row for this task: the date, the task slug and where
-  it ended, merged or parked, and the commit range of this session's work on its
+- **Session Log.** Add one row for this task: the date, the developer as
+  `<PREFIX> / <HANDLE>`, the task slug and where it ended, merged or parked,
+  and the commit range of this session's work on its
   branch. Never the handoff commit's own hash or the pull request number, which
   do not exist when the row is written. When the owner asked in this session
   for the merge into the default branch, the row says the task went there too,
-  and if step 9 cannot make that merge, its report says so. Keep the last ten
-  rows and drop older ones.
+  and if step 9 cannot make that merge, its report says so. Add rows at the top
+  and never remove one, because two closes that each only added a row merge
+  cleanly, and one that also removed a row conflicts.
 - **Blocked On.** Add, change or remove the row for any task this session
   blocked or unblocked.
 - **Credentials In Transit.** Values held here only when the Credentials
@@ -127,14 +139,16 @@ the named headings below, in this order, and add nothing else.
   Each value is whole in a fenced code block of its own. Otherwise `None`. If
   the file has a `has_secrets` field, set it to match.
 - **Decisions Made.** Add the decisions taken this session that are recorded
-  nowhere else, each with its reasoning in one line. A decision that governs
+  nowhere else, each with the developer who took it, the date, and its
+  reasoning in one line. A decision that governs
   future work belongs in the authority file, or in `CLAUDE.md` when there is
   none, so move it there and note the move here. Mark a decision this session
   overturned as superseded rather than deleting it.
-- **Open Questions For the owner,** under the heading that names them. Add
-  direct questions, each answerable in a sentence and carrying the context
-  needed to answer it without reading the rest of the file, and remove the ones
-  this session answered. Each proposal from the retrospective is one of these
+- **Open Questions.** Add direct questions, each answerable in a sentence,
+  carrying the context needed to answer it without reading the rest of the
+  file, and naming the developer who raised it, the date, and the task it
+  concerns when there is one. Remove the ones this session answered, whoever
+  raised them, since every developer is an owner. Each proposal from the retrospective is one of these
   questions, offering a task for it. A question that belongs to one file is a
   `TODO:` in that file, and is not repeated here.
 - **Flagged As Unverified.** Add anything assumed, inferred, or believed but not
@@ -315,7 +329,7 @@ of `session-open`. Do not
 infer it from the queue being empty, from the work looking finished, or from
 time passing.
 
-When they have asked, check all three before touching anything:
+When they have asked, check all four before touching anything:
 
 1. Every check passed on the code the integration branch holds. With no
    checks to wait for, that is already true when all three of these hold:
@@ -335,10 +349,15 @@ When they have asked, check all three before touching anything:
 3. No task is `ACTIVE` in `TASKS.md` on the integration branch. A task branch
    merges only when its task is `DONE` or `BLOCKED`, so this always holds unless
    something merged that should not have.
+4. No pull request into the integration branch is open, through the
+   session's GitHub access. Another developer's close may have one open and
+   waiting on its checks, and GitHub retargets it at the default branch when
+   the merge below deletes the integration branch.
 
-If any check fails, name which one and stop. Do not merge to tidy the branch.
+If any check fails, name which one and stop. For check 4, name the open pull
+request and its branch, so the owner can wait for it to merge. Do not merge to tidy the branch.
 
-When all three pass:
+When all four pass:
 
 1. Open the pull request from the integration branch into the default branch,
    titled after what it carries, with a body in the three parts step 8 gives:
@@ -414,7 +433,7 @@ numbered.
 ## Blocked On
 ## Credentials In Transit
 ## Decisions Made
-## Open Questions For <Owner>
+## Open Questions
 ## Flagged As Unverified
 ```
 
@@ -431,7 +450,9 @@ numbered.
 ### <Task Title>
 ```
 
-Each task heading is its title. Directly under it:
+Each task heading is its title. Directly under it, the holder lines, newest
+first, one per session that took or dropped the task, as Developers in
+`.claude/kit/HOUSE.md` gives them, then:
 
 ```markdown
 **Slug:** `<task-slug>`
