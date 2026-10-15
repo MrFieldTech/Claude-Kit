@@ -29,7 +29,16 @@ permanent and name the task's branch.
 | `BLOCKED` | Cannot proceed, and its `Blocked:` line says what would unblock it. A task whose remaining work only the owner can do stays here rather than leaving the queue |
 | `DONE` | Finished, merged, and moved to Closed Tasks |
 
-Each task's heading is its title, and directly under it:
+Each task's heading is its title. Directly under it are its holder lines,
+newest first, which record who took the task and who dropped it, as
+`.claude/kit/HOUSE.md` describes under Developers:
+
+```markdown
+INACTIVE | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
+ACTIVE | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
+```
+
+Then:
 
 ```markdown
 **Slug:** `<task-slug>`

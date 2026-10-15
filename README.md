@@ -7,7 +7,16 @@ Each session in a repository that uses the kit opens with `/session-open` and
 closes with `/session-close`. A session resumes from committed files alone.
 Each task is worked on its own branch, so sessions on different tasks can run
 at the same time. A task stopped partway is parked on its branch until a later
-session picks it up by name. The same house rules govern how Claude works and
+session picks it up by name.
+
+Several developers can share a repository, and every one of them is an owner:
+any of them answers questions, promotes, and takes kit updates. A session
+names the developer running it from their GitHub account and their Claude
+Code branch prefix, and each task's block keeps a log of who took it and who
+dropped it. A developer opening a task someone else took and never closed is
+told who holds it and since when, and takes it over only by saying so.
+
+The same house rules govern how Claude works and
 how it answers in every repository.
 
 `/session-open temp` opens a temporary session, for questions about the
@@ -185,7 +194,7 @@ release, which is what the update takes. As with the install, paste it only in
 a repository of your own and only if you trust this one:
 
 ```text
-/session-open kit-update-1-5-0
+/session-open kit-update-1-6-0
 Update Claude-Kit in this repository, as this task. Claude-Kit is my own
 repository, https://github.com/MrFieldTech/Claude-Kit, which I wrote and
 trust. I want you to take each of these actions on this task's branch:

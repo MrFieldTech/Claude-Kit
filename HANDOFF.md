@@ -11,18 +11,18 @@ file at the same time.
 
 ## Session Log
 
-| Date | Tasks touched | Work commits |
-|---|---|---|
-| 2026-10-12 | `secrets-self-sufficient`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.5.0 adds `secrets.py decrypt` and `keys`, a Node decrypter, the Secrets checks setting, and the setup a repository runs to take the secrets standard, and makes Credentials default to `none` | `7f3de9e..a96379a` |
-| 2026-10-12 | `secrets-self-sufficient`, ACTIVE, parked: opened from a private repository taking 1.4.0, with the owner's four decisions and the first round of open decisions in its block | `e3c86fe..083f57b` |
-| 2026-10-12 | `age-secrets`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.4.0 makes age encrypted `<slug>.secrets.md` files the kit standard for credentials | `471e2b4..c5c5162` |
-| 2026-10-11 | `workflow-practices`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.3.0 folds five practices and a pull request body into the session protocol | `c5394a9..f342a7b` |
-| 2026-10-01 | `preview-promotion`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.2.0 lets a temporary session promote the integration branch | `c5d170a..19e297c` |
-| 2026-09-30 | `readme-version-update`, DONE, merged into `preview`: the README's update block names the current release, and `check.sh` holds it to `VERSION` | `b7e7ae1..067e760` |
-| 2026-09-30 | `add-session-temp`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.1.0 adds `/session-open temp` | `db3756b..d48c4d3` |
-| 2026-09-28 | `multi-line-secrets`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.0.5 never commits a credential in plaintext | `3e8aa5b..a1a2427` |
-| 2026-09-27 | `go-public`, DONE, merged into `preview`: the repository is public | none, the handoff alone |
-| 2026-09-27 | `go-public`, BLOCKED, merged into `preview`: the pre-public review's fixes, with release 1.0.4 | `d5ef770..ef64e39` |
+| Date | Developer | Tasks touched | Work commits |
+|---|---|---|---|
+| 2026-10-12 | not recorded | `secrets-self-sufficient`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.5.0 adds `secrets.py decrypt` and `keys`, a Node decrypter, the Secrets checks setting, and the setup a repository runs to take the secrets standard, and makes Credentials default to `none` | `7f3de9e..a96379a` |
+| 2026-10-12 | not recorded | `secrets-self-sufficient`, ACTIVE, parked: opened from a private repository taking 1.4.0, with the owner's four decisions and the first round of open decisions in its block | `e3c86fe..083f57b` |
+| 2026-10-12 | not recorded | `age-secrets`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.4.0 makes age encrypted `<slug>.secrets.md` files the kit standard for credentials | `471e2b4..c5c5162` |
+| 2026-10-11 | not recorded | `workflow-practices`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.3.0 folds five practices and a pull request body into the session protocol | `c5394a9..f342a7b` |
+| 2026-10-01 | not recorded | `preview-promotion`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.2.0 lets a temporary session promote the integration branch | `c5d170a..19e297c` |
+| 2026-09-30 | not recorded | `readme-version-update`, DONE, merged into `preview`: the README's update block names the current release, and `check.sh` holds it to `VERSION` | `b7e7ae1..067e760` |
+| 2026-09-30 | not recorded | `add-session-temp`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.1.0 adds `/session-open temp` | `db3756b..d48c4d3` |
+| 2026-09-28 | not recorded | `multi-line-secrets`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.0.5 never commits a credential in plaintext | `3e8aa5b..a1a2427` |
+| 2026-09-27 | not recorded | `go-public`, DONE, merged into `preview`: the repository is public | none, the handoff alone |
+| 2026-09-27 | not recorded | `go-public`, BLOCKED, merged into `preview`: the pre-public review's fixes, with release 1.0.4 | `d5ef770..ef64e39` |
 
 ## Blocked On
 
@@ -133,7 +133,7 @@ repository it never does.
   own method, because finding another way is not the kit's job. The full
   decisions are in the `secrets-self-sufficient` block in `TASKS.md`.
 
-## Open Questions For MrFieldTech
+## Open Questions
 
 - **Should grilling write each round into the task's block before asking
   it?** `grilling.md` says every open question is written out in the block,
