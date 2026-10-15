@@ -188,11 +188,17 @@ grilling. The frontier is empty after it.
   First Run and the README. "The owner" in the rules means the developer
   running the session.
 
-**Stopping point.** Grilling is done. Next: change `HOUSE.md`, both skills,
-the `HANDOFF.md` template, `check.sh` where it reads either, `VERSION` to
-1.6.0, `CHANGELOG.md` with what an updating repository must do, and
-`README.md`'s update block to `kit-update-1-6-0`; then this repository's own
-`HANDOFF.md` heading and Session Log column.
+**Stopping point.** The work is done and `bash check.sh` passes: `HOUSE.md`
+gains Developers and redefines the owner, both skills and both templates
+carry the holder lines, the `Holder:` and `Questions:` report lines, the
+Developer column and the `Open Questions` heading, `session-close` step 9
+gains check 4 against an open pull request into the integration branch, and
+1.6.0 is recorded in `VERSION`, `CHANGELOG.md` and `README.md`. This
+repository's own `HANDOFF.md` has the new heading and column. Next:
+`/session-close`, which adds the two notes the owner asked for under Open
+Questions (a review option for pull requests later, a more distinctive name
+for the kit) and flags as unverified that two developers sharing one account
+with no branch prefix look like one developer, so neither is warned.
 
 ## Closed Tasks
 
