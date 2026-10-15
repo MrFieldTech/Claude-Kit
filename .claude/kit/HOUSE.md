@@ -6,8 +6,13 @@ Never edit it inside a project: a change goes to the kit and reaches the
 project by an update. The kit's own repository is the one place it is edited.
 
 Every value that differs between repositories is in the `## Session Settings`
-section of `CLAUDE.md`. Where these rules say "the owner", they mean the person
-the Owner setting names. The keys are defined at the end of this file.
+section of `CLAUDE.md`. The keys are defined at the end of this file.
+
+Where these rules say "the owner", they mean the developer running the
+session. Every developer is an owner: anyone who works the repository with
+Claude Code and this kit, with push access to it. Any of them may answer any
+question, promote the integration branch, take a kit update, and answer for a
+stray. Developers below says how a session knows which one it is.
 
 ## Which file wins
 
@@ -101,6 +106,43 @@ by hand: take either side and run the Regenerate commands again. Where both
 sides only added lines to `TASKS.md` or `HANDOFF.md`, keep both. Anything else
 stops the merge for the owner. Both sides are committed work, and picking one
 loses the other.
+
+## Developers
+
+Several developers can work one repository at once, each in their own
+sessions. A session names the developer running it as `<PREFIX> / <HANDLE>`,
+in capitals, which `session-open` settles before it takes a task:
+
+- **Handle.** The account behind the session's GitHub access. Developers who
+  share one account are that account. When the access names no account, the
+  session asks the developer for their GitHub handle, the one thing about
+  them it asks, and with no answer the handle is `UNKNOWN`.
+- **Prefix.** The Branch prefix from the developer's Claude Code settings, as
+  it shows in the branch the harness checked out before the session began:
+  the part before its first `/`, when that branch is not the default branch,
+  the integration branch, an Other branch or a task branch. With none, the
+  name is the handle alone and `/` is left out. The prefix is never added to
+  a branch name.
+
+**Holder lines.** Directly under each task's heading, newest first, a log of
+who held the task:
+
+```
+ACTIVE | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
+INACTIVE | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
+```
+
+`session-open` adds an `ACTIVE` line when it takes a task, and
+`session-close` adds an `INACTIVE` line above it, whatever the task's status.
+Times are UTC. A task whose top holder line is `ACTIVE` for another developer
+is held: they took it and have not closed it, whether they are working it now
+or their session ended without a close. Any developer may take it over, but
+only once told who holds it and since when, and only when they say so.
+
+Decisions and open questions are recorded with the developer's name and the
+date. Every open question is shown to every developer: whoever works the task
+a question concerns, or asks about open questions, is given it, whoever raised
+it.
 
 ## State files
 
@@ -220,8 +262,8 @@ this order. `session-open` sets every value the first time it runs in a
 repository and asks only about what it cannot settle. Change a value there,
 never in a kit-owned file.
 
-- **Owner.** Whoever answers the questions and alone asks for the default
-  branch to move. The account that owns the repository unless changed.
+- **Owner.** The account that owns the repository. It does not limit who
+  answers: every developer is an owner, by Developers above.
 - **Authority file.** A file that overrides `CLAUDE.md`, this file and both
   skills, or `none`.
 - **Default branch.** Production, usually `main`.

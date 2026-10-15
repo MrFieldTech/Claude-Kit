@@ -4,7 +4,7 @@ Every change to a kit-owned file is a release, recorded here with the version
 `VERSION` carries. A project's `/session-open` reports when a newer release
 exists, and the project takes it by `kit.sh update` when its owner asks.
 
-## 1.6.0
+## 1.7.0
 
 Session references: each session leaves its facts where another repository
 can import them.
@@ -12,7 +12,7 @@ can import them.
 - `session-close` writes a session reference at every close, one per task
   branch, at `.claude/references/<yymmddhhmmss>-<task-slug>.md`, the time
   in UTC, from `.claude/kit/templates/reference.md`: the task and its
-  commit range, current state, decisions and who made them, verified facts
+  commit range, the developer who ran the session as `<PREFIX> / <HANDLE>`, current state, decisions and who made them, verified facts
   with their sources, exact values, artifacts, gotchas, what is unverified,
   open questions, credentials by label, and one block per subject. It is
   never edited once committed. `HANDOFF.md` is written as before.
@@ -53,6 +53,43 @@ standard`, move each into a companion with `secrets.py place`, or into its
 home, and delete the heading after. Keep the heading when the authority
 file requires it. A public repository turns on secret scanning with push
 protection. Imports stay off until the owner asks for them.
+
+## 1.6.0
+
+Several developers can work one repository, each in their own sessions, with
+no hierarchy between them.
+
+- Every developer is an owner: anyone with push access who works the
+  repository with Claude Code and the kit may answer any question, promote
+  the integration branch, take a kit update and answer for a stray. The
+  Owner setting now only names the account that owns the repository.
+- A session names the developer running it, `<PREFIX> / <HANDLE>`, under
+  Developers in `HOUSE.md`: the handle from the session's GitHub account,
+  asked for only when the access names none, and the prefix from the Claude
+  Code Branch prefix as it shows in the branch the session started on. The
+  prefix is never added to a branch name.
+- Each task's block opens with holder lines, newest first: `session-open`
+  adds `ACTIVE | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>` when it takes the
+  task, and `session-close` adds an `INACTIVE` line above it, whatever the
+  task's status. Times are UTC.
+- `session-open` stops before taking a task whose top holder line is
+  `ACTIVE` for another developer, says who holds it and since when, and takes
+  it over only when the developer says so.
+- The `session-open` report gains a `Holder:` line, and a `Questions:` line
+  with the open questions that concern the task and a count of the rest.
+  Every open question is shown to any developer who asks.
+- `HANDOFF.md`: the Session Log gains a Developer column and keeps every row,
+  so two closes that each add one merge cleanly. Decisions and open
+  questions name the developer who made or raised them. The heading `Open
+  Questions For <Owner>` becomes `Open Questions`.
+- `session-close` step 9 refuses to promote while a pull request into the
+  integration branch is open, which the deleted integration branch would
+  otherwise retarget at the default branch.
+
+After updating: in `HANDOFF.md`, rename `## Open Questions For <Owner>` to
+`## Open Questions`, and add a Developer column to the Session Log, second,
+writing `not recorded` in each existing row. In `CLAUDE.md`, nothing changes.
+Existing tasks gain holder lines the next time a session takes them.
 
 ## 1.5.0
 

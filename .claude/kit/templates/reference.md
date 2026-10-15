@@ -2,6 +2,7 @@
 
 **Task:** `<task-slug>`, <DONE | BLOCKED | ACTIVE> at close
 **Repository:** <owner>/<repository>
+**Developer:** <PREFIX> / <HANDLE>
 **Written:** <YYYY-MM-DD hh:mm:ss> UTC
 **Commits:** `<first>..<last>` on `task/<task-slug>`, or none
 **Companion:** `<yymmddhhmmss>-<task-slug>.secrets.md`, or none
@@ -12,7 +13,8 @@
 
 ## Decisions
 
-- <The decision.> <Who made it>, <YYYY-MM-DD>.
+- <The decision.> <PREFIX> / <HANDLE> of the developer who made it,
+  <YYYY-MM-DD>.
 
 ## Verified Facts
 

@@ -11,18 +11,19 @@ file at the same time.
 
 ## Session Log
 
-| Date | Tasks touched | Work commits |
-|---|---|---|
-| 2026-10-12 | `secrets-self-sufficient`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.5.0 adds `secrets.py decrypt` and `keys`, a Node decrypter, the Secrets checks setting, and the setup a repository runs to take the secrets standard, and makes Credentials default to `none` | `7f3de9e..a96379a` |
-| 2026-10-12 | `secrets-self-sufficient`, ACTIVE, parked: opened from a private repository taking 1.4.0, with the owner's four decisions and the first round of open decisions in its block | `e3c86fe..083f57b` |
-| 2026-10-12 | `age-secrets`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.4.0 makes age encrypted `<slug>.secrets.md` files the kit standard for credentials | `471e2b4..c5c5162` |
-| 2026-10-11 | `workflow-practices`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.3.0 folds five practices and a pull request body into the session protocol | `c5394a9..f342a7b` |
-| 2026-10-01 | `preview-promotion`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.2.0 lets a temporary session promote the integration branch | `c5d170a..19e297c` |
-| 2026-09-30 | `readme-version-update`, DONE, merged into `preview`: the README's update block names the current release, and `check.sh` holds it to `VERSION` | `b7e7ae1..067e760` |
-| 2026-09-30 | `add-session-temp`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.1.0 adds `/session-open temp` | `db3756b..d48c4d3` |
-| 2026-09-28 | `multi-line-secrets`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.0.5 never commits a credential in plaintext | `3e8aa5b..a1a2427` |
-| 2026-09-27 | `go-public`, DONE, merged into `preview`: the repository is public | none, the handoff alone |
-| 2026-09-27 | `go-public`, BLOCKED, merged into `preview`: the pre-public review's fixes, with release 1.0.4 | `d5ef770..ef64e39` |
+| Date | Developer | Tasks touched | Work commits |
+|---|---|---|---|
+| 2026-10-15 | GRM / MRFIELDTECH | `multi-dev-setup`, DONE, merged into `preview`: release 1.6.0 lets several developers share a repository, every one an owner, with holder lines on each task | `824ed6f..fe201c3` |
+| 2026-10-12 | not recorded | `secrets-self-sufficient`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.5.0 adds `secrets.py decrypt` and `keys`, a Node decrypter, the Secrets checks setting, and the setup a repository runs to take the secrets standard, and makes Credentials default to `none` | `7f3de9e..a96379a` |
+| 2026-10-12 | not recorded | `secrets-self-sufficient`, ACTIVE, parked: opened from a private repository taking 1.4.0, with the owner's four decisions and the first round of open decisions in its block | `e3c86fe..083f57b` |
+| 2026-10-12 | not recorded | `age-secrets`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.4.0 makes age encrypted `<slug>.secrets.md` files the kit standard for credentials | `471e2b4..c5c5162` |
+| 2026-10-11 | not recorded | `workflow-practices`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.3.0 folds five practices and a pull request body into the session protocol | `c5394a9..f342a7b` |
+| 2026-10-01 | not recorded | `preview-promotion`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.2.0 lets a temporary session promote the integration branch | `c5d170a..19e297c` |
+| 2026-09-30 | not recorded | `readme-version-update`, DONE, merged into `preview`: the README's update block names the current release, and `check.sh` holds it to `VERSION` | `b7e7ae1..067e760` |
+| 2026-09-30 | not recorded | `add-session-temp`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.1.0 adds `/session-open temp` | `db3756b..d48c4d3` |
+| 2026-09-28 | not recorded | `multi-line-secrets`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.0.5 never commits a credential in plaintext | `3e8aa5b..a1a2427` |
+| 2026-09-27 | not recorded | `go-public`, DONE, merged into `preview`: the repository is public | none, the handoff alone |
+| 2026-09-27 | not recorded | `go-public`, BLOCKED, merged into `preview`: the pre-public review's fixes, with release 1.0.4 | `d5ef770..ef64e39` |
 
 ## Blocked On
 
@@ -133,7 +134,29 @@ repository it never does.
   own method, because finding another way is not the kit's job. The full
   decisions are in the `secrets-self-sufficient` block in `TASKS.md`.
 
-## Open Questions For MrFieldTech
+- **Every developer is an owner, and a session records who it is.**
+  GRM / MRFIELDTECH, 2026-10-15. The organization is flat, so the kit
+  builds in no hierarchy or employee list. A session names its developer
+  from the GitHub account and the Claude Code branch prefix, and each task
+  keeps ACTIVE and INACTIVE holder lines. The full decisions are in the
+  `multi-dev-setup` block in `TASKS.md`.
+- **Developers sharing one GitHub account are their own responsibility.**
+  GRM / MRFIELDTECH, 2026-10-15. They look like one developer and neither
+  is warned, but adding a collaborator is easy.
+- **`multi-dev-setup` went before `session-references`.** GRM /
+  MRFIELDTECH, 2026-10-15, so references carry the developer from their
+  first release, which moves `session-references` to 1.7.0.
+
+## Open Questions
+
+- **Should the kit offer a review step for task pull requests?** Raised by
+  GRM / MRFIELDTECH, 2026-10-15, in `multi-dev-setup`. Sessions merge their
+  own pull requests, and a repository whose branch protection requires an
+  approval would park every task at close. Not wanted now; open a task when
+  it is?
+- **Should the kit take a more distinctive name?** Raised by GRM /
+  MRFIELDTECH, 2026-10-15. Claude-Kit used publicly is too generic. Open a
+  task to choose one?
 
 - **Should grilling write each round into the task's block before asking
   it?** `grilling.md` says every open question is written out in the block,
@@ -157,6 +180,17 @@ repository it never does.
   Open a task for it?
 
 ## Flagged As Unverified
+
+**No session has run 1.6.0's open or close from start to finish.** This
+session opened under 1.5.0 and wrote its own holder lines by hand. The next
+`/session-open` verifies the prefix read from the harness branch, the
+`Holder:` and `Questions:` lines, and the held-task warning; the next close
+verifies the INACTIVE line and step 9's check 4.
+
+**How a local session shows the branch prefix.** The prefix was read only
+from a cloud session's harness branch, `grm/elegant-hypatia-o6xu3r`. Whether
+a local session starts on a prefixed branch, or shows the prefix at all, has
+not been tried; without one its holder line carries the handle alone.
 
 **The Node decrypter has been checked against one version of
 `age-encryption`.** Locally, `check.sh` matched its output to `secrets.py

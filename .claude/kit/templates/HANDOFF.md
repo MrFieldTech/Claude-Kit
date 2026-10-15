@@ -11,8 +11,8 @@ file at the same time.
 
 ## Session Log
 
-| Date | Tasks touched | Work commits |
-|---|---|---|
+| Date | Developer | Tasks touched | Work commits |
+|---|---|---|---|
 
 ## Blocked On
 
@@ -22,7 +22,7 @@ None.
 
 None yet.
 
-## Open Questions For <Owner>
+## Open Questions
 
 None.
 

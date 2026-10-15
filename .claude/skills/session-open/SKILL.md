@@ -1,7 +1,7 @@
 ---
 name: session-open
 description: >-
-  Start a Claude Code session in a repository that uses Claude-Kit. Takes an optional task slug: an existing task resumes on its branch, a slug that names no task starts a new task under that name, settled by grilling before its block is written, and with no slug it lists the parked task branches and queued tasks and asks. In a repository that has never used the kit, it proposes the Session Settings and builds TASKS.md and HANDOFF.md first. Reads the authority file, CLAUDE.md, TASKS.md and HANDOFF.md, reports the kit's version and any stray branch, puts the session on the task's own branch, task/<task-slug>, and works the task from the stopping point in its block. With the argument temp it opens a temporary session instead: it reads and reports the same way, answers questions without taking a branch or writing anything, merges the integration branch into the default branch when the owner asks, and turns what is to be kept or built into tasks when the owner asks. With the argument import it imports the session references of the repositories REFERENCES.md names, on a task of its own. Runs only when the owner invokes /session-open.
+  Start a Claude Code session in a repository that uses Claude-Kit. Takes an optional task slug: an existing task resumes on its branch, a slug that names no task starts a new task under that name, settled by grilling before its block is written, and with no slug it lists the parked task branches and queued tasks and asks. In a repository that has never used the kit, it proposes the Session Settings and builds TASKS.md and HANDOFF.md first. Names the developer running it from their GitHub account and Claude Code branch prefix, warns before taking a task another developer still holds, and records who took each task. Reads the authority file, CLAUDE.md, TASKS.md and HANDOFF.md, reports the kit's version and any stray branch, puts the session on the task's own branch, task/<task-slug>, and works the task from the stopping point in its block. With the argument temp it opens a temporary session instead: it reads and reports the same way, answers questions without taking a branch or writing anything, merges the integration branch into the default branch when the owner asks, and turns what is to be kept or built into tasks when the owner asks. With the argument import it imports the session references of the repositories REFERENCES.md names, on a task of its own. Runs only when the owner invokes /session-open.
 disable-model-invocation: true
 ---
 
@@ -24,7 +24,14 @@ steps in order. Do not skip ahead to the work. The exceptions are
 and `/session-open import`, which imports by Import, both at the end of this
 file.
 
-## 1. Fetch everything
+## 1. Find the developer and fetch everything
+
+Before anything checks out another branch, note the branch the session
+started on, with `git rev-parse --abbrev-ref HEAD`. Then name the developer
+running the session, `<PREFIX> / <HANDLE>`, by Developers in
+`.claude/kit/HOUSE.md`: the handle from the account behind the session's
+GitHub access, and the prefix from the branch just noted. Ask for the handle
+only when the GitHub access names no account.
 
 ```
 git fetch origin "+refs/heads/*:refs/remotes/origin/*" --prune
@@ -159,8 +166,8 @@ it in the first round.
 same way, choosing a slug that keeps the rule below.
 
 **e. They named nothing and asked for nothing.** List every task branch with
-its task's title, status, stopping point and preview address when there is
-one, then every task under Open Tasks that has no branch and is not `BLOCKED`,
+its task's title, status, top holder line, stopping point and preview
+address when there is one, then every task under Open Tasks that has no branch and is not `BLOCKED`,
 and ask whether to resume one, start one, or start something new. With nothing
 to list, say so and ask what the new task is. Do not invent work. Stop until
 they answer.
@@ -172,6 +179,12 @@ slug limit, unique among tasks, none of the Reserved slugs, never `temp` or
 A task branch the owner did not name or choose is never taken. A parked branch
 and one another session is working look the same, and two sessions on one task
 is the collision the task branches exist to prevent.
+
+**A held task.** Read the top holder line of the chosen task's block, on its
+branch when it has one. When it is `ACTIVE` for another developer, the task is
+held: say who holds it and since when, that they may be working it right now
+or may have ended their session without a close, and stop until the owner
+says to take it over. When they do not, go back to this step without it.
 
 ## 5. Get onto the task branch
 
@@ -186,6 +199,8 @@ git merge --no-edit origin/<default branch>
 The last merge is a no-op in the usual case and it is cheap. It matters when the
 default branch carries a merge that the integration branch does not.
 
+Add the holder line below, commit, and push.
+
 **If it does not exist, create it and claim it:**
 
 ```
@@ -194,14 +209,21 @@ git merge --no-edit origin/<default branch>
 ```
 
 Set the task's status to `ACTIVE` in its block, or add the block for cases c
-and d, commit, and push at once:
+and d, add the holder line below, commit, and push at once:
 
 ```
 git push -u origin task/<slug>
 ```
 
-The pushed branch is the claim. A session opening after this one sees the task
-as taken. If the push is rejected because the branch now exists, another
+**The holder line.** Directly under the task's heading, above any holder
+lines already there, add one for this session, with the UTC time now:
+
+```
+ACTIVE | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
+```
+
+The pushed branch is the claim, and the holder line says whose it is. A
+session opening after this one sees the task as taken. If the push is rejected because the branch now exists, another
 session claimed the task first: tell the owner and go back to step 4 without
 it.
 
@@ -232,13 +254,20 @@ Branch:   task/<slug> <resumed at <hash> | created from <the base branch's name>
 Preview:  <the Task preview address with the slug in it | none>
 Base:     <origin/<integration branch> at <hash> | origin/<default branch> at <hash>, <integration branch> absent>
 Kit:      <the line kit.sh status printed>
-Parked:   <none | the other task branches, each with its task's status>
+Holder:   <the holder line this session added>
+Parked:   <none | the other task branches, each with its task's status and top holder line>
 Strays:   <none | branch names and any open pull request into the integration branch>
+Questions: <none | each open question in HANDOFF.md that concerns this task, then N others>
 Next:     <the stopping point in the task's block, or its first step>
 ```
 
 With `Integration branch: none`, the `Base:` line names the default branch
-alone. A preview address serves the newest build of the task branch. For a
+alone. With the handle `UNKNOWN`, the `Holder:` line says the GitHub access
+named no account and the owner gave no handle. The `Questions:` line takes
+each question under Open Questions in `HANDOFF.md` that names this task, its
+files or a decision its block leaves open, in a word or two each, and counts
+the rest. Every one of them is shown in full whenever the owner asks about
+open questions, whoever raised it. A preview address serves the newest build of the task branch. For a
 branch created in this step, the host builds it from the push that claimed it,
 so the address works a few minutes later; say so on the `Preview:` line.
 
@@ -297,8 +326,9 @@ Task:     none, temporary session
 Branch:   none, detached at <the base branch's name> <hash>
 Base:     <as in step 6>
 Kit:      <the line kit.sh status printed>
-Parked:   <none | the task branches, each with its task's status>
+Parked:   <none | the task branches, each with its task's status and top holder line>
 Strays:   <none | as in step 6>
+Questions: <none | the number of open questions in HANDOFF.md>
 ```
 
 **Promoting the integration branch.** The owner may ask, in any words, for
@@ -504,8 +534,7 @@ first, by the command in the kit's README.
      `.claude/kit/templates/CLAUDE.md`.
    - `TASKS.md` from `.claude/kit/templates/TASKS.md`, with the first task's
      block under Open Tasks.
-   - `HANDOFF.md` from `.claude/kit/templates/HANDOFF.md`, with its Open
-     Questions heading naming the owner.
+   - `HANDOFF.md` from `.claude/kit/templates/HANDOFF.md`.
    - Whatever the Regenerate commands write, by running them.
    - The kit's paths, in any list of the repository's files that a
      `README.md` or contributing guide keeps.

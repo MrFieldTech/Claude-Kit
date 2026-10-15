@@ -10,7 +10,7 @@ import got. `/session-open import` reads it and the import task writes it.
 
 **Import procedure:** <kit default | the file and heading that give this
 repository's own>
-**Default warning:** <shown | dismissed by <owner>, <YYYY-MM-DD>>
+**Default warning:** <shown | dismissed by <PREFIX> / <HANDLE>, <YYYY-MM-DD>>
 
 ## Sources
 

@@ -29,7 +29,16 @@ permanent and name the task's branch.
 | `BLOCKED` | Cannot proceed, and its `Blocked:` line says what would unblock it. A task whose remaining work only the owner can do stays here rather than leaving the queue |
 | `DONE` | Finished, merged, and moved to Closed Tasks |
 
-Each task's heading is its title, and directly under it:
+Each task's heading is its title. Directly under it are its holder lines,
+newest first, which record who took the task and who dropped it, as
+`.claude/kit/HOUSE.md` describes under Developers:
+
+```markdown
+INACTIVE | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
+ACTIVE | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
+```
+
+Then:
 
 ```markdown
 **Slug:** `<task-slug>`
@@ -44,6 +53,8 @@ Then the detail block, as prose.
 ## Open Tasks
 
 ### Write Session References And Import Them Into Other Repositories
+
+ACTIVE | GRM / MRFIELDTECH | 261015 220409
 
 **Slug:** `session-references`
 **Status:** ACTIVE
@@ -112,8 +123,8 @@ into a repository that asks for them and turns them into its own content.
   checked for the owner's other projects.
 - The slug `import-<yymmddhhmmss>` is 19 characters, inside the default
   Task slug limit of 23.
-- Version 1.5.0 is current; this is 1.6.0, new features with no breaking
-  change.
+- Version 1.5.0 was current when this opened, so this was 1.6.0, new
+  features with no breaking change. It became 1.7.0 on 2026-10-15.
 
 **Decisions made.** MrFieldTech, 2026-10-14, round 1 of grilling.
 
@@ -193,7 +204,7 @@ Grilling is done: the frontier is empty.
 - `secrets.py` and `secrets-decrypt.mjs`: decrypt skips `.claude/references/`.
 - `check.sh`: private terms over `.claude/references/`, the decrypt skip,
   the new templates. `CLAUDE.md`: the redaction rule.
-- Release 1.6.0: `VERSION`, `CHANGELOG.md`, `README.md`.
+- Release 1.7.0: `VERSION`, `CHANGELOG.md`, `README.md`.
 
 **Round 2, as asked** (answered above):
 
@@ -261,14 +272,197 @@ Grilling is done: the frontier is empty.
     `.claude/references/` here (recommended); b) also its address check;
     c) neither.
 
-**Stopping point.** Built, every item under The build, and `bash
-check.sh` passes on it. Next: `/session-close` merges it into `preview`.
-Before the first real import, the private repository whose
-procedure the default follows needs its authority file to name an import
-procedure, its own or the kit default, and it copies no credential until
-it switches to `kit standard`.
+**Decisions made.** MrFieldTech, `GRM / MRFIELDTECH`, 2026-10-15, folding
+in release 1.6.0, `multi-dev-setup`, which merged into `preview` ahead of
+this task by MrFieldTech's decision and was merged onto this branch.
+
+- This release is 1.7.0, not 1.6.0, and its README update slug is
+  `kit-update-1-7-0`.
+- Each session reference records the developer who ran the session as
+  `<PREFIX> / <HANDLE>`, as the holder lines do, and the decisions in it
+  name the developer who made each.
+- The writer goes into `session-close` as 1.6.0 left it: step 3 adds an
+  `INACTIVE` holder line and step 4 adds a Developer column to the Session
+  Log. The `HANDOFF.md` heading is `Open Questions`.
+- Every developer is an owner, so the import's questions go to whichever
+  developer runs the session.
+
+**Open, after folding in 1.6.0** (asked 2026-10-15, recommended answer
+first):
+
+1. Two developers running `/session-open import` at once would import the
+   same references and both edit the same `REFERENCES.md` rows, which
+   conflicts at merge and parks the second task. a) An import refuses to
+   start while another `import-` task branch exists, naming its holder from
+   its holder lines, and the developer may take that task over instead
+   (recommended); b) allow it and let the merge rule park the second.
+2. Open questions in `HANDOFF.md` now name the developer who raised them.
+   An imported question was raised in its source. a) It names the source's
+   developer from the reference's Developer line and the source
+   repository, as `<PREFIX> / <HANDLE> in <owner>/<repository>`
+   (recommended); b) it names the developer who ran the import.
+
+**Stopping point.** 1.6.0 is merged onto this branch, renumbered to 1.7.0,
+and the two merge conflicts it raised, both sides only adding (the
+`session-open` description and the top `CHANGELOG.md` entry), keep both.
+Next: add the developer to the reference template and `references.md`,
+record the answers above, run `bash check.sh`, then `/session-close`.
+Before the first real import, the private repository whose procedure the
+default follows needs its authority file to name an import procedure, its
+own or the kit default, and it copies no credential until it switches to
+`kit standard`.
 
 ## Closed Tasks
+
+### Run The Session Protocol With Several Developers
+
+INACTIVE | GRM / MRFIELDTECH | 261015 214746
+ACTIVE | GRM / MRFIELDTECH | 261015 004741
+
+**Slug:** `multi-dev-setup`
+**Status:** DONE
+**Opened:** 2026-10-15
+**Closed:** 2026-10-15
+
+**Why.** MrFieldTech, 2026-10-15: "Right now the session open/close mechanic
+is mainly built around a single dev handling multiple tasks/branches. How can
+we redevelop the process to handle multiple devs with multiple
+tasks/branches?" The kit should let several people, each running their own
+sessions, work one repository's queue without taking each other's tasks,
+overwriting each other's state, or merging into each other's way.
+
+**Facts looked up, 2026-10-15.** Where the protocol assumes one developer:
+
+- **One person answers everything.** The Owner setting names whoever answers
+  every question, alone asks for the default branch to move, and alone
+  decides a kit update. `HANDOFF.md` has one `Open Questions For <Owner>`
+  heading, and grilling puts every decision to the owner.
+- **A task branch says it is taken, not by whom.** `session-open` step 4
+  never takes a branch nobody named, because a parked branch and one another
+  session is working look the same. With one developer, a branch they name is
+  theirs. With several, a developer can name, and resume, a branch another
+  developer parked or is working right now. No line in a task's block records
+  who holds it.
+- **The session never learns who is running it.** Nothing in either skill
+  reads a GitHub account or `git config user.name`. Decisions are recorded
+  with the owner's name, and the Session Log has no column for who worked.
+- **Every close edits the top of shared tables.** Each close adds a row to the
+  top of the Session Log and edits Open Questions, Decisions Made and Flagged
+  As Unverified in `HANDOFF.md`. The conflict rule keeps both sides only where
+  both only added lines, so a dropped row (the log keeps ten) or an edited
+  question conflicts and parks the task. More developers means more of these.
+- **A promotion can strand another developer's pull request.** `session-close`
+  step 9 does not check for an open pull request into the integration branch;
+  only the temporary session's promotion does. If one developer promotes while
+  another's close has a pull request open into it, GitHub deletes the
+  integration branch and retargets that pull request at the default branch.
+  This is a fix the task makes whatever the decisions below.
+- **The session merges its own pull request.** No one else reviews it. A
+  repository whose branch protection requires an approval would park every
+  task at close.
+- **A stray stops every session.** `session-open` step 3 stops until the owner
+  answers. A branch another developer made, or their tool made, stops every
+  developer's session, and only the owner can answer for it.
+- **Two new tasks under one slug collide safely.** The second push of
+  `task/<slug>` is rejected and step 5 sends that session back to step 4.
+  Blocks added to `TASKS.md` on two branches are added lines, which the
+  conflict rule keeps.
+- **`session-references` is parked and also changes `session-close`.** Its
+  references would record who ran each session if this task adds identity.
+  Whichever merges second merges the other in.
+
+**Facts looked up, 2026-10-15, after round 1.**
+
+- The GitHub connector's `get_me` returns the account behind the session,
+  `MrFieldTech` here. `git config user.name` in a cloud container reads
+  `Claude`, so it names no one and is no fallback.
+- The Claude Code Branch prefix setting is not in the session's environment
+  or in any settings file the container holds. A cloud session sees it only
+  in the branch the harness assigned and checked out before any skill runs:
+  this session started on `grm/elegant-hypatia-o6xu3r`, so the prefix is the
+  part before the first `/`. `session-open` must read it before step 2
+  detaches. A local session, or a prefix left empty, shows none.
+- The Status line (`TODO | ACTIVE | BLOCKED | DONE`) and the new holder lines
+  both use the word ACTIVE. They are different lines and stay so.
+
+**Decisions made.** MrFieldTech (prefix `grm`), 2026-10-15, round 1 of
+grilling.
+
+- **The organization is flat.** Every developer is the owner: anyone may
+  promote, take a kit update, answer any question and answer for a stray.
+  The kit builds in no hierarchy and no list of employees.
+- **A developer is anyone with push access** who works the repository with
+  Claude Code and the kit. No setting lists them.
+- **The session finds who runs it and never asks.** The handle is the GitHub
+  account behind the session's GitHub access. Developers given one shared
+  account are treated as that account. The Branch prefix from Claude Code
+  settings is recorded beside the handle, never added to a branch name.
+- **Any developer may resume any task,** with a warning when the task's
+  newest holder line is ACTIVE for another developer, meaning they never
+  dropped it by `session-close`. When `session-open` takes a task, it adds at
+  the top of the task's block a line `ACTIVE | <PREFIX> / <HANDLE> | <MMDDYY
+  HHMMSS>`, all in capitals. `session-close` adds above it, whatever the
+  task's status, `INACTIVE | <PREFIX> / <HANDLE> | <MMDDYY>`. The lines are
+  a running log of who touched the task, newest first.
+- **Pull requests are not reviewed.** Sessions keep merging their own. A
+  review option is a possible later feature of the kit, noted under Open
+  Questions in `HANDOFF.md` when this task closes.
+- **The kit may need a more distinctive name,** because Claude-Kit used
+  publicly is too generic. Noted under Open Questions in `HANDOFF.md` when
+  this task closes.
+- **One `HANDOFF.md`.** The Session Log gains a column for who worked and
+  stops dropping old rows inside a close, each open question names who
+  raised it or who it is for, and a close edits only the lines it added or
+  answered. No question is hidden from any developer: one looking into open
+  questions, or working the task a question concerns, is shown it whoever it
+  was for.
+- **The owners answer for a stray,** meaning whichever developer runs the
+  session, since every developer is an owner. Strays should still never
+  happen.
+- **Fix the promotion race** found above, whatever else is decided.
+
+**Decisions made.** MrFieldTech (prefix `grm`), 2026-10-15, round 2 of
+grilling. The frontier is empty after it.
+
+- **This task goes before `session-references`,** so references carry the
+  prefix and handle from their first release. This is 1.6.0, and
+  `session-references` moves to the next version.
+- **The prefix is the part before the first `/` of the branch checked out
+  when `session-open` starts,** read before step 2 detaches, when that branch
+  is not the default branch, the integration branch, an Other branch or a
+  task branch. With no prefix, the line leaves it out:
+  `ACTIVE | <HANDLE> | <date>`, never `NONE`.
+- **When the GitHub access names no account,** the session asks the developer
+  for their GitHub handle, the one case it asks. With no answer, the handle
+  is `UNKNOWN` and the report says so.
+- **Holder lines date in UTC as `YYMMDD HHMMSS` on both ACTIVE and
+  INACTIVE,** in place of the formats first given. Within a block the newest
+  line is the top one, so nothing sorts there; the format lets the lines of
+  several tasks be compared or sorted as text, across years, and matches the
+  `session-references` file names.
+- **The warning stops the session.** It names who holds the task and since
+  when, and waits for the developer to say take it over.
+- **The `session-open` report gains a `Questions:` line** with the open
+  questions that concern the task being worked and a count of the rest.
+  Today `session-open` reads `HANDOFF.md` in full but no step shows its Open
+  Questions, so a question surfaces only if a session happens to mention it.
+- **The heading becomes `## Open Questions`,** which every updating
+  repository applies.
+- **The Owner setting stays as the account that owns the repository,** for
+  First Run and the README. "The owner" in the rules means the developer
+  running the session.
+
+**Outcome.** Release 1.6.0, checked by `bash check.sh`: `HOUSE.md` gains
+Developers and makes every developer an owner, both skills and both templates
+carry the holder lines, the `Holder:` and `Questions:` report lines, the
+Developer column and the `Open Questions` heading, and `session-close` step 9
+gains check 4 against an open pull request into the integration branch. This
+repository's own `HANDOFF.md` took the new heading and column.
+
+**Decision at close.** MrFieldTech (prefix `grm`), 2026-10-15: two people
+sharing one GitHub account with no branch prefix look like one developer, and
+the kit does nothing about it. Adding a collaborator is easy, so sharing an
+account is their own responsibility.
 
 ### Make The Kit's Secrets Standard Self-Sufficient
 

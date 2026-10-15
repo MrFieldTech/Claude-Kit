@@ -18,6 +18,9 @@ there, in that order. Under a heading with nothing to record, write `None.`
 A session that learned nothing worth keeping still writes one, with `None.`
 under every heading after Current State.
 
+- **Who.** The Developer line names the developer who ran the session, as
+  `<PREFIX> / <HANDLE>`, by Developers in `.claude/kit/HOUSE.md`, and each
+  decision names the developer who made it the same way.
 - **Facts, not documentation.** Each line is one fact a later reader can
   check, in the words the session would use to say it, not a polished page.
   A fact a reader must trust carries its source.
@@ -163,7 +166,8 @@ Used when `REFERENCES.md` names `kit default`. While its Default warning is
 that this repository's own way probably differs, and asks once:
 
 1. Keep the default and stop the warning: the Default warning becomes
-   `dismissed by <owner>, <date>`.
+   `dismissed by <PREFIX> / <HANDLE>, <date>`, naming the developer who
+   answered.
 2. Write this repository's own procedure: a few questions on where facts,
    values and credentials belong here, answered into `CLAUDE.md` under a
    heading of its own, which `REFERENCES.md` then names.
