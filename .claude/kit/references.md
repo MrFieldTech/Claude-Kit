@@ -107,7 +107,8 @@ references are the files under `.claude/references/` ending in `.md` but not
 git diff --name-only --diff-filter=A <read at>..<head> -- .claude/references/
 ```
 
-With Read at `none`, every reference is new. A reference that merges late
+A shallow clone may not hold Read at, so run `git fetch --unshallow` in a
+shallow one first. With Read at `none`, every reference is new. A reference that merges late
 is caught this way even when an older name sorts it before the last one
 imported. When Read at is no longer in the source's history, take every
 reference named later than Last reference imported, and say so in the
