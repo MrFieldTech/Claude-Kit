@@ -312,8 +312,42 @@ folding in 1.6.0.
 - Before 1.6.0 the Session Log kept ten rows, so older closes are found by
   their `handoff:` commits, not by the log.
 
-**Open, round on backfilling references** (asked 2026-10-15, recommended
-answer first):
+**Decisions made.** MrFieldTech, `GRM / MRFIELDTECH`, 2026-10-15, backfill
+round.
+
+- `/session-open backfill`, with `backfill` reserved like `temp` and
+  `import`, opens a task `backfill-<yymmddhhmmss>`. Run in a conversation
+  that already ran a session, it writes that session's reference from the
+  conversation. Run in a new session, it looks for every past close with
+  no reference and writes one for each. The developer asked that it close
+  itself when done; whether it does is question 2 below.
+- It covers every `handoff:` commit with no reference, back to the first.
+- A reference rebuilt from the repository carries a `Reconstructed:` line
+  naming its sources, and every fact no commit or committed file shows
+  goes under Flagged As Unverified.
+- Its file name carries the original close's time, the UTC commit time of
+  its `handoff:` commit, and the original task's slug.
+- The developer asked whether a reference the session did not write itself
+  is worth having. The reply of 2026-10-15 answered in full; question 1
+  below puts the choice.
+
+**Open, second backfill round** (asked 2026-10-15, recommended answer
+first):
+
+1. A reference rebuilt with no conversation holds nothing the repository
+   does not, but an import reads only `.claude/references/`, so without
+   one a past session's decisions and facts never reach an importing
+   repository. a) Keep it as transcription only: copy what committed files
+   state about that close (the task's block, its Decisions Made and Session
+   Log entries, its commit messages, its pull request body), each with its
+   file as source, and infer nothing (recommended); b) drop it, and
+   backfill only from a conversation that still holds the session.
+2. Closing: a) a backfill task runs `session-close`'s steps on itself when
+   its references are written, with no `/session-close`, because it changes
+   only `.claude/references/` and the state files (recommended); b) it
+   waits for `/session-close` like any task.
+
+**Backfill round, as asked** (answered below):
 
 1. How a developer asks for it: a) `/session-open backfill`, with
    `backfill` reserved like `temp` and `import`, opening a task
@@ -351,8 +385,8 @@ answer first):
 and the two merge conflicts it raised, both sides only adding (the
 `session-open` description and the top `CHANGELOG.md` entry), keep both.
 The developer is in the reference template and `references.md`, and the
-import's two answers are built. Next: settle the backfill round above,
-build it into this release, run `bash check.sh`, then `/session-close`.
+import's two answers are built. Next: settle the second backfill round above,
+build the backfill into this release, run `bash check.sh`, then `/session-close`.
 Before the first real import, the private repository whose procedure the
 default follows needs its authority file to name an import procedure, its
 own or the kit default, and it copies no credential until it switches to
