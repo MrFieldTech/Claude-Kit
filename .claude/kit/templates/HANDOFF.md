@@ -11,23 +11,18 @@ file at the same time.
 
 ## Session Log
 
-| Date | Tasks touched | Work commits |
-|---|---|---|
+| Date | Developer | Tasks touched | Work commits |
+|---|---|---|---|
 
 ## Blocked On
 
 None.
 
-## Credentials In Transit
-
-None. A value is held here only when the Credentials setting in `CLAUDE.md`
-sends it here, and only encrypted by the method that setting names.
-
 ## Decisions Made
 
 None yet.
 
-## Open Questions For <Owner>
+## Open Questions
 
 None.
 

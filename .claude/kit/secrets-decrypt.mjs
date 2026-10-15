@@ -7,10 +7,11 @@
 //
 //   node .claude/kit/secrets-decrypt.mjs --out <dir>
 //
-// Copies every <slug>.secrets.md to the same path under <dir>, which git
-// must ignore, with each value in plaintext. The private key comes from the
-// SECRETS_AGE_KEY environment variable. Fails on a missing key or a value
-// that will not decrypt, naming the file and label and never the value.
+// Copies every <slug>.secrets.md outside .claude/references/ to the same
+// path under <dir>, which git must ignore, with each value in plaintext.
+// The private key comes from the SECRETS_AGE_KEY environment variable.
+// Fails on a missing key or a value that will not decrypt, naming the file
+// and label and never the value.
 // With SECRETS_CHECK_BUILD=1 it needs no key and writes a placeholder for
 // every value. A value encrypted on Windows has its \r\n line endings and
 // one trailing line break dropped, so it reads as typed.
@@ -23,6 +24,8 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, relative, resolve, isAbsolute } from "node:path";
 
 const SUFFIX = ".secrets.md";
+// A session reference's companion is a dated copy, never read by a build.
+const REFERENCES = ".claude/references/";
 const PLACEHOLDER = "secrets-check-build-placeholder";
 const AGE_FENCE = /^```age\s*$/;
 const ANY_FENCE = /^\s*(`{3,}|~{3,})\s*([^`]*?)\s*$/;
@@ -123,7 +126,9 @@ async function main(argv) {
   }
 
   const listed = git(["ls-files", "-z", "--cached", "--others", "--exclude-standard", "--", "*" + SUFFIX], top);
-  const files = [...new Set(listed.split("\0").filter(Boolean))].sort();
+  const files = [...new Set(listed.split("\0").filter(Boolean))]
+    .filter((rel) => !rel.startsWith(REFERENCES))
+    .sort();
   const written = [];
   let total = 0;
   for (const rel of files) {

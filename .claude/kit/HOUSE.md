@@ -6,8 +6,13 @@ Never edit it inside a project: a change goes to the kit and reaches the
 project by an update. The kit's own repository is the one place it is edited.
 
 Every value that differs between repositories is in the `## Session Settings`
-section of `CLAUDE.md`. Where these rules say "the owner", they mean the person
-the Owner setting names. The keys are defined at the end of this file.
+section of `CLAUDE.md`. The keys are defined at the end of this file.
+
+Where these rules say "the owner", they mean the developer running the
+session. Every developer is an owner: anyone who works the repository with
+Claude Code and this kit, with push access to it. Any of them may answer any
+question, promote the integration branch, take a kit update, and answer for a
+stray. Developers below says how a session knows which one it is.
 
 ## Which file wins
 
@@ -58,6 +63,12 @@ built, the session turns it into a task, with its own branch, and from then on
 it is an ordinary session that ends with `/session-close`. A temporary session
 that opened no task needs no close.
 
+`/session-open import` imports the session references of the repositories
+`REFERENCES.md` names, on a task of its own, `import-<yymmddhhmmss>`.
+`/session-open backfill` writes a session reference for every past close
+that has none, on a task of its own, `backfill-<yymmddhhmmss>`, which closes
+itself.
+
 There are three kinds of branch, and no others.
 
 | Branch | What it is |
@@ -99,14 +110,58 @@ sides only added lines to `TASKS.md` or `HANDOFF.md`, keep both. Anything else
 stops the merge for the owner. Both sides are committed work, and picking one
 loses the other.
 
+## Developers
+
+Several developers can work one repository at once, each in their own
+sessions. A session names the developer running it as `<PREFIX> / <HANDLE>`,
+in capitals, which `session-open` settles before it takes a task:
+
+- **Handle.** The account behind the session's GitHub access. Developers who
+  share one account are that account. When the access names no account, the
+  session asks the developer for their GitHub handle, the one thing about
+  them it asks, and with no answer the handle is `UNKNOWN`.
+- **Prefix.** The Branch prefix from the developer's Claude Code settings, as
+  it shows in the branch the harness checked out before the session began:
+  the part before its first `/`, when that branch is not the default branch,
+  the integration branch, an Other branch or a task branch. With none, the
+  name is the handle alone and `/` is left out. The prefix is never added to
+  a branch name.
+
+**Holder lines.** Directly under each task's heading, newest first, a log of
+who held the task:
+
+```
+ACTIVE | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
+INACTIVE | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
+```
+
+`session-open` adds an `ACTIVE` line when it takes a task, and
+`session-close` adds an `INACTIVE` line above it, whatever the task's status.
+Times are UTC. A task whose top holder line is `ACTIVE` for another developer
+is held: they took it and have not closed it, whether they are working it now
+or their session ended without a close. Any developer may take it over, but
+only once told who holds it and since when, and only when they say so.
+
+Decisions and open questions are recorded with the developer's name and the
+date. Every open question is shown to every developer: whoever works the task
+a question concerns, or asks about open questions, is given it, whoever raised
+it.
+
 ## State files
 
 `TASKS.md` is the work queue, and each task's block holds its specification
 and, while it is open, where it stopped. `HANDOFF.md` holds what sits above any
-one task: the session log, what is blocked, credentials in transit, decisions,
-open questions, and what is unverified. `session-close` writes both and
-`session-open` reads both. Both are edited in place rather than replaced,
-because two sessions may close into them.
+one task: the session log, what is blocked, decisions, open questions, and
+what is unverified. `session-close` writes both and `session-open` reads
+both. Both are edited in place rather than replaced, because two sessions
+may close into them.
+
+**Session references** are the facts each session learned, one file per
+task branch at every close, under `.claude/references/`, with the session's
+credentials in a companion file. Another repository imports them by
+`/session-open import`. `.claude/kit/references.md` holds the rules: read it
+before writing one at close, before turning imports on, before an import,
+and before a backfill.
 
 When Generated files lists `TODO.md`, it holds every `TODO:` in the repository
 as a question and is never edited by hand. Answer a question where it is asked
@@ -210,8 +265,8 @@ this order. `session-open` sets every value the first time it runs in a
 repository and asks only about what it cannot settle. Change a value there,
 never in a kit-owned file.
 
-- **Owner.** Whoever answers the questions and alone asks for the default
-  branch to move. The account that owns the repository unless changed.
+- **Owner.** The account that owns the repository. It does not limit who
+  answers: every developer is an owner, by Developers above.
 - **Authority file.** A file that overrides `CLAUDE.md`, this file and both
   skills, or `none`.
 - **Default branch.** Production, usually `main`.
@@ -226,9 +281,11 @@ never in a kit-owned file.
 - **Task slug limit.** The longest a task slug may be. 23 unless a repository
   needs otherwise: Cloudflare Pages cuts a branch's preview address at 28
   characters, and `task-` takes five, so 23 keeps every address whole.
-- **Reserved slugs.** Names a task slug may not take, or `none`. `temp` is
-  never a task slug, whatever this setting says, because it opens a
-  temporary session.
+- **Reserved slugs.** Names a task slug may not take, or `none`. `temp`,
+  `import` and `backfill` are never task slugs, whatever this setting says,
+  because they open a temporary session, an import and a backfill, and
+  only those take slugs of the form `import-<yymmddhhmmss>` and
+  `backfill-<yymmddhhmmss>`.
 - **Regenerate.** Commands that rewrite the generated files, run in the order
   given, or `none`.
 - **Generated files.** The paths those commands write, or `none`.
