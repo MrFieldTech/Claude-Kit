@@ -43,6 +43,100 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+### Run The Session Protocol With Several Developers
+
+**Slug:** `multi-dev-setup`
+**Status:** ACTIVE
+**Opened:** 2026-10-15
+
+**Why.** MrFieldTech, 2026-10-15: "Right now the session open/close mechanic
+is mainly built around a single dev handling multiple tasks/branches. How can
+we redevelop the process to handle multiple devs with multiple
+tasks/branches?" The kit should let several people, each running their own
+sessions, work one repository's queue without taking each other's tasks,
+overwriting each other's state, or merging into each other's way.
+
+**Facts looked up, 2026-10-15.** Where the protocol assumes one developer:
+
+- **One person answers everything.** The Owner setting names whoever answers
+  every question, alone asks for the default branch to move, and alone
+  decides a kit update. `HANDOFF.md` has one `Open Questions For <Owner>`
+  heading, and grilling puts every decision to the owner.
+- **A task branch says it is taken, not by whom.** `session-open` step 4
+  never takes a branch nobody named, because a parked branch and one another
+  session is working look the same. With one developer, a branch they name is
+  theirs. With several, a developer can name, and resume, a branch another
+  developer parked or is working right now. No line in a task's block records
+  who holds it.
+- **The session never learns who is running it.** Nothing in either skill
+  reads a GitHub account or `git config user.name`. Decisions are recorded
+  with the owner's name, and the Session Log has no column for who worked.
+- **Every close edits the top of shared tables.** Each close adds a row to the
+  top of the Session Log and edits Open Questions, Decisions Made and Flagged
+  As Unverified in `HANDOFF.md`. The conflict rule keeps both sides only where
+  both only added lines, so a dropped row (the log keeps ten) or an edited
+  question conflicts and parks the task. More developers means more of these.
+- **A promotion can strand another developer's pull request.** `session-close`
+  step 9 does not check for an open pull request into the integration branch;
+  only the temporary session's promotion does. If one developer promotes while
+  another's close has a pull request open into it, GitHub deletes the
+  integration branch and retargets that pull request at the default branch.
+  This is a fix the task makes whatever the decisions below.
+- **The session merges its own pull request.** No one else reviews it. A
+  repository whose branch protection requires an approval would park every
+  task at close.
+- **A stray stops every session.** `session-open` step 3 stops until the owner
+  answers. A branch another developer made, or their tool made, stops every
+  developer's session, and only the owner can answer for it.
+- **Two new tasks under one slug collide safely.** The second push of
+  `task/<slug>` is rejected and step 5 sends that session back to step 4.
+  Blocks added to `TASKS.md` on two branches are added lines, which the
+  conflict rule keeps.
+- **`session-references` is parked and also changes `session-close`.** Its
+  references would record who ran each session if this task adds identity.
+  Whichever merges second merges the other in.
+
+**Decisions made.** None yet.
+
+**Stopping point.** Round 1 of grilling, below, is asked and waits on
+MrFieldTech. Next: record the answers here, recompute the frontier, ask round
+2 (expected: the release number and what an updating repository must do, the
+name and format of any new setting or task line), then change `HOUSE.md`, both
+skills, the templates, `check.sh`, `VERSION`, `CHANGELOG.md` and `README.md`.
+
+**Round 1 of grilling, asked 2026-10-15.**
+
+1. Who decides what? (a, recommended) The Owner keeps promotion to the default
+   branch, kit updates and any decision that changes a rule; each developer
+   answers the grilling for, closes and merges their own tasks. (b) Every
+   developer can do everything the Owner does. (c) A new setting lists each
+   developer with a role.
+2. Who counts as a developer? (a, recommended) Anyone with push access; no
+   setting to keep up. (b) Only the accounts a new Developers setting lists.
+3. How does a session know who is running it? (a, recommended) The GitHub
+   account behind the session's GitHub access, then `git config user.name`,
+   then it asks, recorded as the GitHub handle. (b) It always asks at open.
+4. How is a task held? (a, recommended) A `**Held by:** <handle>` line in the
+   block, set at claim; `session-open` lists other developers' tasks but
+   resumes one only when the developer says they are taking it over, which
+   rewrites the line. (b) Any developer resumes any parked task. (c) The branch
+   name carries the developer, `task/<handle>/<slug>`, which breaks the slug
+   limit and preview addresses.
+5. Is a task's pull request reviewed by another developer? (a, recommended) A
+   new setting, default `none`, keeps today's self-merge; set to a number of
+   approvals, the close leaves the pull request open for review and parks the
+   task under a new status until it merges. (b) Always self-merge. (c) Always
+   wait for one approval.
+6. How does `HANDOFF.md` take many closes? (a, recommended) One file: the
+   Session Log gains a Developer column and stops dropping old rows inside a
+   close, each open question names who it is for, and a close edits only
+   lines it added or answered. (b) A handoff file per developer. (c) Move the
+   Session Log out into per-session files, shared with `session-references`.
+7. Who answers for a stray? (a, recommended) A stray still stops the session,
+   but Other branches takes patterns such as `<handle>/*`, and a stray whose
+   commits are all by the developer running the session is theirs to answer.
+   (b) Only the Owner, as today.
+
 ## Closed Tasks
 
 ### Make The Kit's Secrets Standard Self-Sufficient
