@@ -4,6 +4,56 @@ Every change to a kit-owned file is a release, recorded here with the version
 `VERSION` carries. A project's `/session-open` reports when a newer release
 exists, and the project takes it by `kit.sh update` when its owner asks.
 
+## 1.6.0
+
+Session references: each session leaves its facts where another repository
+can import them.
+
+- `session-close` writes a session reference at every close, one per task
+  branch, at `.claude/references/<yymmddhhmmss>-<task-slug>.md`, the time
+  in UTC, from `.claude/kit/templates/reference.md`: the task and its
+  commit range, current state, decisions and who made them, verified facts
+  with their sources, exact values, artifacts, gotchas, what is unverified,
+  open questions, credentials by label, and one block per subject. It is
+  never edited once committed. `HANDOFF.md` is written as before.
+- The credentials a session handled go, each as a dated copy, into the
+  reference's companion, `<yymmddhhmmss>-<task-slug>.secrets.md` beside it,
+  by the Credentials setting's method. With `none`, or in a public
+  repository, no companion is written, and the close says the repository
+  has no method and offers to set one up. A value given in plaintext in
+  the conversation draws a warning at close that the conversation still
+  holds it.
+- Credentials In Transit leaves the `HANDOFF.md` template and
+  `session-close`: a value with no home yet lives in its session's
+  companion. `secrets.py` still reads, checks and re-encrypts the heading
+  where an older `HANDOFF.md` or an authority file keeps it.
+- `secrets.py decrypt` and the Node decrypter skip `.claude/references/`,
+  so a build never holds a second plaintext copy.
+- `/session-open import` imports the references of the repositories
+  `REFERENCES.md` names, on a task of its own, `import-<yymmddhhmmss>`.
+  `import` is never a task slug, like `temp`. A repository turns imports
+  on by the setup in `.claude/kit/references.md`, which writes
+  `REFERENCES.md` from `.claude/kit/templates/REFERENCES.md`. Each import
+  takes every reference a source's default branch added since the last
+  one, one commit per reference, by the procedure the authority file or
+  `CLAUDE.md` gives, or by the kit's default procedure, which says so until
+  the owner dismisses the warning or writes their own. Credentials copy as
+  they stand only when the source encrypts to the same keys; otherwise
+  each arrives as a `TODO:`.
+- In a public repository a reference holds nothing the repository's rules
+  keep private, and the first run asks the owner to turn on secret
+  scanning with push protection.
+- `check.sh` tests a companion, the decrypt skip and the sweep skipping a
+  reference.
+
+After updating: references start at the next close, with nothing to set.
+Delete the Credentials In Transit heading from `HANDOFF.md` when it holds
+`None.`. When it holds values and the Credentials setting is `kit
+standard`, move each into a companion with `secrets.py place`, or into its
+home, and delete the heading after. Keep the heading when the authority
+file requires it. A public repository turns on secret scanning with push
+protection. Imports stay off until the owner asks for them.
+
 ## 1.5.0
 
 The secrets standard is self-sufficient: whatever the kit encrypts, the kit

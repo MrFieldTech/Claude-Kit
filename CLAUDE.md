@@ -50,6 +50,13 @@ here, never in a kit-owned file.
 - **The kit-owned files are the source here.** There is no `MANIFEST` in this
   repository, and the rule that kit-owned files are never edited applies to
   the repositories that install them, not to this one.
+- **This repository's session references name none of the owner's other
+  projects.** It is public, and a reference is published when its task
+  branch is pushed at close. Before the close commits a reference, it reads
+  `KIT_PRIVATE_TERMS` from the environment and replaces each match in the
+  reference with `[redacted]`. When the variable is not set, the close
+  writes the reference naming no other project and says in its report that
+  the terms were not checked. `check.sh` fails on any match left.
 - **A skill stays generic by reading Session Settings.** A value that differs
   between repositories becomes a settings key, defined at the end of
   `HOUSE.md` and given a default in `.claude/kit/templates/CLAUDE.md`, never a
