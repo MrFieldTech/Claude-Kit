@@ -56,9 +56,14 @@ it breaks.>
   `secrets.py lock` encrypts it. A value in a table cannot be encrypted, and
   the table is rewritten as one labelled value per block first.
 
-`HANDOFF.md` holds a value only under Credentials In Transit, in the same
-form: a bold label and an encrypted block. That is for a value whose
-`<slug>.secrets.md` does not exist yet, until a task places it.
+A session reference's companion,
+`.claude/references/<yymmddhhmmss>-<task-slug>.secrets.md`, is a secrets file
+in the same form, holding a dated copy of every value the session handled,
+by `.claude/kit/references.md`. A value whose `<slug>.secrets.md` does not
+exist yet lives there alone until a task places it. An older `HANDOFF.md`
+may still hold values under Credentials In Transit, in the same form, and
+the tool still reads, checks and re-encrypts them there. Move each into a
+companion when the repository updates to a kit with companions.
 
 `todo_sweep.py` never reads a `<slug>.secrets.md` file.
 
@@ -95,7 +100,7 @@ lines returned, each under a comment naming its holder.
 |---|---|
 | Store a value | `secrets.py set <file> "<label>"`, the value on standard input. A label already there has its value replaced |
 | Store a value the owner encrypted | `secrets.py place <file> "<label>" < <armored file>` |
-| Hold a value under Credentials In Transit | `set` or `place` with `HANDOFF.md` as the file |
+| Hold a value whose home is not settled | `set` or `place` with the session's companion as the file |
 | Encrypt plaintext already in a file | `secrets.py lock <file>` |
 | Print one encrypted block | `secrets.py encrypt`, the value on standard input |
 | Check every value is encrypted | `secrets.py check` |
@@ -140,7 +145,8 @@ python3 .claude/kit/secrets.py decrypt --out <dir>
 
 It copies every `<slug>.secrets.md` to the same path under `<dir>` with each
 value in plaintext, written as `show` writes it, and later steps read the
-copy in place of the encrypted file. `HANDOFF.md` is never decrypted.
+copy in place of the encrypted file. `HANDOFF.md` and the companions under
+`.claude/references/` are never decrypted.
 
 - The private key comes from `SECRETS_AGE_KEY`, set on the build host as
   an encrypted variable holding the build's key.

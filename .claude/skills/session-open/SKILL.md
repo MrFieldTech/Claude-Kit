@@ -1,7 +1,7 @@
 ---
 name: session-open
 description: >-
-  Start a Claude Code session in a repository that uses Claude-Kit. Takes an optional task slug: an existing task resumes on its branch, a slug that names no task starts a new task under that name, settled by grilling before its block is written, and with no slug it lists the parked task branches and queued tasks and asks. In a repository that has never used the kit, it proposes the Session Settings and builds TASKS.md and HANDOFF.md first. Reads the authority file, CLAUDE.md, TASKS.md and HANDOFF.md, reports the kit's version and any stray branch, puts the session on the task's own branch, task/<task-slug>, and works the task from the stopping point in its block. With the argument temp it opens a temporary session instead: it reads and reports the same way, answers questions without taking a branch or writing anything, merges the integration branch into the default branch when the owner asks, and turns what is to be kept or built into tasks when the owner asks. Runs only when the owner invokes /session-open.
+  Start a Claude Code session in a repository that uses Claude-Kit. Takes an optional task slug: an existing task resumes on its branch, a slug that names no task starts a new task under that name, settled by grilling before its block is written, and with no slug it lists the parked task branches and queued tasks and asks. In a repository that has never used the kit, it proposes the Session Settings and builds TASKS.md and HANDOFF.md first. Reads the authority file, CLAUDE.md, TASKS.md and HANDOFF.md, reports the kit's version and any stray branch, puts the session on the task's own branch, task/<task-slug>, and works the task from the stopping point in its block. With the argument temp it opens a temporary session instead: it reads and reports the same way, answers questions without taking a branch or writing anything, merges the integration branch into the default branch when the owner asks, and turns what is to be kept or built into tasks when the owner asks. With the argument import it imports the session references of the repositories REFERENCES.md names, on a task of its own. Runs only when the owner invokes /session-open.
 disable-model-invocation: true
 ---
 
@@ -19,9 +19,10 @@ the rules this skill applies. Below, the owner, the authority file, the default
 branch and the integration branch are what Session Settings says they are.
 
 Every session works on the branch of one task, `task/<task-slug>`. Run these
-steps in order. Do not skip ahead to the work. The one exception is
-`/session-open temp`, which opens a temporary session by Temporary Session at
-the end of this file.
+steps in order. Do not skip ahead to the work. The exceptions are
+`/session-open temp`, which opens a temporary session by Temporary Session,
+and `/session-open import`, which imports by Import, both at the end of this
+file.
 
 ## 1. Fetch everything
 
@@ -131,7 +132,8 @@ owner already answered for in this session's First Run.
 ## 4. Choose the task
 
 If the owner named `temp`, with or without `task/` in front, stop following
-these steps here and follow Temporary Session at the end of this file.
+these steps here and follow Temporary Session at the end of this file. If they
+named `import`, follow Import at the end of this file.
 
 The owner names a task by its slug, after `/session-open` or in their message,
 with or without `task/` in front: `/session-open footer-rebuild` and
@@ -164,7 +166,8 @@ to list, say so and ask what the new task is. Do not invent work. Stop until
 they answer.
 
 A task slug is lowercase letters, digits and hyphens, no longer than the Task
-slug limit, unique among tasks, none of the Reserved slugs, and never `temp`.
+slug limit, unique among tasks, none of the Reserved slugs, never `temp` or
+`import`, and of the form `import-<yymmddhhmmss>` only when Import opens it.
 
 A task branch the owner did not name or choose is never taken. A parked branch
 and one another session is working look the same, and two sessions on one task
@@ -365,6 +368,52 @@ A temporary session that opened no task needs no `/session-close`. If context
 runs low while something worth keeping is still only in the conversation, say
 so on the low-context line and offer to open its task before anything else.
 
+## Import
+
+For `/session-open import`. It ran steps 1 to 3 like any session, and a
+stray stops it there, because it opens a task. In a repository new to the
+kit it does not run First Run: say so and stop. Read
+`.claude/kit/references.md` before anything below; it holds the rules for
+each step.
+
+1. **Turned on?** Read `REFERENCES.md` on the base. With none, say imports
+   are not turned on, offer the setup in `.claude/kit/references.md` as a
+   numbered question, and stop. Nothing is written.
+2. **Attach each source** under Sources, read-only, through the session's
+   GitHub access: in a cloud session, attach it with read access and clone
+   it, never registering it as one of the session's repositories. Fetch the
+   branch its row names. A source that cannot be reached is reported, and
+   its row is left as it is.
+3. **List what is new** in each source by What is new in
+   `.claude/kit/references.md`. Done when every reachable source has its
+   list, empty or not.
+4. **Report** these lines, as one fenced code block with no backticks
+   inside it:
+
+   ```
+   Task:     <none, nothing to import | import-<yymmddhhmmss>, new>
+   Base:     <as in step 6>
+   Kit:      <the line kit.sh status printed>
+   Parked:   <as in step 6>
+   Strays:   <as in step 6>
+   Sources:  <each source, with its count of new references or unreachable>
+   ```
+
+   With nothing new in any source, stop here. Nothing is written and no
+   branch is taken.
+5. **Open the task** `import-<yymmddhhmmss>`, the time in UTC now, by step 4
+   case c with no grilling: its block lists each source and each new
+   reference, oldest first, each `not imported`, and the Import procedure
+   `REFERENCES.md` names. Claim it by step 5.
+6. **Import** each reference by The import in `.claude/kit/references.md`,
+   by the Import procedure `REFERENCES.md` names, one commit per reference
+   holding the import, its source's row in `REFERENCES.md`, and the
+   reference marked `imported` in the task's block, pushed after each. Done
+   when every listed reference is `imported`, or the task parks or blocks
+   on a question by the usual rules.
+
+It then ends with `/session-close`, like any task.
+
 ## First Run
 
 For a repository that has never used the kit. `kit.sh install` has written the
@@ -481,6 +530,10 @@ first, by the command in the kit's README.
    - When Credentials is `kit standard`, whatever the setup in
      `.claude/kit/credentials.md`, Setting it up, leaves for the owner, such
      as making the keys.
+   - When the repository is public, turn on secret scanning with push
+     protection, under its Settings, Advanced Security. Every close pushes a
+     session reference, and push protection refuses a push that holds a
+     credential in a format GitHub knows.
 
    Then ask, as numbered questions, about each rule in the repository's own
    files that contradicts `HOUSE.md`, such as a release process that pushes
