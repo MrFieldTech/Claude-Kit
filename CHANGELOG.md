@@ -12,9 +12,11 @@ can import them.
 - `session-close` writes a session reference at every close, one per task
   branch, at `.claude/references/<yymmddhhmmss>-<task-slug>.md`, the time
   in UTC, from `.claude/kit/templates/reference.md`: the task and its
-  commit range, the developer who ran the session as `<PREFIX> / <HANDLE>`, current state, decisions and who made them, verified facts
-  with their sources, exact values, artifacts, gotchas, what is unverified,
-  open questions, credentials by label, and one block per subject. It is
+  commit range, the developer who ran the session as `<PREFIX> /
+  <HANDLE>`, current state, decisions and who made them, verified facts
+  with their sources, exact values, artifacts, gotchas, what is
+  unverified, open questions, credentials by label, and one block per
+  subject. It is
   never edited once committed. `HANDOFF.md` is written as before.
 - The credentials a session handled go, each as a dated copy, into the
   reference's companion, `<yymmddhhmmss>-<task-slug>.secrets.md` beside it,
