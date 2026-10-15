@@ -137,10 +137,65 @@ into a repository that asks for them and turns them into its own content.
 - `secrets.py decrypt` and the Node decrypter skip `.claude/references/`,
   so a build never holds a second plaintext copy.
 - `check.sh` extends its private-terms check to `.claude/references/` in
-  this repository. The owner asked that private text found there be hashed
-  out; how is round 2.
+  this repository.
 
-**Open, round 2 of grilling** (asked 2026-10-14, recommended answer first):
+MrFieldTech, 2026-10-14 and 2026-10-15, rounds 2 and 3 of grilling.
+
+- Credentials In Transit leaves the `HANDOFF.md` template and
+  `session-close`. A value with no home yet lives only in its session's
+  companion, and the task opened to place it names that companion.
+  `secrets.py` still reads the heading where an older `HANDOFF.md` or an
+  authority file keeps it, and an updating repository moves any value held
+  there into a companion.
+- When the repository gives no import procedure, the import runs the kit's
+  default and says so, because the repository's own way probably differs.
+  The owner either dismisses the warning for good, recorded in
+  `REFERENCES.md` with who and when, or answers a few questions that write
+  the repository's own procedure.
+- The default is modelled, with the owner's approval of 2026-10-15 to
+  publish it unnamed, on how one of the owner's private repositories
+  already promotes chat handoffs. It must work for any repository but
+  first of all as that repository works today, and must not turn every
+  import into a long round of questions: it asks only what it cannot
+  record. Each subject becomes `imported/<subject-slug>.md`, or reconciles
+  into the file already there: the newer reference wins on facts, every
+  unique fact carries over, and a conflict is written onto the file with a
+  `TODO:` rather than settled by picking a side. A fact flagged as
+  unverified becomes a `TODO:` quoting the reference. New files are listed
+  in the report, not asked about. Questions and unverified facts above any
+  one subject go to `HANDOFF.md`. Nothing is deleted.
+- This repository: the owner adds `KIT_PRIVATE_TERMS` to the cloud
+  environment's variables, a project rule in `CLAUDE.md` has the close
+  replace each match in a reference with `[redacted]` before committing
+  it, `check.sh` fails on any match left, and the owner turns on secret
+  scanning with push protection.
+- Every repository: a `HOUSE.md` rule that a reference in a public
+  repository, or one whose visibility cannot be confirmed, holds no detail
+  the repository's own rules keep private, and the first run gives an
+  `Action needed:` to turn on secret scanning with push protection in a
+  public repository.
+
+Grilling is done: the frontier is empty.
+
+**The build.**
+
+- `.claude/kit/references.md`, new: the reference and its companion, the
+  setup that turns imports on, `REFERENCES.md`, the import, and the kit's
+  default import procedure.
+- `.claude/kit/templates/reference.md` and `templates/REFERENCES.md`, new.
+- `session-close`: write the reference and its companion, stage them in the
+  handoff commit, the plaintext warning, a `Reference:` report line, and no
+  Credentials In Transit.
+- `session-open`: `/session-open import`, `import` never a task slug, and
+  the first run's secret scanning notice.
+- `HOUSE.md`, `credentials.md`, `templates/HANDOFF.md`: references,
+  companions, no Credentials In Transit, the public repository rule.
+- `secrets.py` and `secrets-decrypt.mjs`: decrypt skips `.claude/references/`.
+- `check.sh`: private terms over `.claude/references/`, the decrypt skip,
+  the new templates. `CLAUDE.md`: the redaction rule.
+- Release 1.6.0: `VERSION`, `CHANGELOG.md`, `README.md`.
+
+**Round 2, as asked** (answered above):
 
 1. Credentials In Transit, now that companions hold every value: a) remove
    the heading from the `HANDOFF.md` template and `session-close`; a value
@@ -206,8 +261,8 @@ into a repository that asks for them and turns them into its own content.
     `.claude/references/` here (recommended); b) also its address check;
     c) neither.
 
-**Stopping point.** Waiting on round 2. Next: record the answers, then
-build release 1.6.0.
+**Stopping point.** Grilling done. Next: build the list under The build,
+in order.
 
 ## Closed Tasks
 
