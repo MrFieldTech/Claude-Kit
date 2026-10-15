@@ -24,11 +24,12 @@ Commands, run from anywhere in the repository:
   secrets.py show <file> [--identity <key file>]
       Print the file with its values decrypted.
   secrets.py decrypt --out <dir> [--identity <key file>]
-      For a build: copy every <slug>.secrets.md to the same path under <dir>,
-      which git must ignore, with each value in plaintext. Fails on a missing
-      key or a value that will not decrypt, naming the file and label and
-      never the value. With SECRETS_CHECK_BUILD=1 it needs no key and no age
-      tool, and writes a placeholder for every value.
+      For a build: copy every <slug>.secrets.md outside .claude/references/
+      to the same path under <dir>, which git must ignore, with each value in
+      plaintext. Fails on a missing key or a value that will not decrypt,
+      naming the file and label and never the value. With
+      SECRETS_CHECK_BUILD=1 it needs no key and no age tool, and writes a
+      placeholder for every value.
   secrets.py rekey [--identity <key file>]
       Re-encrypt every value, HANDOFF.md included, to the keys now listed in
       secrets-recipients.txt, after one is added or removed.
@@ -63,6 +64,10 @@ import sys
 import tempfile
 
 SUFFIX = ".secrets.md"
+# Session references and their companions, .claude/kit/references.md. A
+# companion is a dated copy of values whose home is elsewhere, so a build
+# never decrypts it.
+REFERENCES = ".claude/references/"
 RECIPIENTS = "secrets-recipients.txt"
 HANDOFF = "HANDOFF.md"
 TRANSIT = "## Credentials In Transit"
@@ -584,6 +589,8 @@ def cmd_decrypt(args, ids):
     total = 0
     for path in secrets_files(top):
         rel = os.path.relpath(path, top)
+        if rel.replace(os.sep, "/").startswith(REFERENCES):
+            continue
         lines = read(path)
         reps = []
         for u in units(lines):
