@@ -263,7 +263,7 @@ Grilling is done: the frontier is empty.
 
 **Stopping point.** Built, every item under The build, and `bash
 check.sh` passes on it. Next: `/session-close` merges it into `preview`.
-Before the first real import, the private record repository whose
+Before the first real import, the private repository whose
 procedure the default follows needs its authority file to name an import
 procedure, its own or the kit default, and it copies no credential until
 it switches to `kit standard`.
