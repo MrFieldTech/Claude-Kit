@@ -52,13 +52,17 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+## Closed Tasks
+
 ### Write Session References And Import Them Into Other Repositories
 
+INACTIVE | GRM / MRFIELDTECH | 261015 223345
 ACTIVE | GRM / MRFIELDTECH | 261015 220409
 
 **Slug:** `session-references`
-**Status:** ACTIVE
+**Status:** DONE
 **Opened:** 2026-10-14
+**Closed:** 2026-10-15
 
 **Why.** MrFieldTech, 2026-10-14. Facts a session learns in one repository
 should reach another without a person carrying them, in any repository that
@@ -390,17 +394,15 @@ backfill round. Built.
    repository, as `<PREFIX> / <HANDLE> in <owner>/<repository>`
    (recommended); b) it names the developer who ran the import.
 
-**Stopping point.** 1.6.0 is merged onto this branch, renumbered to 1.7.0,
-and the two merge conflicts it raised, both sides only adding (the
-`session-open` description and the top `CHANGELOG.md` entry), keep both.
-The developer is in the reference template and `references.md`, and the
-import's two answers are built. The backfill is built into this release. Next: `/session-close`.
+**Outcome.** Release 1.7.0, checked by `bash check.sh`: session references
+written at every close with a companion for credentials, `/session-open
+import` with its setup and the kit default procedure, `/session-open
+backfill`, no Credentials In Transit in the template, both decrypters
+skipping `.claude/references/`, and this repository's redaction rule.
 Before the first real import, the private repository whose procedure the
 default follows needs its authority file to name an import procedure, its
 own or the kit default, and it copies no credential until it switches to
 `kit standard`.
-
-## Closed Tasks
 
 ### Run The Session Protocol With Several Developers
 
