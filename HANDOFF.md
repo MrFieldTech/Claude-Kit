@@ -13,6 +13,7 @@ file at the same time.
 
 | Date | Developer | Tasks touched | Work commits |
 |---|---|---|---|
+| 2026-10-15 | GRM / MRFIELDTECH | `session-references`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.7.0 adds session references, `/session-open import` and `/session-open backfill`, after taking in 1.6.0 | `6233007..7e0bf1f` |
 | 2026-10-15 | GRM / MRFIELDTECH | `multi-dev-setup`, DONE, merged into `preview`: release 1.6.0 lets several developers share a repository, every one an owner, with holder lines on each task | `824ed6f..fe201c3` |
 | 2026-10-12 | not recorded | `secrets-self-sufficient`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.5.0 adds `secrets.py decrypt` and `keys`, a Node decrypter, the Secrets checks setting, and the setup a repository runs to take the secrets standard, and makes Credentials default to `none` | `7f3de9e..a96379a` |
 | 2026-10-12 | not recorded | `secrets-self-sufficient`, ACTIVE, parked: opened from a private repository taking 1.4.0, with the owner's four decisions and the first round of open decisions in its block | `e3c86fe..083f57b` |
@@ -28,12 +29,6 @@ file at the same time.
 ## Blocked On
 
 None.
-
-## Credentials In Transit
-
-None. A value is held here only when the Credentials setting in `CLAUDE.md`
-sends it here, and only encrypted by the method that setting names. In this
-repository it never does.
 
 ## Decisions Made
 
@@ -147,7 +142,27 @@ repository it never does.
   MRFIELDTECH, 2026-10-15, so references carry the developer from their
   first release, which moves `session-references` to 1.7.0.
 
+- **Every close writes a session reference, and other repositories import
+  them.** GRM / MRFIELDTECH, 2026-10-14 and 2026-10-15. Facts a session
+  learns should reach another repository without a person carrying them.
+  Credentials In Transit gave way to each session's companion. The full
+  decisions are in the `session-references` block in `TASKS.md`.
+- **The kit default import follows, unnamed, a private repository's
+  handoff promotion.** GRM / MRFIELDTECH, 2026-10-15, approved publishing it
+  generically, so it works first of all as that repository works today and
+  asks only what it cannot record.
+- **This repository's references are redacted against `KIT_PRIVATE_TERMS`
+  before commit.** GRM / MRFIELDTECH, 2026-10-15. Moved to `CLAUDE.md` as a
+  project rule.
+
 ## Open Questions
+
+- **Should the private repository the default import follows name its
+  import procedure?** Raised by GRM / MRFIELDTECH, 2026-10-15, in
+  `session-references`. Its authority file governs it and names none, so
+  an import there would stop or run the kit default. Open a task there,
+  after it updates to 1.7.0, pointing at the kit default or writing its
+  own?
 
 - **Should the kit offer a review step for task pull requests?** Raised by
   GRM / MRFIELDTECH, 2026-10-15, in `multi-dev-setup`. Sessions merge their
@@ -177,9 +192,24 @@ repository it never does.
   Section 5 installs from a clone of `HEAD`, so run before committing it
   failed with "status after install reads '1.2.0, current', not '1.3.0,
   current'", which reads as a broken installer rather than "commit first".
-  Open a task for it?
+  It happened again in `session-references` on 2026-10-14. Open a task for
+  it?
 
 ## Flagged As Unverified
+
+**No session has written a reference at close, imported, or backfilled.**
+1.7.0 was checked by `check.sh` only, which tests the companion and the
+decrypt skip, not the skills. This close writes the first reference; the
+first `/session-open import` and `/session-open backfill` verify the rest,
+including `git diff --diff-filter=A` across a source's history.
+
+**Whether GitHub custom secret scanning patterns are available on this
+account.** Push protection on a public repository is believed free; custom
+patterns, which could catch project names, were not checked.
+
+**The kit's own references were not checked against the private terms.**
+`KIT_PRIVATE_TERMS` was not set in this session's environment, so the first
+reference here names no other project by hand, and CI checks it.
 
 **No session has run 1.6.0's open or close from start to finish.** This
 session opened under 1.5.0 and wrote its own holder lines by hand. The next

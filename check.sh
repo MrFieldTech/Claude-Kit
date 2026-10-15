@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Checks the kit before it merges. Run from anywhere: bash check.sh
 #
-# 1. No kit-owned file holds an address, or a name on the private list of
-#    project terms when one is given.
+# 1. No kit-owned file holds an address, and neither one nor a session
+#    reference holds a name on the private list of project terms when one is
+#    given.
 # 2. No file in the repository holds an em dash.
 # 3. The scripts parse, each skill's frontmatter is whole, every practice
 #    is pointed at and every pointer names a practice that exists, and every
@@ -53,12 +54,17 @@ terms="${KIT_PRIVATE_TERMS:-}"
 if [ -z "$terms" ] && [ -f .private-terms ]; then
   terms="$(tr -d '\n' < .private-terms)"
 fi
+# This repository's own session references are public too, so they are
+# held to the same list. CLAUDE.md has the close redact a match before the
+# reference is committed.
+TERMS_SCANNED=("${KIT_OWNED[@]}")
+[ -d .claude/references ] && TERMS_SCANNED+=(.claude/references)
 if [ -n "$terms" ]; then
   status=0
-  grep -rnIE "$terms" "${KIT_OWNED[@]}" || status=$?
+  grep -rnIE "$terms" "${TERMS_SCANNED[@]}" || status=$?
   [ "$status" -ne 0 ] && [ "$status" -ne 1 ] && fail "the private terms are not a valid pattern"
   [ "$status" -eq 0 ] && fail "the lines above name something that belongs to one project"
-  echo "check: kit-owned files hold no address and name no project"
+  echo "check: kit-owned files hold no address, and they and the references name no project"
 else
   echo "check: kit-owned files hold no address (no private terms given, so names were not checked)"
 fi
@@ -178,7 +184,9 @@ TODO: inside a fence, which is an example.
 EOF
 printf 'x = 1  # TODO: Is this still used?\n' > "$repo/code.py"
 printf 'TODO: never read?\n' > "$repo/key.secrets.md"
-git -C "$repo" add notes.md code.py key.secrets.md
+mkdir -p "$repo/.claude/references"
+printf 'TODO: never read either?\n' > "$repo/.claude/references/261015000000-check.md"
+git -C "$repo" add notes.md code.py key.secrets.md .claude/references
 (cd "$repo" && python3 .claude/kit/todo_sweep.py >/dev/null)
 expected='# TODO
 
@@ -223,6 +231,9 @@ if command -v age >/dev/null 2>&1 && command -v age-keygen >/dev/null 2>&1; then
   git init --quiet "$srepo"
   cp -R "$repo/.claude" "$srepo/"
   cp "$scratch/kit/.claude/kit/templates/HANDOFF.md" "$srepo/HANDOFF.md"
+  # The template has no Credentials In Transit since 1.6.0. An older
+  # HANDOFF.md keeps one, and the tool still reads it there.
+  printf '\n## Credentials In Transit\n\nNone.\n' >> "$srepo/HANDOFF.md"
   for k in one two three; do age-keygen -o "$keys/$k" 2>/dev/null; done
   pub() { age-keygen -y "$keys/$1"; }
   secrets() { (cd "$srepo" && python3 .claude/kit/secrets.py "$@"); }
@@ -290,6 +301,13 @@ if command -v age >/dev/null 2>&1 && command -v age-keygen >/dev/null 2>&1; then
   fi
   grep -qF "$(pub three)" <<< "$(secrets steps)" || fail "secrets steps does not write the keys in"
 
+  # A session reference's companion is a secrets file like any other, and
+  # no build decrypts it.
+  companion=".claude/references/261015000000-check.secrets.md"
+  secrets set "$companion" "Token" >/dev/null <<< 'check-value-companion'
+  grep -qx 'slug: 261015000000-check' "$srepo/$companion" || fail "a companion's slug is not its name"
+  secrets check >/dev/null || fail "secrets check fails on a companion"
+
   # Decrypt for a build: a copy at the same path under a gitignored
   # directory, the check build's placeholders, and every refusal.
   printf '/build-secrets/\n' > "$srepo/.gitignore"
@@ -314,6 +332,7 @@ if command -v age >/dev/null 2>&1 && command -v age-keygen >/dev/null 2>&1; then
   grep -q 'BEGIN AGE' "$copy" && fail "secrets decrypt left an encrypted block in its copy"
   grep -qF 'check-code-1' "$srepo/build-secrets/old.secrets.md" || fail "secrets decrypt missed a file"
   [ -e "$srepo/build-secrets/HANDOFF.md" ] && fail "secrets decrypt wrote HANDOFF.md"
+  [ -e "$srepo/build-secrets/.claude" ] && fail "secrets decrypt wrote a session reference's companion"
   [ "$(cd "$srepo" && git status --porcelain --untracked-files=all | grep -c build-secrets)" = 0 ] \
     || fail "the decrypted copy is not ignored by git"
   rm -rf "$srepo/build-secrets"
@@ -338,6 +357,7 @@ if command -v age >/dev/null 2>&1 && command -v age-keygen >/dev/null 2>&1; then
     (cd "$srepo" && SECRETS_CHECK_BUILD=1 node .claude/kit/secrets-decrypt.mjs --out build-secrets >/dev/null) \
       || fail "the Node decrypter failed a check build"
     grep -qF '`secrets-check-build-placeholder`' "$copy" || fail "the Node check build wrote no placeholder"
+    [ -e "$srepo/build-secrets/.claude" ] && fail "the Node decrypter wrote a session reference's companion"
     if (cd "$srepo" && node .claude/kit/secrets-decrypt.mjs --out build-secrets >/dev/null 2>&1); then
       fail "the Node decrypter ran with no key"
     fi

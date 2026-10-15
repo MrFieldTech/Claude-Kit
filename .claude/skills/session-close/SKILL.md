@@ -1,7 +1,7 @@
 ---
 name: session-close
 description: >-
-  Close out a Claude Code session in a repository that uses Claude-Kit. For each task branch the session worked on, stops at a clean boundary, places every credential, updates the task's block in TASKS.md, looks back over a session that met friction and edits HANDOFF.md in place, runs the repository's Regenerate commands, and pushes the branch. A failing Regenerate command or check is diagnosed before anything parks. A task that is DONE or BLOCKED then merges into the integration branch by a pull request whose body carries evidence and a merge danger call, and GitHub deletes its branch; a task stopped partway stays parked on its branch. Merges the integration branch into the default branch only when the owner asks. Reports where to see each task's work. Runs only when the owner invokes /session-close.
+  Close out a Claude Code session in a repository that uses Claude-Kit. For each task branch the session worked on, stops at a clean boundary, places every credential, updates the task's block in TASKS.md, looks back over a session that met friction, edits HANDOFF.md in place, writes the session reference, runs the repository's Regenerate commands, and pushes the branch. A failing Regenerate command or check is diagnosed before anything parks. A task that is DONE or BLOCKED then merges into the integration branch by a pull request whose body carries evidence and a merge danger call, and GitHub deletes its branch; a task stopped partway stays parked on its branch. Merges the integration branch into the default branch only when the owner asks. Reports where to see each task's work. Runs only when the owner invokes /session-close.
 disable-model-invocation: true
 ---
 
@@ -55,8 +55,8 @@ access. Then:
 - **When the repository is confirmed private and the setting is `kit
   standard`,** the method is `.claude/kit/credentials.md`: store each value
   in its `<slug>.secrets.md` with `python3 .claude/kit/secrets.py set`, or,
-  when where it belongs is not settled, under Credentials In Transit in
-  `HANDOFF.md` with a task opened to place it. Then run `python3 .claude/kit/secrets.py check`
+  when where it belongs is not settled, in this session's companion alone,
+  by step 4, with a task opened to place it. Then run `python3 .claude/kit/secrets.py check`
   and each command under the Secrets checks setting, and commit nothing
   while one fails. With no `secrets-recipients.txt`, or no `age` tool the
   session can install, the next case applies.
@@ -66,7 +66,14 @@ access. Then:
   the value nowhere, `HANDOFF.md` included. Put it in the final report under
   its own heading, labelled with what it unlocks, and say plainly that the
   report is the only copy, so the owner can place it before the conversation
-  ends. When a method was named but could not run, say why.
+  ends. When a method was named but could not run, say why. With the setting
+  `none`, say the repository has no method for keeping credentials and offer
+  to set one up.
+
+Every value this session produced, was given or changed is also copied into
+its companion in step 4, by `.claude/kit/references.md`, wherever the rules
+above commit it. Note each value the owner or anyone gave in plaintext in the
+conversation, for step 11.
 
 Never commit a value in plaintext. Never mask, truncate, or substitute a
 reference where a value is recorded, in the report or in a file. Encrypting a
@@ -108,7 +115,7 @@ Set the status:
   whatever context a fresh session needs to continue. `/session-open
   <task-slug>` resumes from exactly this.
 
-## 4. Edit HANDOFF.md
+## 4. Edit HANDOFF.md and write the session reference
 
 First, when the session met friction, look back over it by the retrospective
 in `.claude/kit/practices/retro.md`. Each proposal it keeps is a question for
@@ -130,14 +137,6 @@ the named headings below, in this order, and add nothing else.
   cleanly, and one that also removed a row conflicts.
 - **Blocked On.** Add, change or remove the row for any task this session
   blocked or unblocked.
-- **Credentials In Transit.** Values held here only when the Credentials
-  setting sends them here, each encrypted by step 2 and never in plaintext,
-  with a label, the method that encrypted it, and the task that will place it.
-  Under `kit standard` the label and the age block are the whole record, in
-  the form `.claude/kit/credentials.md` gives, and the task is named in the
-  label's note.
-  Each value is whole in a fenced code block of its own. Otherwise `None`. If
-  the file has a `has_secrets` field, set it to match.
 - **Decisions Made.** Add the decisions taken this session that are recorded
   nowhere else, each with the developer who took it, the date, and its
   reasoning in one line. A decision that governs
@@ -160,6 +159,17 @@ include the narrative of the session, restatements of the authority file or
 `HOUSE.md`, or optimism such as "nearly finished". Where a task stopped belongs
 in its block in `TASKS.md`, not here.
 
+A `HANDOFF.md` that still holds a Credentials In Transit heading, from an
+older kit or because the authority file requires one, keeps it and the
+values in it. Add no value there unless the authority file sends it there.
+
+Then write the session reference for this task branch, and its companion
+when step 2 committed any value, by `.claude/kit/references.md`. Read that
+file first. The reference is a new file: never edit one already committed.
+It is done when every heading of the template is there, each holding facts
+or `None.`, and every credential this session handled is under Credentials
+by its label.
+
 ## 5. Regenerate derived files
 
 Run each Regenerate command, in the order Session Settings gives. If any command
@@ -172,8 +182,8 @@ and what the diagnosis found under Flagged As Unverified, and continue. With
 
 ## 6. Make the handoff commit
 
-Stage only `TASKS.md`, `HANDOFF.md`, and the paths under Generated files. Commit
-them together with a message beginning exactly `handoff: ` followed by a short
+Stage only `TASKS.md`, `HANDOFF.md`, the session reference and its companion,
+and the paths under Generated files. Commit them together with a message beginning exactly `handoff: ` followed by a short
 description of what moved.
 
 No other commit may begin with that prefix.
@@ -399,6 +409,7 @@ Branch:  <merged into <target> by <pull request URL>, deleted by GitHub | merged
 Preview: <the Task preview address when parked | the Integration preview address when merged | none>
 Commit:  <handoff commit hash>
 Secrets: <none | where each value was placed | N in this report for the owner to place>
+Reference: <the session reference's path>
 Retro:   <none | N proposals under Open Questions in HANDOFF.md>
 Parked:  <none | every parked task slug, which is what /session-open takes to resume>
 Strays:  <none | branch names>
@@ -407,7 +418,10 @@ Merged:  <integration branch into default branch pull request URL, or not reques
 
 A value that could not be committed, by step 2, follows these lines under its
 own heading, in a fenced code block of its own when it spans more than one
-line, and is the one exception to "nothing else".
+line. Each value given in plaintext in the conversation follows them too, by
+its label, with the warning that the conversation still holds it and should
+be erased once the value is placed. Both are the exceptions to "nothing
+else".
 
 A parked task's preview address serves the newest build of its branch. A
 merged task's work is on the integration preview once the host has built the
@@ -431,7 +445,6 @@ numbered.
 ## Purpose
 ## Session Log
 ## Blocked On
-## Credentials In Transit
 ## Decisions Made
 ## Open Questions
 ## Flagged As Unverified

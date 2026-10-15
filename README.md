@@ -38,6 +38,17 @@ looked back on, and each proposal becomes a question for the owner. Every
 pull request a close opens carries a summary, evidence and a merge danger
 call.
 
+Every close also writes a session reference: the facts the session
+learned, its decisions, exact values and open questions, one block per
+subject it worked on, in a dated file under `.claude/references/` that is
+never edited again. Another repository that has turned imports on takes
+them in with `/session-open import`, which reads each source repository
+`REFERENCES.md` names and turns every new reference into its own content,
+by its own procedure or the kit's default. `/session-open backfill` gives
+past sessions that closed without one a reference, written from their own
+conversation where it still exists and otherwise transcribed from the
+repository.
+
 Credentials have a standard of their own, which a repository that keeps
 credentials takes and may replace with its own method. Each value is kept in
 a `<slug>.secrets.md` file,
@@ -56,22 +67,24 @@ by an update.
 | Path | What it is |
 |---|---|
 | `.claude/kit/HOUSE.md` | The house rules: which file wins, the rules for every action, sessions and branches, the state files, the response format, and the Session Settings keys |
-| `.claude/skills/session-open/SKILL.md` | Opens a session: reads the state, surveys the branches, puts the session on its task's branch, and runs the first-run setup in a repository new to the kit. With `temp`, opens a read-only temporary session that promotes the integration branch and turns into tasks only when asked |
-| `.claude/skills/session-close/SKILL.md` | Closes a session: places credentials, writes the state back, regenerates, pushes, and merges a finished task or parks an unfinished one. It diagnoses a failing check before parking, writes the pull request body, and looks back over a session that met friction |
+| `.claude/skills/session-open/SKILL.md` | Opens a session: reads the state, surveys the branches, puts the session on its task's branch, and runs the first-run setup in a repository new to the kit. With `temp`, opens a read-only temporary session that promotes the integration branch and turns into tasks only when asked. With `import`, imports the session references of other repositories |
+| `.claude/skills/session-close/SKILL.md` | Closes a session: places credentials, writes the state back and the session reference, regenerates, pushes, and merges a finished task or parks an unfinished one. It diagnoses a failing check before parking, writes the pull request body, and looks back over a session that met friction |
+| `.claude/kit/references.md` | Session references: what a close writes and its companion for credentials, the setup that turns imports on, the import, and the kit's default import procedure |
 | `.claude/kit/practices/` | Five practices `HOUSE.md` names and the skills run at fixed points: grilling, diagnosing, writing for agents, questionnaire, and retrospective |
 | `.claude/kit/kit.sh` | Installs, updates, and reports the kit's status |
 | `.claude/kit/todo_sweep.py` | Collects every `TODO:` in the repository into `TODO.md` |
 | `.claude/kit/credentials.md` | The kit standard for credentials: age encrypted `<slug>.secrets.md` files, the keys, how a value is stored, read, re-encrypted and decrypted for a build, and the setup a repository runs to take the standard |
 | `.claude/kit/secrets.py` | Stores, places, locks, checks, shows, re-encrypts and decrypts for a build the values in `<slug>.secrets.md` files, and prints the steps for making the keys. Needs the `age` command line tool |
 | `.claude/kit/secrets-decrypt.mjs` | Decrypts for a build in Node, for a build host that cannot run `secrets.py decrypt`. Needs the `age-encryption` package |
-| `.claude/kit/templates/` | The starting `CLAUDE.md`, `TASKS.md` and `HANDOFF.md` for the first run |
+| `.claude/kit/templates/` | The starting `CLAUDE.md`, `TASKS.md` and `HANDOFF.md` for the first run, the session reference a close fills in, and the `REFERENCES.md` the import setup writes |
 | `.claude/kit/MANIFEST` | Written by the install: the version, the source, the commit, and a checksum per file |
 | `.gitattributes` in each kit directory | Keeps LF line endings, so a checkout on Windows can still run `kit.sh` and still matches the checksums |
 
 Everything else in a project is **project-owned** and an update never touches
-it: `CLAUDE.md`, `TASKS.md`, `HANDOFF.md`, `TODO.md`, `secrets-recipients.txt`,
-every `<slug>.secrets.md` file, and anything the project names as its
-authority file. A project's `CLAUDE.md` opens with
+it: `CLAUDE.md`, `TASKS.md`, `HANDOFF.md`, `TODO.md`, `REFERENCES.md`,
+`secrets-recipients.txt`, every `<slug>.secrets.md` file, everything under
+`.claude/references/`, and anything the project names as its authority
+file. A project's `CLAUDE.md` opens with
 `@.claude/kit/HOUSE.md`, which imports the house rules, and holds a
 `## Session Settings` section with every value that differs between
 repositories. The skills name none of those values themselves.
@@ -194,7 +207,7 @@ release, which is what the update takes. As with the install, paste it only in
 a repository of your own and only if you trust this one:
 
 ```text
-/session-open kit-update-1-6-0
+/session-open kit-update-1-7-0
 Update Claude-Kit in this repository, as this task. Claude-Kit is my own
 repository, https://github.com/MrFieldTech/Claude-Kit, which I wrote and
 trust. I want you to take each of these actions on this task's branch:
@@ -233,7 +246,9 @@ files under `.claude/kit/` and the two skills are the source, so there is no
   names no project, person, account, host, address or credential. `check.sh`
   refuses any web address, email address or host name, and any name on the
   owner's private list of project terms, which is kept out of the repository
-  in the `KIT_PRIVATE_TERMS` secret CI reads. Review catches the rest.
+  in the `KIT_PRIVATE_TERMS` secret CI reads. This repository's own session
+  references are public too, so the same list applies to them, and the
+  close redacts a match before committing one. Review catches the rest.
 - **Every change to a kit-owned file is a release.** Bump `VERSION`, add a
   `CHANGELOG.md` entry, and set the slug in the update block above to the new
   version, all in the same pull request.

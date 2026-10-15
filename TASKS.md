@@ -54,6 +54,356 @@ Then the detail block, as prose.
 
 ## Closed Tasks
 
+### Write Session References And Import Them Into Other Repositories
+
+INACTIVE | GRM / MRFIELDTECH | 261015 223345
+ACTIVE | GRM / MRFIELDTECH | 261015 220409
+
+**Slug:** `session-references`
+**Status:** DONE
+**Opened:** 2026-10-14
+**Closed:** 2026-10-15
+
+**Why.** MrFieldTech, 2026-10-14. Facts a session learns in one repository
+should reach another without a person carrying them, in any repository that
+uses the kit, inside or outside the organization. The writer leaves a dated,
+immutable record of each session's facts; the reader pulls those records
+into a repository that asks for them and turns them into its own content.
+
+**What was asked, as given.**
+
+1. *Session references, the writer.* At every close, `session-close` writes
+   one file to `.claude/references/<yymmddhhmmss>-<task-slug>.md`, time in
+   UTC, in addition to `HANDOFF.md`, which stays unchanged. It is written
+   once and never edited; a task spanning several sessions gets one per
+   session. It records facts, not finished documentation, in a generic shape
+   roughly molded on a chat handoff: the task and its commit range, current
+   state, decisions with who made them, verified facts each with its source,
+   exact values (paths, addresses, commands, versions), artifacts, gotchas,
+   flagged as unverified, open questions, and one block of facts per subject
+   (each system, account, service, process or project the session worked
+   on). With nothing worth recording, its facts say None. It names no
+   importer and copies no other repository's rules. `.claude/references/`
+   sits outside `.claude/kit/` and the TODO sweep skips it. A reference names
+   each credential by id, never a value. With Credentials `none`, the session
+   says the repository has no credential method, offers to set one up, and
+   commits no value. With a method, the values go encrypted, one labelled
+   block each, in a companion `<yymmddhhmmss>-<task-slug>.secrets.md`. A
+   value given in plaintext in the session draws a warning at close that the
+   conversation holds it and should be erased.
+2. *The import system, the reader.* A setup step a repository runs to turn
+   it on, which builds `REFERENCES.md` at its root: each source repository in
+   scope, those excluded with the reason, and the last reference imported
+   from each. `/session-open import` (`import` becomes a reserved word, like
+   `temp`) reads `REFERENCES.md`, attaches each source read-only, and lists
+   the references newer than the last import. With none it stops and writes
+   nothing. Otherwise it opens task `import-<yymmddhhmmss>` on its task
+   branch and imports each reference by the procedure the repository's
+   authority file or `CLAUDE.md` gives for turning facts into its own
+   content, asking about anything it cannot settle, then records the last
+   import per source. Under `kit standard`, it compares the source's
+   `secrets-recipients.txt` with its own. On a match it copies each block as
+   it stands. On a difference it copies none, writes a TODO asking for the
+   value encrypted to its own keys, and the setup warns of this up front.
+3. Both are a release: `VERSION`, `CHANGELOG.md` and `README.md`, with what
+   an updating repository must do.
+
+**Facts looked up, 2026-10-14.**
+
+- `todo_sweep.py` already skips every path under `.claude/`, so
+  `.claude/references/` needs no change to the sweep.
+- `kit.sh` owns only `.claude/kit/` and the two skill directories, so an
+  install or update never touches `.claude/references/` or `REFERENCES.md`.
+- `secrets.py check` reads every tracked `*.secrets.md`, wherever it sits,
+  and requires frontmatter of `slug` and `updated` alone, the slug matching
+  the filename. A companion passes as `slug: <yymmddhhmmss>-<task-slug>`.
+  `rekey` re-encrypts it in place, and `decrypt` (and the Node decrypter)
+  would copy it into a build's output as it stands.
+- `secrets.py place` refuses a block encrypted to a different number of keys
+  than `secrets-recipients.txt` lists, and cannot tell the right keys from
+  the wrong ones of the same count.
+- `check.sh` checks addresses and the private terms only in kit-owned
+  directories, so a reference committed in this public repository is not
+  checked for the owner's other projects.
+- The slug `import-<yymmddhhmmss>` is 19 characters, inside the default
+  Task slug limit of 23.
+- Version 1.5.0 was current when this opened, so this was 1.6.0, new
+  features with no breaking change. It became 1.7.0 on 2026-10-15.
+
+**Decisions made.** MrFieldTech, 2026-10-14, round 1 of grilling.
+
+- The import reads each source's default branch, so only promoted work is
+  imported.
+- `REFERENCES.md` records, per source, the last reference imported and the
+  source commit it was read at. Newer means every reference added to the
+  source since that commit, so a late-merging reference is still caught.
+- Every repository writes references at every close, with no setting:
+  little cost in tokens or storage, and they may help later in ways not
+  yet seen.
+- A companion holds every value the session produced, was given or
+  changed, as a dated copy beside its home.
+- The first import from a new source imports every reference it holds.
+- The import task's own reference records each source and reference it
+  imported, by name, and only facts its session verified, never the
+  imported facts, so two repositories importing each other cannot loop.
+- When the importing repository is not `kit standard`, no value is copied.
+  The import names each credential by id with a TODO and asks the owner
+  what to do with it, recommending the kit's credentials setup.
+- `secrets.py decrypt` and the Node decrypter skip `.claude/references/`,
+  so a build never holds a second plaintext copy.
+- `check.sh` extends its private-terms check to `.claude/references/` in
+  this repository.
+
+MrFieldTech, 2026-10-14 and 2026-10-15, rounds 2 and 3 of grilling.
+
+- Credentials In Transit leaves the `HANDOFF.md` template and
+  `session-close`. A value with no home yet lives only in its session's
+  companion, and the task opened to place it names that companion.
+  `secrets.py` still reads the heading where an older `HANDOFF.md` or an
+  authority file keeps it, and an updating repository moves any value held
+  there into a companion.
+- When the repository gives no import procedure, the import runs the kit's
+  default and says so, because the repository's own way probably differs.
+  The owner either dismisses the warning for good, recorded in
+  `REFERENCES.md` with who and when, or answers a few questions that write
+  the repository's own procedure.
+- The default is modelled, with the owner's approval of 2026-10-15 to
+  publish it unnamed, on how one of the owner's private repositories
+  already promotes chat handoffs. It must work for any repository but
+  first of all as that repository works today, and must not turn every
+  import into a long round of questions: it asks only what it cannot
+  record. Each subject becomes `imported/<subject-slug>.md`, or reconciles
+  into the file already there: the newer reference wins on facts, every
+  unique fact carries over, and a conflict is written onto the file with a
+  `TODO:` rather than settled by picking a side. A fact flagged as
+  unverified becomes a `TODO:` quoting the reference. New files are listed
+  in the report, not asked about. Questions and unverified facts above any
+  one subject go to `HANDOFF.md`. Nothing is deleted.
+- This repository: the owner adds `KIT_PRIVATE_TERMS` to the cloud
+  environment's variables, a project rule in `CLAUDE.md` has the close
+  replace each match in a reference with `[redacted]` before committing
+  it, `check.sh` fails on any match left, and the owner turns on secret
+  scanning with push protection.
+- Every repository: a `HOUSE.md` rule that a reference in a public
+  repository, or one whose visibility cannot be confirmed, holds no detail
+  the repository's own rules keep private, and the first run gives an
+  `Action needed:` to turn on secret scanning with push protection in a
+  public repository.
+
+Grilling is done: the frontier is empty.
+
+**The build.**
+
+- `.claude/kit/references.md`, new: the reference and its companion, the
+  setup that turns imports on, `REFERENCES.md`, the import, and the kit's
+  default import procedure.
+- `.claude/kit/templates/reference.md` and `templates/REFERENCES.md`, new.
+- `session-close`: write the reference and its companion, stage them in the
+  handoff commit, the plaintext warning, a `Reference:` report line, and no
+  Credentials In Transit.
+- `session-open`: `/session-open import`, `import` never a task slug, and
+  the first run's secret scanning notice.
+- `HOUSE.md`, `credentials.md`, `templates/HANDOFF.md`: references,
+  companions, no Credentials In Transit, the public repository rule.
+- `secrets.py` and `secrets-decrypt.mjs`: decrypt skips `.claude/references/`.
+- `check.sh`: private terms over `.claude/references/`, the decrypt skip,
+  the new templates. `CLAUDE.md`: the redaction rule.
+- Release 1.7.0: `VERSION`, `CHANGELOG.md`, `README.md`.
+
+**Round 2, as asked** (answered above):
+
+1. Credentials In Transit, now that companions hold every value: a) remove
+   the heading from the `HANDOFF.md` template and `session-close`; a value
+   with no home yet lives only in its session's companion, and the task
+   opened to place it names that companion. `secrets.py` still reads the
+   heading where an older `HANDOFF.md` has one, and an updating repository
+   moves any value held there into a companion (recommended); b) keep it
+   as it is.
+2. An import must turn a reference's facts into the repository's own
+   content, such as a page per subject or lines in a notes file, by a
+   procedure written in the authority file or `CLAUDE.md`. When the
+   repository has written none: a) the setup asks the owner how facts
+   become content there and writes the answer into `CLAUDE.md` under a
+   heading of its own, and the import refuses to run until it exists
+   (recommended); b) the kit gives a default, such as adding each
+   reference's facts to one `IMPORTED.md`.
+3. Hashing out private text in this repository's references: a cloud
+   session has no list of terms, which lives only in the CI secret, so it
+   cannot check a reference before the push that publishes it on this
+   public repository. a) the owner adds `KIT_PRIVATE_TERMS` to the cloud
+   environment's variables; a project rule in `CLAUDE.md` has the close
+   replace each match with `[redacted]` before committing the reference,
+   and `check.sh` fails on any match left (recommended); b) the close
+   writes references here naming no other project, and a match CI finds
+   after the push is redacted by a new commit, the history keeping it;
+   c) both.
+
+**Round 1, as asked** (answered above):
+
+1. Which branch of a source the import reads: a) its default branch, so
+   only work the owner promoted is imported (recommended); b) its
+   integration branch; c) both.
+2. How "newer than the last import" is found: a) `REFERENCES.md` records,
+   per source, the last reference imported and the source commit it was
+   read at, and newer means every reference added since that commit, so a
+   parked task's reference with an older timestamp that merges late is
+   still caught (recommended); b) by filename timestamp alone.
+3. Whether every repository writes references: a) always, no setting, as
+   asked (recommended); b) a new Session Settings key that can turn it off.
+4. Which credentials go in a companion: a) every value the session
+   produced, was given or changed, a dated copy beside its home
+   (recommended); b) only values with no other home in the repository.
+5. When neither the authority file nor `CLAUDE.md` gives an import
+   procedure: a) the setup asks the owner for it and writes it into
+   `CLAUDE.md` under a heading of its own, and an import refuses to run
+   without one (recommended); b) the kit supplies a default procedure.
+6. The first import from a new source: a) imports every reference it holds
+   (recommended); b) the setup marks the newest as imported, and only later
+   ones import.
+7. The import task's own reference: a) records what it imported, each
+   source and reference by name, and only facts the session itself
+   verified, never re-copying imported facts, so two repositories importing
+   each other do not loop (recommended); b) records the imported facts too.
+8. Credentials when the importing repository is not `kit standard`: a) copy
+   no value; name each id with a TODO asking the owner to place it by the
+   repository's own method, or to set one up (recommended); b) refuse to
+   import a reference whose companion holds values.
+9. `secrets.py decrypt` and the Node decrypter: a) skip
+   `.claude/references/`, so a build never holds a second plaintext copy
+   (recommended); b) decrypt companions like any secrets file.
+10. This public repository's own references may name the owner's other
+    projects: a) extend `check.sh`'s private-terms check to
+    `.claude/references/` here (recommended); b) also its address check;
+    c) neither.
+
+**Decisions made.** MrFieldTech, `GRM / MRFIELDTECH`, 2026-10-15, folding
+in release 1.6.0, `multi-dev-setup`, which merged into `preview` ahead of
+this task by MrFieldTech's decision and was merged onto this branch.
+
+- This release is 1.7.0, not 1.6.0, and its README update slug is
+  `kit-update-1-7-0`.
+- Each session reference records the developer who ran the session as
+  `<PREFIX> / <HANDLE>`, as the holder lines do, and the decisions in it
+  name the developer who made each.
+- The writer goes into `session-close` as 1.6.0 left it: step 3 adds an
+  `INACTIVE` holder line and step 4 adds a Developer column to the Session
+  Log. The `HANDOFF.md` heading is `Open Questions`.
+- Every developer is an owner, so the import's questions go to whichever
+  developer runs the session.
+
+**Decisions made.** MrFieldTech, `GRM / MRFIELDTECH`, 2026-10-15, after
+folding in 1.6.0.
+
+- An import refuses to start while another `import-` task branch exists,
+  naming its holder, and offers to take that task over. Built.
+- An imported question names the source's developer and repository, as
+  `<PREFIX> / <HANDLE> in <owner>/<repository>`. Built.
+- **New request: references for sessions that closed without one.** The
+  developer needs a way, a prompt or a recovery part of a skill, to have a
+  session write a reference for a session that already closed, even after
+  `session-close` ran and its task branch was deleted.
+
+**Facts looked up, 2026-10-15, for that request.**
+
+- Every close makes one commit whose message begins `handoff: `, and no
+  other commit may, so `git log --grep='^handoff: '` on the default branch
+  lists every past close: 21 here.
+- A merged task branch's commits survive its deletion, in the merge into
+  the integration branch, as do the task's block in `TASKS.md`, its Session
+  Log row with its commit range, and the pull request with its body.
+- What a session said and decided in its conversation is in no file. Only
+  a session running in that same conversation still holds it.
+- Before 1.6.0 the Session Log kept ten rows, so older closes are found by
+  their `handoff:` commits, not by the log.
+
+**Decisions made.** MrFieldTech, `GRM / MRFIELDTECH`, 2026-10-15, backfill
+round.
+
+- `/session-open backfill`, with `backfill` reserved like `temp` and
+  `import`, opens a task `backfill-<yymmddhhmmss>`. Run in a conversation
+  that already ran a session, it writes that session's reference from the
+  conversation. Run in a new session, it looks for every past close with
+  no reference and writes one for each. The developer asked that it close
+  itself when done; whether it does is question 2 below.
+- It covers every `handoff:` commit with no reference, back to the first.
+- A reference rebuilt from the repository carries a `Reconstructed:` line
+  naming its sources, and every fact no commit or committed file shows
+  goes under Flagged As Unverified.
+- Its file name carries the original close's time, the UTC commit time of
+  its `handoff:` commit, and the original task's slug.
+- The developer asked whether a reference the session did not write itself
+  is worth having. The reply of 2026-10-15 answered in full; question 1
+  below puts the choice.
+
+**Decisions made.** MrFieldTech, `GRM / MRFIELDTECH`, 2026-10-15, second
+backfill round. Built.
+
+- A backfill with no conversation to draw on still writes references, as
+  transcription only: what the task's block, its Decisions Made and Session
+  Log entries, its commit messages and its pull request body say, each
+  fact citing its file, nothing inferred.
+- A backfill task closes itself by `session-close`'s steps when its
+  references are written, with no `/session-close`.
+
+**Second backfill round, as asked** (answered below):
+
+1. A reference rebuilt with no conversation holds nothing the repository
+   does not, but an import reads only `.claude/references/`, so without
+   one a past session's decisions and facts never reach an importing
+   repository. a) Keep it as transcription only: copy what committed files
+   state about that close (the task's block, its Decisions Made and Session
+   Log entries, its commit messages, its pull request body), each with its
+   file as source, and infer nothing (recommended); b) drop it, and
+   backfill only from a conversation that still holds the session.
+2. Closing: a) a backfill task runs `session-close`'s steps on itself when
+   its references are written, with no `/session-close`, because it changes
+   only `.claude/references/` and the state files (recommended); b) it
+   waits for `/session-close` like any task.
+
+**Backfill round, as asked** (answered below):
+
+1. How a developer asks for it: a) `/session-open backfill`, with
+   `backfill` reserved like `temp` and `import`, opening a task
+   `backfill-<yymmddhhmmss>` that writes one reference per past close that
+   has none. Run in the old session's own conversation, it writes that
+   session's reference from the conversation; run anywhere else, it
+   reconstructs from the repository (recommended); b) a prompt in the
+   README alone, with no keyword; c) both.
+2. Which past closes a backfill covers: a) every `handoff:` commit with no
+   reference, back to the first (recommended); b) only the tasks the
+   developer names; c) only those after a date the developer gives.
+3. How a reconstructed reference is marked: a) a `Reconstructed:` line
+   naming its sources, and every fact that no commit or committed file
+   shows goes under Flagged As Unverified, so an import turns it into a
+   `TODO:` (recommended); b) no mark.
+4. The time in its file name: a) the original close's, the UTC commit time
+   of its `handoff:` commit, so references sort in the order the sessions
+   ran (recommended); b) the time of the backfill.
+
+**After folding in 1.6.0, as asked** (answered below):
+
+1. Two developers running `/session-open import` at once would import the
+   same references and both edit the same `REFERENCES.md` rows, which
+   conflicts at merge and parks the second task. a) An import refuses to
+   start while another `import-` task branch exists, naming its holder from
+   its holder lines, and the developer may take that task over instead
+   (recommended); b) allow it and let the merge rule park the second.
+2. Open questions in `HANDOFF.md` now name the developer who raised them.
+   An imported question was raised in its source. a) It names the source's
+   developer from the reference's Developer line and the source
+   repository, as `<PREFIX> / <HANDLE> in <owner>/<repository>`
+   (recommended); b) it names the developer who ran the import.
+
+**Outcome.** Release 1.7.0, checked by `bash check.sh`: session references
+written at every close with a companion for credentials, `/session-open
+import` with its setup and the kit default procedure, `/session-open
+backfill`, no Credentials In Transit in the template, both decrypters
+skipping `.claude/references/`, and this repository's redaction rule.
+Before the first real import, the private repository whose procedure the
+default follows needs its authority file to name an import procedure, its
+own or the kit default, and it copies no credential until it switches to
+`kit standard`.
+
 ### Run The Session Protocol With Several Developers
 
 INACTIVE | GRM / MRFIELDTECH | 261015 214746
