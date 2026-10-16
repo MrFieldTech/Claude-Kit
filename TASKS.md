@@ -101,50 +101,35 @@ projects.
   The looser check matches this task's own branch.
 - This repository has no `REFERENCES.md`, so imports are off here.
 
-**Open questions, round 1.**
+**Decisions made.** MrFieldTech, 2026-10-16, round 1 of grilling, every
+answer the recommended one.
 
-1. Where do the three values live?
-   a. (recommended) In `REFERENCES.md`'s Procedure section, beside Import
-      procedure, set when imports are turned on. Only a repository that
-      imports needs them, and the file already holds its import settings.
-   b. As Session Settings keys in `CLAUDE.md`, defined in `HOUSE.md` with
-      defaults in the `CLAUDE.md` template.
-2. What form does the home value take?
-   a. (recommended) A path pattern holding `<subject-slug>`, with `*`
-      allowed for one directory level. A subject's home is the one file
-      matching it; none is a new home; more than one is a question. The
-      credentials home is the same path ending `.secrets.md`. Default
-      `imported/<subject-slug>.md`.
-   b. The same, without `*`: one fixed directory per repository.
-3. How is a new home written?
-   a. (recommended) A value naming `kit default` or a file and heading in
-      the repository's own rules, which the import reads and follows for a
-      new home's layout and for where added facts go in an existing one.
-   b. The same, but used only for a new home; facts added to an existing
-      one are appended as the default does.
-4. When new homes wait for confirmation, how is it asked?
-   a. (recommended) Before importing anything, read every new reference,
-      propose a home for each subject with no match, and ask in one round,
-      with the proposed path as the recommended answer. The import waits
-      for the answers, then runs. Default: no confirmation.
-   b. Ask per reference as the import reaches it, parking the task between.
-5. What becomes of the Default warning's second option, write the
-   repository's own procedure?
-   a. (recommended) It asks the three values, reading the repository's
-      rules to propose each. A full procedure of the repository's own stays
-      possible as now. The warning shows only while all three are default.
-   b. Leave the warning as it is; the three values are set only by hand.
-6. Tighten `session-open` Import step 2 to `task/import-<yymmddhhmmss>`, as
-   One at a time says, so a task like this one does not stop an import?
-   a. (recommended) Yes, in this release.
-   b. No.
-7. The release?
-   a. (recommended) 1.12.0. A `REFERENCES.md` missing the new lines reads
-      them as their defaults, so an updating repository does nothing.
-   b. 1.12.0, and the update adds the three lines to an existing
-      `REFERENCES.md`.
+- The three values live in `REFERENCES.md`'s Procedure section, beside
+  Import procedure, and are set when imports are turned on: only a
+  repository that imports needs them. They apply only under `kit default`.
+- Subject home is a path pattern holding `<subject-slug>`, with `*` for one
+  directory level. The one matching file is the subject's home, none means
+  a new home, and more than one is a question. Credentials go beside the
+  home, ending `.secrets.md`. Default `imported/<subject-slug>.md`.
+- New home format is `kit default` or a file and heading in the
+  repository's own rules, followed both when writing a new home and when
+  placing added facts in an existing one.
+- Confirm new homes, when `yes`, is asked once, before anything is
+  imported: every new reference is read, and each unmatched subject gets a
+  proposed path as the recommended answer. The import waits for the
+  answers. Default `no`.
+- The Default warning's second option asks for the three values, proposing
+  each from the repository's own rules. A full procedure of the
+  repository's own stays possible. The warning shows only while all three
+  are at their defaults.
+- `session-open` Import step 2 matches only `task/import-<yymmddhhmmss>`,
+  as One at a time says, in this release.
+- The release is 1.12.0. A `REFERENCES.md` without the new lines reads them
+  as their defaults, so an updating repository does nothing.
 
-**Stopping point.** Round 1 of grilling asked; waiting on the answers.
+The frontier is empty after round 1.
+
+**Stopping point.** Grilling done; writing release 1.12.0.
 
 ## Closed Tasks
 
