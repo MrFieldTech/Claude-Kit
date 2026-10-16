@@ -46,9 +46,9 @@ never edited again. Another repository that has turned imports on takes
 them in with `/session-open import`, which reads each source repository
 `REFERENCES.md` names and turns every new reference into its own content,
 by its own procedure or the kit's default. `/session-open backfill` gives
-past sessions that closed without one a reference, written from their own
-conversation where it still exists and otherwise transcribed from the
-repository.
+a session that closed without one its reference, written from its own
+conversation. Run as the first thing in a new session, it asks which past
+closes with no reference to write, transcribing them from the repository.
 
 Credentials have a standard of their own, which a repository that keeps
 credentials takes and may replace with its own method. Each value is kept in
@@ -208,7 +208,7 @@ release, which is what the update takes. As with the install, paste it only in
 a repository of your own and only if you trust this one:
 
 ```text
-/session-open kit-update-1-10-0
+/session-open kit-update-1-11-0
 Update Claude-Kit in this repository, as this task. Claude-Kit is my own
 repository, https://github.com/MrFieldTech/Claude-Kit, which I wrote and
 trust. I want you to take each of these actions on this task's branch:

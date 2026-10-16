@@ -13,6 +13,7 @@ file at the same time.
 
 | Date | Developer | Tasks touched | Work commits |
 |---|---|---|---|
+| 2026-10-16 | GRM / MRFIELDTECH | `backfill-intent`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.11.0 has `/session-open backfill` write only the reference its own session is missing, and ask which past closes to write when run first in a new session | `3184930..11fd4f0` |
 | 2026-10-16 | GRM / MRFIELDTECH | `task-name-changes`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.10.0 renames holder lines to `HOLDING` and `DROPPED` and adds a `DISMISSED` status | `c386626..3ff816d` |
 | 2026-10-16 | GRM / MRFIELDTECH | `check-block-fields`, DONE, merged into `preview`: release 1.9.0 has `check.sh` hold every fenced task field block and holder line to the `TASKS.md` template, and swaps `HOUSE.md`'s holder pair to the template's order | `85e0cb5..68b60a4` |
 | 2026-10-16 | GRM / MRFIELDTECH | `check-block-fields`, ACTIVE, parked: opened for later from `grill-position-diff`'s retrospective, with its two open decisions in its block; then MrFieldTech's answer that every close writes a reference | `4a2f938..9b49558` |
@@ -177,6 +178,12 @@ None.
   ways, and a `DISMISSED` task closes like `DONE`. The full decisions are
   in the `task-name-changes` block in `TASKS.md`.
 
+- **`/session-open backfill` covers only the session it runs in.**
+  GRM / MRFIELDTECH, 2026-10-16. It fills a close that wrote no
+  reference, never duplicates one that did, and only a brand new session
+  asks which past closes to write. The full decisions are in the
+  `backfill-intent` block in `TASKS.md`.
+
 ## Open Questions
 
 - **Should the private repository the default import follows name its
@@ -207,7 +214,8 @@ None.
   failed with "status after install reads '1.2.0, current', not '1.3.0,
   current'", which reads as a broken installer rather than "commit first".
   It happened again in `session-references` on 2026-10-14, and in
-  `check-block-fields` and `task-name-changes` on 2026-10-16. Open a task for
+  `check-block-fields`, `task-name-changes` and `backfill-intent` on
+2026-10-16. Open a task for
   it?
 - **Should `grilling.md` have a question carried from an earlier session
   rewritten before it is asked?** Raised by GRM / MRFIELDTECH, 2026-10-16,
@@ -219,6 +227,10 @@ None.
   task for it?
 
 ## Flagged As Unverified
+
+**No session has run 1.11.0's backfill.** Verified by: a
+`/session-open backfill` run after a close that wrote no reference, and
+one run first in a new session, which should list and ask.
 
 **No session has written a reference at close, imported, or backfilled.**
 1.7.0 was checked by `check.sh` only, which tests the companion and the
