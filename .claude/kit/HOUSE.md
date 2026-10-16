@@ -131,8 +131,8 @@ in capitals, which `session-open` settles before it takes a task:
 who held the task:
 
 ```
-ACTIVE | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
 INACTIVE | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
+ACTIVE | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
 ```
 
 `session-open` adds an `ACTIVE` line when it takes a task, and

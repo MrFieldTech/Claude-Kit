@@ -55,6 +55,67 @@ Then the detail block, as prose.
 
 ## Closed Tasks
 
+### Hold The Task Block Fields To One Format In check.sh
+
+INACTIVE | GRM / MRFIELDTECH | 261016 213052
+ACTIVE | GRM / MRFIELDTECH | 261016 203427
+INACTIVE | GRM / MRFIELDTECH | 261016 201729
+ACTIVE | GRM / MRFIELDTECH | 261016 201442
+
+**Slug:** `check-block-fields`
+**Status:** DONE
+**Opened:** 2026-10-16
+**Closed:** 2026-10-16
+
+**Why.** MrFieldTech, 2026-10-16, answering the retrospective of
+`grill-position-diff`: open a task for it later. A task block's fields
+(`Slug`, `Status`, `Opened`, `Blocked`, `Closed`, `Dropped`) are written out
+in three places: `.claude/kit/templates/TASKS.md`, `session-close`'s Format
+section, and this repository's own `TASKS.md`. Release 1.8.0's `Dropped:`
+line reached the template first and `session-close` only on a second look
+(`6580c0f`), and `bash check.sh` passed both ways. A check would make a field
+added to one copy and missed in another fail.
+
+**Background.** `check.sh` already fails on a missing practice file and on a
+README update slug that does not match `VERSION`, so a cross-file
+consistency check fits it. Find the copies with
+`grep -rn 'Closed:\*\* <' .claude TASKS.md`.
+
+**Facts looked up, 2026-10-16.** The fenced field block is identical, line
+for line, in `.claude/kit/templates/TASKS.md`, `session-close`'s Format and
+this repository's `TASKS.md`. The holder line is written out in five places
+(`HOUSE.md`, the template, `session-open` step 5, `session-close`, and this
+`TASKS.md`), each line in the same shape, two of them as an example pair in
+opposite orders, both newest first.
+
+**Decisions.**
+
+- MrFieldTech, 2026-10-16: the check is strict. A fenced block of field
+  lines must match the template's line for line, placeholders included, so
+  a changed description fails as well as a missing field.
+- MrFieldTech, 2026-10-16: the check covers the holder line as well as the
+  field block, because both are format that one copy can gain and another
+  miss.
+
+- MrFieldTech, 2026-10-16: the check holds all three copies to the
+  template, this repository's `TASKS.md` included. Only the fenced
+  examples above its Open Tasks are compared, never a task's real lines,
+  and a release changes all three in one pull request.
+- MrFieldTech, 2026-10-16: a two-line holder example matches the template
+  in order too, so `HOUSE.md`'s pair is swapped to the template's order
+  (`INACTIVE` above `ACTIVE`, newest first) and this task is a release.
+  Copies of a template's details never differ, even by order. A one-line
+  holder example must equal one of the template's lines.
+
+**Done, 2026-10-16.** Release 1.9.0, as decided: `check.sh` section 4
+holds every fenced field block and holder line in a kit-owned file, and in
+this repository's `TASKS.md` above its Open Tasks, to
+`.claude/kit/templates/TASKS.md`, and `HOUSE.md`'s holder pair lists
+`INACTIVE` above `ACTIVE`. A dropped field, a changed placeholder, a changed
+holder line and the old `HOUSE.md` order each made it fail. The field
+lines it compares are the template's labels, so other bold labels in
+fenced examples, such as `**Purpose:**`, are left alone.
+
 ### Claim A New Task's Branch Before Grilling It
 
 INACTIVE | GRM / MRFIELDTECH | 261016 160327
