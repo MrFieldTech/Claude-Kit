@@ -55,13 +55,17 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+## Closed Tasks
+
 ### Backfill Only The Session It Was Opened In
 
+DROPPED | GRM / MRFIELDTECH | 261016 224318
 HOLDING | GRM / MRFIELDTECH | 261016 222714
 
 **Slug:** `backfill-intent`
-**Status:** ACTIVE
+**Status:** DONE
 **Opened:** 2026-10-16
+**Closed:** 2026-10-16
 
 **Why.** MrFieldTech, 2026-10-16: "Using the backfill flag for session
 open is supposed to create a session-reference for the missing session.
@@ -116,7 +120,8 @@ Backfilling gains What a backfill covers and names a temporary session's
 reference. `HOUSE.md`, `README.md`, the skill's description and
 `CHANGELOG.md` say the same.
 
-## Closed Tasks
+**Closed, 2026-10-16.** Merged into `preview` and then `main` at
+MrFieldTech's request.
 
 ### Rename The Holder Words And Add A DISMISSED Status
 
