@@ -84,27 +84,17 @@ may come)."
 - Session references carry no holder lines. Their `Task:` line names the
   status at close, `<DONE | BLOCKED | ACTIVE>`.
 
-**Open questions, round 1.**
+**Decisions made.** MrFieldTech, 2026-10-16, round 1 of grilling.
 
-1. Holder lines already written, in this repository's closed tasks and in
-   every repository that installs the kit, still read `ACTIVE` and
-   `INACTIVE`. What happens to them?
-   a. (recommended) They are renamed: this release rewrites this
-      repository's, and its changelog entry tells an updating repository
-      to replace them in its `TASKS.md` in the update's commit, so only one
-      pair of words ever exists.
-   b. They stay as written, and `session-open` reads an old `ACTIVE` top
-      line as `HOLDING`.
-   c. They stay as written and nothing reads them differently.
-2. Where does a `DISMISSED` task go?
-   a. (recommended) Wherever a `DONE` one goes: it gets a `Closed:` date
-      and a `Dismissed:` line, merges at close, moves to Closed Tasks, and
-      counts as closed in every check that asks about `DONE`.
-   b. Somewhere else, which you describe.
-3. Which release number?
-   a. (recommended) 1.10.0, as 1.6.0 added holder lines as a minor
-      release.
-   b. 2.0.0, because an updating repository must rewrite its own lines.
+- Holder lines already written are renamed, so only one pair of words ever
+  exists. This release rewrites this repository's, and its changelog entry
+  tells an updating repository to rename its own in the update's commit.
+- A `DISMISSED` task goes wherever a `DONE` one goes: it gets a `Closed:`
+  date and a `Dismissed:` line saying why, merges at close, moves to Closed
+  Tasks, and counts as closed in every check that asks about `DONE`.
+- The release is 1.10.0, a minor release as 1.6.0 was.
+
+The frontier is empty after round 1.
 
 ## Closed Tasks
 
