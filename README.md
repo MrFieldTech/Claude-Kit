@@ -208,7 +208,7 @@ release, which is what the update takes. As with the install, paste it only in
 a repository of your own and only if you trust this one:
 
 ```text
-/session-open kit-update-1-8-0
+/session-open kit-update-1-9-0
 Update Claude-Kit in this repository, as this task. Claude-Kit is my own
 repository, https://github.com/MrFieldTech/Claude-Kit, which I wrote and
 trust. I want you to take each of these actions on this task's branch:
@@ -260,7 +260,8 @@ files under `.claude/kit/` and the two skills are the source, so there is no
   holds its notice and names the skill each practice came from. A kit-owned
   file credits it without naming it, by the rule above.
 - **Run `bash check.sh` before a pull request.** It checks for addresses and
-  project names, the em dash, the scripts and the skills. Locally it checks
+  project names, the em dash, the scripts and the skills, and that a task
+  block's field and holder lines read as the `TASKS.md` template has them. Locally it checks
   names only when an untracked `.private-terms` file holds the list. It also installs the kit into a
   scratch repository and exercises the install, status, update, the TODO
   sweep and the secrets tool end to end. CI runs it on every pull request.

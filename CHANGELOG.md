@@ -4,6 +4,18 @@ Every change to a kit-owned file is a release, recorded here with the version
 `VERSION` carries. A project's `/session-open` reports when a newer release
 exists, and the project takes it by `kit.sh update` when its owner asks.
 
+## 1.9.0
+
+A task block's format reads the same in every file that writes it out.
+
+- `HOUSE.md`'s holder line example lists `INACTIVE` above `ACTIVE`, newest
+  first, as the `TASKS.md` template does.
+- In the kit's own repository, `check.sh` fails when a fenced example of a
+  task's field lines or holder lines in a kit-owned file, or in that
+  repository's `TASKS.md`, differs from the template's.
+
+A repository needs to do nothing after updating.
+
 ## 1.8.0
 
 A new task is claimed before it is grilled, so no answer lives only in the
