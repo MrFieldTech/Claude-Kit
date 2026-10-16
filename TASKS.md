@@ -53,15 +53,19 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+## Closed Tasks
+
 ### Hold The Task Block Fields To One Format In check.sh
 
+INACTIVE | GRM / MRFIELDTECH | 261016 213052
 ACTIVE | GRM / MRFIELDTECH | 261016 203427
 INACTIVE | GRM / MRFIELDTECH | 261016 201729
 ACTIVE | GRM / MRFIELDTECH | 261016 201442
 
 **Slug:** `check-block-fields`
-**Status:** ACTIVE
+**Status:** DONE
 **Opened:** 2026-10-16
+**Closed:** 2026-10-16
 
 **Why.** MrFieldTech, 2026-10-16, answering the retrospective of
 `grill-position-diff`: open a task for it later. A task block's fields
@@ -103,14 +107,14 @@ opposite orders, both newest first.
   Copies of a template's details never differ, even by order. A one-line
   holder example must equal one of the template's lines.
 
-**Stopping point.** Work done, not closed. `check.sh` section 4 holds the
-field block and holder lines to the template, `HOUSE.md`'s pair is
-swapped, and release 1.9.0 is recorded; `bash check.sh` passes. Each
-mismatch kind was shown to fail: a dropped field, a changed placeholder,
-a changed holder line, and the old `HOUSE.md` order. Next:
-`/session-close`.
-
-## Closed Tasks
+**Done, 2026-10-16.** Release 1.9.0, as decided: `check.sh` section 4
+holds every fenced field block and holder line in a kit-owned file, and in
+this repository's `TASKS.md` above its Open Tasks, to
+`.claude/kit/templates/TASKS.md`, and `HOUSE.md`'s holder pair lists
+`INACTIVE` above `ACTIVE`. A dropped field, a changed placeholder, a changed
+holder line and the old `HOUSE.md` order each made it fail. The field
+lines it compares are the template's labels, so other bold labels in
+fenced examples, such as `**Purpose:**`, are left alone.
 
 ### Claim A New Task's Branch Before Grilling It
 

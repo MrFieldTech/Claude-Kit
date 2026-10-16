@@ -13,6 +13,7 @@ file at the same time.
 
 | Date | Developer | Tasks touched | Work commits |
 |---|---|---|---|
+| 2026-10-16 | GRM / MRFIELDTECH | `check-block-fields`, DONE, merged into `preview`: release 1.9.0 has `check.sh` hold every fenced task field block and holder line to the `TASKS.md` template, and swaps `HOUSE.md`'s holder pair to the template's order | `85e0cb5..68b60a4` |
 | 2026-10-16 | GRM / MRFIELDTECH | `check-block-fields`, ACTIVE, parked: opened for later from `grill-position-diff`'s retrospective, with its two open decisions in its block; then MrFieldTech's answer that every close writes a reference | `4a2f938..9b49558` |
 | 2026-10-16 | GRM / MRFIELDTECH | `grill-position-diff`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.8.0 claims a new task's branch before grilling it, and writes each round into its block | `df78d4f..6580c0f` |
 | 2026-10-15 | GRM / MRFIELDTECH | `session-references`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.7.0 adds session references, `/session-open import` and `/session-open backfill`, after taking in 1.6.0 | `6233007..7e0bf1f` |
@@ -197,8 +198,17 @@ None.
   Section 5 installs from a clone of `HEAD`, so run before committing it
   failed with "status after install reads '1.2.0, current', not '1.3.0,
   current'", which reads as a broken installer rather than "commit first".
-  It happened again in `session-references` on 2026-10-14. Open a task for
+  It happened again in `session-references` on 2026-10-14, and in
+  `check-block-fields` on 2026-10-16. Open a task for
   it?
+- **Should `grilling.md` have a question carried from an earlier session
+  rewritten before it is asked?** Raised by GRM / MRFIELDTECH, 2026-10-16,
+  in `check-block-fields`. Its open questions were written in shorthand when
+  the task was opened for later ("Which copies does the check hold to the
+  template?"), asked as written, and MrFieldTech could not tell what they
+  applied to; a rewrite naming the files and quoting the lines in question
+  would have saved a round. This is a change to a kit-owned file. Open a
+  task for it?
 
 ## Flagged As Unverified
 
