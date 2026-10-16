@@ -84,24 +84,35 @@ this repository's `TASKS.md`. The holder line is written out in five places
 `TASKS.md`), each line in the same shape, two of them as an example pair in
 opposite orders, both newest first.
 
-**Open questions, round 1.**
+**Decisions.**
 
-1. Which copies does the check hold to the template?
-   a. (recommended) The template and `session-close`'s Format, both
-      kit-owned. This repository's `TASKS.md` is a state file and changes
-      only when a release says so.
-   b. All three.
-2. How strictly?
-   a. (recommended) The fenced block of field lines must match line for
-      line.
-   b. Only the field names must match, in order.
-3. Does the check also cover the holder line?
-   a. (recommended) No. It is one line, already the same shape everywhere,
-      and this task is about the field block.
-   b. Yes: every fenced holder line in a kit-owned file must match the shape
-      `HOUSE.md` gives.
+- MrFieldTech, 2026-10-16: the check is strict. A fenced block of field
+  lines must match the template's line for line, placeholders included, so
+  a changed description fails as well as a missing field.
+- MrFieldTech, 2026-10-16: the check covers the holder line as well as the
+  field block, because both are format that one copy can gain and another
+  miss.
 
-**Stopping point.** Grilling round 1 asked, unanswered. Next: record the
+**Open questions, round 2.**
+
+1. Does the check also hold this repository's `TASKS.md` to the template?
+   It compares only the fenced example blocks in its How Tasks Are Worked
+   section, which hold the same placeholders as the template, never a
+   task's real lines. MrFieldTech first asked for all three copies, then
+   for two on the understanding that this file's copy holds real data.
+   a. (recommended) Yes, all three. A release changes all three in one
+      pull request, so they agree whenever a check runs.
+   b. No, only the template and `session-close`.
+2. How does the holder line match? `HOUSE.md` and the template both show a
+   two-line example, in opposite orders (`ACTIVE` first in `HOUSE.md`,
+   `INACTIVE` first in the template), and `session-open` and
+   `session-close` each show one line.
+   a. (recommended) Each fenced holder line must equal one of the
+      template's two lines exactly, in any order.
+   b. The two-line examples must also match in order, which changes
+      `HOUSE.md` and makes this task a release.
+
+**Stopping point.** Grilling round 2 asked, unanswered. Next: record the
 answers as decisions, then write the check in `check.sh`. Touching only `check.sh` is not a
 change to a kit-owned file, so it needs no release unless the work also
 changes one.
