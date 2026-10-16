@@ -77,7 +77,14 @@ README update slug that does not match `VERSION`, so a cross-file
 consistency check fits it. Find the copies with
 `grep -rn 'Closed:\*\* <' .claude TASKS.md`.
 
-**Open questions.**
+**Facts looked up, 2026-10-16.** The fenced field block is identical, line
+for line, in `.claude/kit/templates/TASKS.md`, `session-close`'s Format and
+this repository's `TASKS.md`. The holder line is written out in five places
+(`HOUSE.md`, the template, `session-open` step 5, `session-close`, and this
+`TASKS.md`), each line in the same shape, two of them as an example pair in
+opposite orders, both newest first.
+
+**Open questions, round 1.**
 
 1. Which copies does the check hold to the template?
    a. (recommended) The template and `session-close`'s Format, both
@@ -88,9 +95,14 @@ consistency check fits it. Find the copies with
    a. (recommended) The fenced block of field lines must match line for
       line.
    b. Only the field names must match, in order.
+3. Does the check also cover the holder line?
+   a. (recommended) No. It is one line, already the same shape everywhere,
+      and this task is about the field block.
+   b. Yes: every fenced holder line in a kit-owned file must match the shape
+      `HOUSE.md` gives.
 
-**Stopping point.** Not started. First: settle the open questions above,
-then write the check in `check.sh`. Touching only `check.sh` is not a
+**Stopping point.** Grilling round 1 asked, unanswered. Next: record the
+answers as decisions, then write the check in `check.sh`. Touching only `check.sh` is not a
 change to a kit-owned file, so it needs no release unless the work also
 changes one.
 
