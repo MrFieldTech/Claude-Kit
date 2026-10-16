@@ -62,12 +62,12 @@ is already in the block. Its stopping point names that round, and the task
 parks as usual. Open questions stay in the block, and reach `HANDOFF.md` only
 when the task blocks on one or closes with one unanswered.
 
-When grilling shows the task should not go ahead, because the owner drops it
-or it duplicates another task, mark it `DONE` with a `Dropped:` line saying
-why. It merges at close like any finished task, so its branch is deleted and
-its block keeps the reason. A slug that turns out misleading stays, because
-it is a label; the task is dropped and another opened only when the owner
-asks.
+When grilling shows the task should not go ahead, because the owner
+dismisses it or it duplicates another task, mark it `DISMISSED` with a
+`Dismissed:` line saying why. It merges at close like a finished task, so
+its branch is deleted and its block keeps the reason. A slug that turns out
+misleading stays, because it is a label; the task is dismissed and another
+opened only when the owner asks.
 
 Grilling with no task, such as a plan stress-tested in a temporary session,
 asks its rounds in the reply until the owner keeps the result as a task.

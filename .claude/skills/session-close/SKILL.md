@@ -1,7 +1,7 @@
 ---
 name: session-close
 description: >-
-  Close out a Claude Code session in a repository that uses Claude-Kit. For each task branch the session worked on, stops at a clean boundary, places every credential, updates the task's block in TASKS.md, looks back over a session that met friction, edits HANDOFF.md in place, writes the session reference, runs the repository's Regenerate commands, and pushes the branch. A failing Regenerate command or check is diagnosed before anything parks. A task that is DONE or BLOCKED then merges into the integration branch by a pull request whose body carries evidence and a merge danger call, and GitHub deletes its branch; a task stopped partway stays parked on its branch. Merges the integration branch into the default branch only when the owner asks. Reports where to see each task's work. Runs only when the owner invokes /session-close.
+  Close out a Claude Code session in a repository that uses Claude-Kit. For each task branch the session worked on, stops at a clean boundary, places every credential, updates the task's block in TASKS.md, looks back over a session that met friction, edits HANDOFF.md in place, writes the session reference, runs the repository's Regenerate commands, and pushes the branch. A failing Regenerate command or check is diagnosed before anything parks. A task that is DONE, DISMISSED or BLOCKED then merges into the integration branch by a pull request whose body carries evidence and a merge danger call, and GitHub deletes its branch; a task stopped partway stays parked on its branch. Merges the integration branch into the default branch only when the owner asks. Reports where to see each task's work. Runs only when the owner invokes /session-close.
 disable-model-invocation: true
 ---
 
@@ -96,16 +96,16 @@ this session, whatever the status below, with the UTC time now and the
 developer `session-open` named, by Developers in `.claude/kit/HOUSE.md`:
 
 ```
-INACTIVE | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
+DROPPED | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
 ```
 
 It drops the task, so the next developer to open it finds it free.
 
 Set the status:
 
-- `DONE` when the work is finished, or dropped with a `Dropped:` line saying
-  why. Move the block from Open Tasks to Closed Tasks and add a `Closed:`
-  date. Move any question still open in the block to Open Questions in
+- `DONE` when the work is finished, or `DISMISSED` when it will not be done,
+  with a `Dismissed:` line saying why. Move the block from Open Tasks to
+  Closed Tasks and add a `Closed:` date. Move any question still open in the block to Open Questions in
   `HANDOFF.md`. The merge in step 8 is what makes it true, and if that merge
   does not happen, step 8 sets it back.
 - `BLOCKED` when it needs something only the owner can supply, with the question
@@ -206,8 +206,9 @@ on to the next task branch or to step 9.
 
 ## 8. Merge a finished task
 
-A task that is `DONE` or `BLOCKED` merges into the integration branch. With
-`Integration branch: none`, a `DONE` task merges into the default branch and a
+A task that is `DONE`, `DISMISSED` or `BLOCKED` merges into the integration
+branch. With `Integration branch: none`, a `DONE` or `DISMISSED` task merges
+into the default branch and a
 `BLOCKED` one parks, below, because its partial work would otherwise reach
 production. Below, the target is the branch the task merges into.
 
@@ -323,7 +324,7 @@ The second command prints nothing when the branch is gone. If it is still there,
 report it for the owner to delete, and say on the `Branch:` line that
 Automatically delete head branches is off and needs turning on.
 
-**To park a task instead,** set a `DONE` task back to `ACTIVE` and move its
+**To park a task instead,** set a `DONE` or `DISMISSED` task back to `ACTIVE` and move its
 block back to Open Tasks, or leave a `BLOCKED` task as it is. Write in the block
 why the merge did not happen, naming the conflicting files or the failing check.
 Commit, push, and report it as parked.
@@ -359,7 +360,8 @@ When they have asked, check all four before touching anything:
    waits.
 2. The integration branch merges into the default branch with no conflict.
 3. No task is `ACTIVE` in `TASKS.md` on the integration branch. A task branch
-   merges only when its task is `DONE` or `BLOCKED`, so this always holds unless
+   merges only when its task is `DONE`, `DISMISSED` or `BLOCKED`, so this
+   always holds unless
    something merged that should not have.
 4. No pull request into the integration branch is open, through the
    session's GitHub access. Another developer's close may have one open and
@@ -406,7 +408,7 @@ as one fenced code block with no backticks inside it, giving one `Task:`,
 `Branch:` and `Preview:` line to each task branch the session closed:
 
 ```
-Task:    <task slug>, <DONE | BLOCKED | ACTIVE>
+Task:    <task slug>, <DONE | DISMISSED | BLOCKED | ACTIVE>
 Branch:  <merged into <target> by <pull request URL>, deleted by GitHub | merged into <target> by <pull request URL>, not deleted: turn on Automatically delete head branches | parked at <hash>>
 Preview: <the Task preview address when parked | the Integration preview address when merged | none>
 Commit:  <handoff commit hash>
@@ -471,11 +473,11 @@ first, one per session that took or dropped the task, as Developers in
 
 ```markdown
 **Slug:** `<task-slug>`
-**Status:** TODO | ACTIVE | BLOCKED | DONE
+**Status:** TODO | ACTIVE | BLOCKED | DONE | DISMISSED
 **Opened:** <YYYY-MM-DD>
 **Blocked:** <what would unblock it, only when BLOCKED>
-**Closed:** <YYYY-MM-DD, only when DONE>
-**Dropped:** <why the work was not done, only when dropped>
+**Closed:** <YYYY-MM-DD, only when DONE or DISMISSED>
+**Dismissed:** <why the work will not be done, only when DISMISSED>
 ```
 
 Then the detail block as prose. Task slugs are unique and permanent, and a task

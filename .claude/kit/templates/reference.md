@@ -1,6 +1,6 @@
 # Session Reference: <task title>
 
-**Task:** `<task-slug>`, <DONE | BLOCKED | ACTIVE> at close
+**Task:** `<task-slug>`, <DONE | DISMISSED | BLOCKED | ACTIVE> at close
 **Repository:** <owner>/<repository>
 **Developer:** <PREFIX> / <HANDLE>
 **Written:** <YYYY-MM-DD hh:mm:ss> UTC
