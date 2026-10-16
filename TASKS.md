@@ -129,7 +129,16 @@ answer the recommended one.
 
 The frontier is empty after round 1.
 
-**Stopping point.** Grilling done; writing release 1.12.0.
+**Done, 2026-10-16.** Release 1.12.0, as decided: the `REFERENCES.md`
+template gains Subject home, New home format and Confirm new homes.
+`references.md` The kit default procedure holds Its three values, The
+warning and The steps, whose first settles every subject's home before
+anything is imported; Turning imports on proposes the values and the
+import's Questions rule names an unsettled home. `session-open` Import step
+2 matches only `task/import-<yymmddhhmmss>`, and step 7 runs the Homes step
+first. `README.md` and `CHANGELOG.md` say the same. `bash check.sh` passed.
+
+**Stopping point.** Work done; waiting on `/session-close`.
 
 ## Closed Tasks
 
