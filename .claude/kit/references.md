@@ -70,9 +70,21 @@ conversation should be erased once the value is placed.
 
 ## Backfilling
 
-`/session-open backfill` writes a reference for every past close that has
-none, by the Backfill section of `session-open`, on a task of its own,
+`/session-open backfill` writes a reference that is missing, by the
+Backfill section of `session-open`, on a task of its own,
 `backfill-<yymmddhhmmss>`. The rules it applies are here.
+
+**What a backfill covers.** It is for a session whose close wrote no
+reference, such as one that closed under a release before 1.7.0. Run in a
+session that has done something before `/session-open backfill`, it covers
+only that session: each close the conversation ran that added no reference,
+and a temporary session that opened no task, named for the slug `temp`. A
+close that wrote its reference is never written again, because a second
+one would duplicate it rather than fill a gap. A task the session worked
+and has not closed is left to its close, which writes its reference. Run as
+the first thing in a brand new session, it has no session of its own to
+cover, so it lists the past closes with no reference and writes those the
+developer chooses.
 
 **Past closes.** Every close made one commit whose message begins
 `handoff: `, so `git log --grep='^handoff: '` on the base lists them all,
@@ -86,9 +98,10 @@ next close writes its reference.
 of the `handoff:` commit, so it sorts where the session ran. The slug is
 the task the Session Log row that commit added names, or else the task
 whose block it changed. When neither names one, the slug is `unknown` and
-Current State says so.
+Current State says so. A temporary session has no `handoff:` commit,
+so its reference takes the time it is written and the slug `temp`.
 
-**From a conversation.** A close this conversation itself ran is written
+**From a conversation.** A close this conversation itself ran, or its temporary session, is written
 from the conversation, by The reference above, as its own close would have
 written it.
 
@@ -109,7 +122,7 @@ recorded, as before release 1.6.0, the Developer line reads
 `not recorded`. A credential is named by its label and never copied: a
 backfill writes no companion.
 
-**It closes itself.** Once every past close has a reference, the backfill
+**It closes itself.** Once every reference it listed is written, the backfill
 task runs `session-close`'s steps for itself, as `DONE`, without waiting
 for `/session-close`. Its own reference lists each reference it wrote
 under Artifacts and records no other facts.
