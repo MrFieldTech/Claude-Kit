@@ -4,6 +4,21 @@ Every change to a kit-owned file is a release, recorded here with the version
 `VERSION` carries. A project's `/session-open` reports when a newer release
 exists, and the project takes it by `kit.sh update` when its owner asks.
 
+## 1.11.0
+
+`/session-open backfill` writes the reference the session it runs in is
+missing, not one for every past close.
+
+- Run in a session that has already done something, it writes a
+  reference only for that session: a close the conversation ran that wrote
+  none, or a temporary session that opened no task. A close that wrote its
+  reference is never written again, and a task not yet closed is left to
+  its close.
+- Run as the first thing in a new session, it lists the past closes with
+  no reference and asks which to write: all, some by number, or none.
+
+A repository needs to do nothing after updating.
+
 ## 1.10.0
 
 The words in a holder line are no longer the same as a task's status
