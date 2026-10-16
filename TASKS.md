@@ -99,41 +99,37 @@ branch taken then start the grilling."
   answer turns its question into a record of what was decided. How exactly is
   round 2, question 1.
 
-**Open questions, round 2.**
+**Decisions made.** MrFieldTech, 2026-10-16, round 2 of grilling.
 
-1. When the owner answers a question in the block, what replaces it?
-   a. (recommended) The question is removed and a decision is written under
-      Decisions made: who, the date, what was decided, what it changes, and
-      why, in the owner's sense rather than their words.
-   b. The question stays, marked answered, with the answer under it.
-2. What happens when grilling, after the claim, shows the task should not go
-   ahead as claimed?
-   a. (recommended) The slug is checked against the slug rule before the
-      claim, as now. A task dropped or found to duplicate another is marked
-      `DONE` with a `Dropped:` line saying why, and merges by pull request at
-      close like any done task, so GitHub deletes its branch and the block
-      records why. A slug that turns out to be misleading stays, because a
-      slug is a label; only when the owner asks is the task dropped and a new
-      one opened under the slug they want.
-   b. The same, but a dropped task stays parked for the owner to delete its
-      branch, and nothing merges.
-3. With no slug named (step 4 case d), the session chooses the slug. Under
-   the new order it claims that slug before the owner sees it. Should it?
-   a. (recommended) Yes. It claims at once with the slug it chose and names
-      it in the first round, and question 2's rule covers a slug the owner
-      dislikes.
-   b. No. Case d asks the slug alone first, as a round of one question, and
-      claims once the owner answers.
-4. Should a parked task with unanswered grilling questions also list them
-   under Open Questions in `HANDOFF.md`?
-   a. (recommended) No. They stay in the task's block; `session-open` shows
-      the stopping point, which names the round, whenever it lists or resumes
-      the task. `HANDOFF.md` takes a question only when the task is
-      `BLOCKED` on it, as now.
-   b. Yes, every unanswered grilling question is copied there too.
+- An answered question leaves the block's open questions and becomes a
+  decision under Decisions made: who, the date, what was decided, what it
+  changes and why, in the owner's sense rather than their words.
+- The slug is checked against the slug rule before the claim, as now. A task
+  grilling drops, or finds duplicating another, is marked `DONE` with a
+  `Dropped:` line saying why and merges by pull request at close, so GitHub
+  deletes its branch and the block keeps the reason. A slug that turns out
+  misleading stays, because the slug is inconsequential to the work; the
+  task is dropped and a new one opened only when the owner asks.
+- With no slug named but work described (step 4 case d), the session first
+  looks for an open task that already covers it, on a task branch or under
+  Open Tasks, and offers each match as an option alongside a new task. With
+  no match it chooses a slug and claims at once, naming the slug in the
+  first round. With neither a slug nor work named (case e), the session
+  lists the task branches and open tasks and asks, which is how case e
+  already works.
+- Unanswered grilling questions stay in the task's block, and `session-open`
+  shows them through the stopping point. `HANDOFF.md` takes a question only
+  when the task is `BLOCKED` on it, as now, or when the task closes `DONE`
+  with questions it raised still unanswered, which then move from the block
+  to Open Questions in `HANDOFF.md`.
 
-**Stopping point.** Round 2 of grilling is asked and not answered. Next:
-record the answers, then write 1.8.0.
+The frontier is empty after round 2.
+
+**Stopping point.** Grilling is done. Next: write 1.8.0 in
+`session-open` step 4 cases c and d and the temporary session's task path,
+`grilling.md`, `HOUSE.md`'s Grilling pointer, `session-close` step 3 for a
+`DONE` or dropped task, `TASKS.md`'s template for the `Dropped:` line, then
+`VERSION`, `CHANGELOG.md` and `README.md`.
 
 ## Closed Tasks
 
