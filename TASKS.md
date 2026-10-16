@@ -55,6 +55,72 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+### Backfill Only The Session It Was Opened In
+
+HOLDING | GRM / MRFIELDTECH | 261016 222714
+
+**Slug:** `backfill-intent`
+**Status:** ACTIVE
+**Opened:** 2026-10-16
+
+**Why.** MrFieldTech, 2026-10-16: "Using the backfill flag for session
+open is supposed to create a session-reference for the missing session.
+It's not supposed to create session-references for every missing
+session-reference for every branch, it's only supposed to create one
+session-reference for the session it was open in. If the session it was
+opened in is a brand new session, only then should it ask if it's supposed
+to create a session-reference for every missing one."
+
+**Facts looked up, 2026-10-16.**
+
+- Release 1.7.0 added `/session-open backfill`. Its Backfill section in
+  `session-open` lists every past close with no reference, by
+  `git log --grep='^handoff: '` on the base, opens
+  `backfill-<yymmddhhmmss>`, writes one reference per close, and closes
+  itself. `.claude/kit/references.md` Backfilling holds its rules, and
+  already writes a close this conversation ran from the conversation and
+  any other by transcription from the repository.
+- The backfill is also described in `HOUSE.md` (Sessions and branches),
+  the `session-open` description and step 4, `README.md` and the 1.7.0
+  `CHANGELOG.md` entry.
+- Since 1.7.0 every close writes a reference, so a session that closed
+  under 1.7.0 or later lacks one only when its close failed partway. A
+  temporary session that opened no task has no close and no reference.
+- The kit is at 1.10.0.
+
+**Open questions, round 1.**
+
+1. What does "the session it was opened in" cover?
+   a. (recommended) Everything this conversation did before
+      `/session-open backfill` that has no reference: each close it ran,
+      each task it worked without closing, and a temporary session's
+      conversation, each written from the conversation.
+   b. Only closes this conversation ran that wrote no reference.
+2. Where does that one reference get committed?
+   a. (recommended) On its own task, `backfill-<yymmddhhmmss>`, which
+      closes itself as today.
+   b. On the task branch the session was working, when it is still on the
+      remote, otherwise on its own task.
+3. In a brand new session, meaning `/session-open backfill` is the first
+   thing the conversation does, what does it ask?
+   a. (recommended) It lists the past closes with no reference, with their
+      count, and asks whether to write all of them; on no it stops and
+      writes nothing.
+   b. As a, but it also lets the developer pick which closes to write.
+4. In a session that is not brand new, when nothing from it is missing a
+   reference, what happens?
+   a. (recommended) It says so and stops, writing nothing and offering no
+      wider backfill.
+   b. It says so and offers to backfill every missing close, as a brand new
+      session would.
+5. Which release is it?
+   a. (recommended) 1.11.0, a minor release, since `/session-open
+      backfill` does something different; no step is needed after
+      updating.
+   b. 1.10.1, a patch release.
+
+**Next.** Answer round 1 of grilling.
+
 ## Closed Tasks
 
 ### Rename The Holder Words And Add A DISMISSED Status
