@@ -13,7 +13,7 @@ file at the same time.
 
 | Date | Developer | Tasks touched | Work commits |
 |---|---|---|---|
-| 2026-10-16 | GRM / MRFIELDTECH | `check-block-fields`, ACTIVE, parked: opened for later from `grill-position-diff`'s retrospective, with its two open decisions in its block | `4a2f938` |
+| 2026-10-16 | GRM / MRFIELDTECH | `check-block-fields`, ACTIVE, parked: opened for later from `grill-position-diff`'s retrospective, with its two open decisions in its block; then MrFieldTech's answer that every close writes a reference | `4a2f938..9b49558` |
 | 2026-10-16 | GRM / MRFIELDTECH | `grill-position-diff`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.8.0 claims a new task's branch before grilling it, and writes each round into its block | `df78d4f..6580c0f` |
 | 2026-10-15 | GRM / MRFIELDTECH | `session-references`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.7.0 adds session references, `/session-open import` and `/session-open backfill`, after taking in 1.6.0 | `6233007..7e0bf1f` |
 | 2026-10-15 | GRM / MRFIELDTECH | `multi-dev-setup`, DONE, merged into `preview`: release 1.6.0 lets several developers share a repository, every one an owner, with holder lines on each task | `824ed6f..fe201c3` |
