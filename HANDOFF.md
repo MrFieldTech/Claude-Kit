@@ -13,6 +13,9 @@ file at the same time.
 
 | Date | Developer | Tasks touched | Work commits |
 |---|---|---|---|
+| 2026-10-16 | GRM / MRFIELDTECH | `task-name-changes`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.10.0 renames holder lines to `HOLDING` and `DROPPED` and adds a `DISMISSED` status | `c386626..3ff816d` |
+| 2026-10-16 | GRM / MRFIELDTECH | `check-block-fields`, DONE, merged into `preview`: release 1.9.0 has `check.sh` hold every fenced task field block and holder line to the `TASKS.md` template, and swaps `HOUSE.md`'s holder pair to the template's order | `85e0cb5..68b60a4` |
+| 2026-10-16 | GRM / MRFIELDTECH | `check-block-fields`, ACTIVE, parked: opened for later from `grill-position-diff`'s retrospective, with its two open decisions in its block; then MrFieldTech's answer that every close writes a reference | `4a2f938..9b49558` |
 | 2026-10-16 | GRM / MRFIELDTECH | `grill-position-diff`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.8.0 claims a new task's branch before grilling it, and writes each round into its block | `df78d4f..6580c0f` |
 | 2026-10-15 | GRM / MRFIELDTECH | `session-references`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.7.0 adds session references, `/session-open import` and `/session-open backfill`, after taking in 1.6.0 | `6233007..7e0bf1f` |
 | 2026-10-15 | GRM / MRFIELDTECH | `multi-dev-setup`, DONE, merged into `preview`: release 1.6.0 lets several developers share a repository, every one an owner, with holder lines on each task | `824ed6f..fe201c3` |
@@ -134,7 +137,8 @@ None.
   GRM / MRFIELDTECH, 2026-10-15. The organization is flat, so the kit
   builds in no hierarchy or employee list. A session names its developer
   from the GitHub account and the Claude Code branch prefix, and each task
-  keeps ACTIVE and INACTIVE holder lines. The full decisions are in the
+  keeps ACTIVE and INACTIVE holder lines (superseded 2026-10-16: `HOLDING`
+  and `DROPPED`, below). The full decisions are in the
   `multi-dev-setup` block in `TASKS.md`.
 - **Developers sharing one GitHub account are their own responsibility.**
   GRM / MRFIELDTECH, 2026-10-15. They look like one developer and neither
@@ -162,6 +166,17 @@ None.
   conversation. The full decisions are in the `grill-position-diff` block in
   `TASKS.md`.
 
+- **Every close writes a session reference, even one that learned
+  nothing.** GRM / MRFIELDTECH, 2026-10-16, so the record has no gaps. A
+  reference already covers only its own task branch since that branch's
+  last close.
+
+- **Holder lines read `HOLDING` and `DROPPED`, and a task that will not be
+  done is `DISMISSED`.** GRM / MRFIELDTECH, 2026-10-16, so a holder word is
+  never read as a status. Existing lines are renamed rather than read two
+  ways, and a `DISMISSED` task closes like `DONE`. The full decisions are
+  in the `task-name-changes` block in `TASKS.md`.
+
 ## Open Questions
 
 - **Should the private repository the default import follows name its
@@ -180,12 +195,6 @@ None.
   MRFIELDTECH, 2026-10-15. Claude-Kit used publicly is too generic. Open a
   task to choose one?
 
-- **Should `check.sh` hold the task fields in `session-close`'s Format to
-  the `TASKS.md` template?** Raised by GRM / MRFIELDTECH, 2026-10-16, in
-  `grill-position-diff`. The fields are written out in both, and 1.8.0's
-  `Dropped:` line reached the template first and `session-close` only on a
-  second look. Open a task for it?
-
 - **Should the kit make every remote branch tracked from the start?** A
   session working from a single-branch clone pushed its task branch, but git
   recorded no `origin/task/<slug>`, so the cloud end-of-turn hook reported
@@ -197,8 +206,17 @@ None.
   Section 5 installs from a clone of `HEAD`, so run before committing it
   failed with "status after install reads '1.2.0, current', not '1.3.0,
   current'", which reads as a broken installer rather than "commit first".
-  It happened again in `session-references` on 2026-10-14. Open a task for
+  It happened again in `session-references` on 2026-10-14, and in
+  `check-block-fields` and `task-name-changes` on 2026-10-16. Open a task for
   it?
+- **Should `grilling.md` have a question carried from an earlier session
+  rewritten before it is asked?** Raised by GRM / MRFIELDTECH, 2026-10-16,
+  in `check-block-fields`. Its open questions were written in shorthand when
+  the task was opened for later ("Which copies does the check hold to the
+  template?"), asked as written, and MrFieldTech could not tell what they
+  applied to; a rewrite naming the files and quoting the lines in question
+  would have saved a round. This is a change to a kit-owned file. Open a
+  task for it?
 
 ## Flagged As Unverified
 
@@ -249,7 +267,14 @@ them.
 `grill-position-diff` claimed first and wrote its rounds into its block by
 hand, under 1.7.0's text. The next new task verifies the claim before
 grilling, the search for a matching task when no slug is named, and, when
-one is dropped, the `Dropped:` close.
+one is dismissed, the `Dismissed:` close.
+
+**No session has written a `HOLDING` line from the skill, and no repository
+has renamed its holder lines after updating to 1.10.0.** `task-name-changes`
+opened under 1.9.0 and its line was renamed by hand; its close wrote the
+first `DROPPED` line from 1.10.0's text. The next `/session-open` verifies
+the `HOLDING` line and the held-task warning on it; the first repository to
+take 1.10.0 verifies the changelog's rename steps.
 
 **No session has diagnosed a failure under 1.3.0.** The first failing check
 or Regenerate command tries the diagnosis.

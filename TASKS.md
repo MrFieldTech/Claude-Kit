@@ -15,7 +15,8 @@ slug names no task. With no slug, `session-open` lists the parked task branches
 and the queued tasks and asks what to work on. Open Tasks are in the order they
 are to be worked. Sessions on different tasks can run at the same time.
 
-At close, a finished task merges by pull request and GitHub deletes its branch.
+At close, a finished or dismissed task merges by pull request and GitHub
+deletes its branch.
 A task stopped partway stays `ACTIVE` and parked on its branch.
 
 Tasks carry a slug and never a number, so a task can be reordered, split, or
@@ -27,26 +28,27 @@ permanent and name the task's branch.
 | `TODO` | Not started, and has no branch |
 | `ACTIVE` | In progress on its branch, or parked there between sessions |
 | `BLOCKED` | Cannot proceed, and its `Blocked:` line says what would unblock it. A task whose remaining work only the owner can do stays here rather than leaving the queue |
-| `DONE` | Finished, or dropped with a `Dropped:` line, merged, and moved to Closed Tasks |
+| `DONE` | Finished, merged, and moved to Closed Tasks |
+| `DISMISSED` | Not to be done, with a `Dismissed:` line saying why, merged, and moved to Closed Tasks |
 
 Each task's heading is its title. Directly under it are its holder lines,
 newest first, which record who took the task and who dropped it, as
 `.claude/kit/HOUSE.md` describes under Developers:
 
 ```markdown
-INACTIVE | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
-ACTIVE | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
+DROPPED | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
+HOLDING | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
 ```
 
 Then:
 
 ```markdown
 **Slug:** `<task-slug>`
-**Status:** TODO | ACTIVE | BLOCKED | DONE
+**Status:** TODO | ACTIVE | BLOCKED | DONE | DISMISSED
 **Opened:** <YYYY-MM-DD>
 **Blocked:** <what would unblock it, only when BLOCKED>
-**Closed:** <YYYY-MM-DD, only when DONE>
-**Dropped:** <why the work was not done, only when dropped>
+**Closed:** <YYYY-MM-DD, only when DONE or DISMISSED>
+**Dismissed:** <why the work will not be done, only when DISMISSED>
 ```
 
 Then the detail block, as prose.
@@ -55,10 +57,128 @@ Then the detail block, as prose.
 
 ## Closed Tasks
 
+### Rename The Holder Words And Add A DISMISSED Status
+
+DROPPED | GRM / MRFIELDTECH | 261016 214943
+HOLDING | GRM / MRFIELDTECH | 261016 213749
+
+**Slug:** `task-name-changes`
+**Status:** DONE
+**Opened:** 2026-10-16
+**Closed:** 2026-10-16
+
+**Why.** MrFieldTech, 2026-10-16: "Within the task holder lines, change
+ACTIVE to HOLDING and INACTIVE to DROPPED (as to not confuse these terms
+with the Status options (TODO, ACTIVE, BLOCKED, DONE). Additionally, when a
+task is no longer going to be developed, it is "Dropped:" with the
+reasoning. This should be changed to DISMISSED so as not to confuse it with
+the new holder status. DISMISSED should be a new status option for a task
+(although redundant with the dismissed information in the task and the fact
+that it was promoted, but still, it's an outline for future changes that
+may come)."
+
+**Facts looked up, 2026-10-16.**
+
+- Holder words are written in `HOUSE.md` (Developers), the `TASKS.md`
+  template, `session-open` steps 4 to 6, `session-close` step 3 and its
+  Format, `check.sh` section 4 (`(IN)?ACTIVE \| `), `README.md` line 16
+  ("dropped it"), and this repository's `TASKS.md`, where four closed
+  tasks carry holder lines.
+- The `Dropped:` field is in the `TASKS.md` template's marker table and
+  field block, `session-close` step 3 and its Format, and `grilling.md`'s
+  Done section. No task here has ever been dropped.
+- Session references carry no holder lines. Their `Task:` line names the
+  status at close, `<DONE | BLOCKED | ACTIVE>`.
+
+**Decisions made.** MrFieldTech, 2026-10-16, round 1 of grilling.
+
+- Holder lines already written are renamed, so only one pair of words ever
+  exists. This release rewrites this repository's, and its changelog entry
+  tells an updating repository to rename its own in the update's commit.
+- A `DISMISSED` task goes wherever a `DONE` one goes: it gets a `Closed:`
+  date and a `Dismissed:` line saying why, merges at close, moves to Closed
+  Tasks, and counts as closed in every check that asks about `DONE`.
+- The release is 1.10.0, a minor release as 1.6.0 was.
+
+The frontier is empty after round 1.
+
+**Done, 2026-10-16.** Release 1.10.0, as decided: holder lines read
+`HOLDING` and `DROPPED` in `HOUSE.md`, both skills, the `TASKS.md`
+template and this repository's `TASKS.md`, every holder line here renamed.
+`DISMISSED` with a `Dismissed:` line replaces `DONE` with `Dropped:`, and
+goes wherever `DONE` goes in `HOUSE.md`, both skills, `grilling.md` and the
+reference template. `check.sh` section 4 also matches the old holder words,
+so a copy left on them fails. The changelog entry says what an updating
+repository renames.
+
+**Closed, 2026-10-16.** Merged into `preview` and then `main` at
+MrFieldTech's request.
+
+### Hold The Task Block Fields To One Format In check.sh
+
+DROPPED | GRM / MRFIELDTECH | 261016 213052
+HOLDING | GRM / MRFIELDTECH | 261016 203427
+DROPPED | GRM / MRFIELDTECH | 261016 201729
+HOLDING | GRM / MRFIELDTECH | 261016 201442
+
+**Slug:** `check-block-fields`
+**Status:** DONE
+**Opened:** 2026-10-16
+**Closed:** 2026-10-16
+
+**Why.** MrFieldTech, 2026-10-16, answering the retrospective of
+`grill-position-diff`: open a task for it later. A task block's fields
+(`Slug`, `Status`, `Opened`, `Blocked`, `Closed`, `Dropped`) are written out
+in three places: `.claude/kit/templates/TASKS.md`, `session-close`'s Format
+section, and this repository's own `TASKS.md`. Release 1.8.0's `Dropped:`
+line reached the template first and `session-close` only on a second look
+(`6580c0f`), and `bash check.sh` passed both ways. A check would make a field
+added to one copy and missed in another fail.
+
+**Background.** `check.sh` already fails on a missing practice file and on a
+README update slug that does not match `VERSION`, so a cross-file
+consistency check fits it. Find the copies with
+`grep -rn 'Closed:\*\* <' .claude TASKS.md`.
+
+**Facts looked up, 2026-10-16.** The fenced field block is identical, line
+for line, in `.claude/kit/templates/TASKS.md`, `session-close`'s Format and
+this repository's `TASKS.md`. The holder line is written out in five places
+(`HOUSE.md`, the template, `session-open` step 5, `session-close`, and this
+`TASKS.md`), each line in the same shape, two of them as an example pair in
+opposite orders, both newest first.
+
+**Decisions.**
+
+- MrFieldTech, 2026-10-16: the check is strict. A fenced block of field
+  lines must match the template's line for line, placeholders included, so
+  a changed description fails as well as a missing field.
+- MrFieldTech, 2026-10-16: the check covers the holder line as well as the
+  field block, because both are format that one copy can gain and another
+  miss.
+
+- MrFieldTech, 2026-10-16: the check holds all three copies to the
+  template, this repository's `TASKS.md` included. Only the fenced
+  examples above its Open Tasks are compared, never a task's real lines,
+  and a release changes all three in one pull request.
+- MrFieldTech, 2026-10-16: a two-line holder example matches the template
+  in order too, so `HOUSE.md`'s pair is swapped to the template's order
+  (`INACTIVE` above `ACTIVE`, newest first) and this task is a release.
+  Copies of a template's details never differ, even by order. A one-line
+  holder example must equal one of the template's lines.
+
+**Done, 2026-10-16.** Release 1.9.0, as decided: `check.sh` section 4
+holds every fenced field block and holder line in a kit-owned file, and in
+this repository's `TASKS.md` above its Open Tasks, to
+`.claude/kit/templates/TASKS.md`, and `HOUSE.md`'s holder pair lists
+`INACTIVE` above `ACTIVE`. A dropped field, a changed placeholder, a changed
+holder line and the old `HOUSE.md` order each made it fail. The field
+lines it compares are the template's labels, so other bold labels in
+fenced examples, such as `**Purpose:**`, are left alone.
+
 ### Claim A New Task's Branch Before Grilling It
 
-INACTIVE | GRM / MRFIELDTECH | 261016 160327
-ACTIVE | GRM / MRFIELDTECH | 261016 145848
+DROPPED | GRM / MRFIELDTECH | 261016 160327
+HOLDING | GRM / MRFIELDTECH | 261016 145848
 
 **Slug:** `grill-position-diff`
 **Status:** DONE
@@ -142,8 +262,8 @@ MrFieldTech's request.
 
 ### Write Session References And Import Them Into Other Repositories
 
-INACTIVE | GRM / MRFIELDTECH | 261015 223345
-ACTIVE | GRM / MRFIELDTECH | 261015 220409
+DROPPED | GRM / MRFIELDTECH | 261015 223345
+HOLDING | GRM / MRFIELDTECH | 261015 220409
 
 **Slug:** `session-references`
 **Status:** DONE
@@ -492,8 +612,8 @@ own or the kit default, and it copies no credential until it switches to
 
 ### Run The Session Protocol With Several Developers
 
-INACTIVE | GRM / MRFIELDTECH | 261015 214746
-ACTIVE | GRM / MRFIELDTECH | 261015 004741
+DROPPED | GRM / MRFIELDTECH | 261015 214746
+HOLDING | GRM / MRFIELDTECH | 261015 004741
 
 **Slug:** `multi-dev-setup`
 **Status:** DONE

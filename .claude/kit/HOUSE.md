@@ -91,8 +91,8 @@ is never pushed. The session works on its task branch instead.
   never force push anything, and never delete a branch.** GitHub's automatic
   deletion of merged branches removes task branches and the integration
   branch. Any other branch that should go is the owner's to delete.
-- **At close, a task that is `DONE` or `BLOCKED` merges into the integration
-  branch** by a pull request the session opens and merges. A task stopped
+- **At close, a task that is `DONE`, `DISMISSED` or `BLOCKED` merges into
+  the integration branch** by a pull request the session opens and merges. A task stopped
   partway stays parked on its branch, with its stopping point in its block in
   `TASKS.md`, and `session-open` lists it at every open.
 - **The integration branch merges into the default branch only when the owner
@@ -100,8 +100,8 @@ is never pushed. The session works on its task branch instead.
   check has passed on the code it holds and nothing conflicts.
 
 With `Integration branch: none` there are two kinds of branch. A task that is
-`DONE` merges into the default branch by pull request at close, and a
-`BLOCKED` task parks like an `ACTIVE` one, because its partial work would
+`DONE` or `DISMISSED` merges into the default branch by pull request at
+close, and a `BLOCKED` task parks like an `ACTIVE` one, because its partial work would
 otherwise reach production.
 
 **When a merge conflicts.** The paths under Generated files are never merged
@@ -131,13 +131,15 @@ in capitals, which `session-open` settles before it takes a task:
 who held the task:
 
 ```
-ACTIVE | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
-INACTIVE | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
+DROPPED | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
+HOLDING | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
 ```
 
-`session-open` adds an `ACTIVE` line when it takes a task, and
-`session-close` adds an `INACTIVE` line above it, whatever the task's status.
-Times are UTC. A task whose top holder line is `ACTIVE` for another developer
+`session-open` adds a `HOLDING` line when it takes a task, and
+`session-close` adds a `DROPPED` line above it, whatever the task's status.
+The holder words are never a task's status words, so a holder line is never
+read as a status. Times are UTC. A task whose top holder line is `HOLDING`
+for another developer
 is held: they took it and have not closed it, whether they are working it now
 or their session ended without a close. Any developer may take it over, but
 only once told who holds it and since when, and only when they say so.

@@ -8,17 +8,19 @@
 # 3. The scripts parse, each skill's frontmatter is whole, every practice
 #    is pointed at and every pointer names a practice that exists, and every
 #    kit-owned directory keeps LF line endings.
-# 4. VERSION is a version number, CHANGELOG.md has an entry for it, and the
+# 4. A task block's field lines and holder lines read the same wherever a
+#    kit-owned file or this repository's TASKS.md writes them out.
+# 5. VERSION is a version number, CHANGELOG.md has an entry for it, and the
 #    README's update block names it.
-# 5. An install into a scratch repository works end to end: the manifest,
+# 6. An install into a scratch repository works end to end: the manifest,
 #    the status line, the guard against overwriting local edits, and the
 #    TODO sweep.
-# 6. The secrets tool stores, places, locks, checks, shows, rekeys and
+# 7. The secrets tool stores, places, locks, checks, shows, rekeys and
 #    decrypts values with age, and prints the steps for keys. Skipped when
 #    age is not installed, except in CI. The Node decrypter is tested when
 #    node is installed, fully when CHECK_NODE_MODULES names a node_modules
 #    directory holding the age-encryption package.
-# 7. This repository's own TODO.md is current.
+# 8. This repository's own TODO.md is current.
 #
 # Exits non-zero on the first section that fails, after printing why.
 
@@ -116,7 +118,63 @@ if grep -rlI $'\r' "${KIT_OWNED[@]}"; then
 fi
 echo "check: scripts parse, skills are whole, practices are pointed at, and line endings stay LF"
 
-# 4. Every release is numbered and recorded.
+# 4. A task block's format is written out in more than one file, and a
+# field or holder line added to one copy and missed in another is caught
+# nowhere else. .claude/kit/templates/TASKS.md is the source. Every fenced
+# example of the format in a kit-owned file, and in this repository's
+# TASKS.md, must read exactly as the template's: the whole field block, and
+# a holder line as one of the template's two lines or both in its order.
+# Only text above a TASKS.md file's Open Tasks heading is read, so a task's
+# own lines are never compared.
+python3 - "${KIT_OWNED[@]}" TASKS.md <<'EOF' || fail "a task block's format differs from .claude/kit/templates/TASKS.md, as printed above"
+import pathlib, re, sys
+
+def examples(path):
+    text = pathlib.Path(path).read_text(encoding="utf-8")
+    if pathlib.Path(path).name == "TASKS.md":
+        text = text.split("\n## Open Tasks", 1)[0]
+    blocks, block = [], None
+    for line in text.splitlines():
+        if line.startswith("```"):
+            if block is not None:
+                blocks.append(block)
+            block = None if block is not None else []
+        elif block is not None:
+            block.append(line)
+    return blocks
+
+# The holder words before 1.10.0 are matched too, so a copy left on them fails.
+holder = re.compile(r"(HOLDING|DROPPED|(IN)?ACTIVE) \| ")
+template = ".claude/kit/templates/TASKS.md"
+blocks = examples(template)
+holders = [b for b in ([l for l in b if holder.match(l)] for b in blocks) if b]
+labels = re.compile(r"\*\*[A-Z][a-z]+:\*\* ")
+fields = [b for b in ([l for l in b if labels.match(l)] for b in blocks) if b]
+if len(holders) != 1 or len(fields) != 1:
+    sys.exit(f"check: {template} must hold one fenced holder example and one fenced field block")
+holders, fields = holders[0], fields[0]
+field = re.compile("|".join(re.escape(l.split(" ", 1)[0] + " ") for l in fields))
+
+files = []
+for arg in sys.argv[1:]:
+    p = pathlib.Path(arg)
+    files += sorted(p.rglob("*.md")) if p.is_dir() else [p]
+bad = False
+for path in files:
+    for block in examples(path):
+        found = [l for l in block if holder.match(l)]
+        if found and found != holders and not (len(found) == 1 and found[0] in holders):
+            print(f"{path}: holder lines\n  " + "\n  ".join(found), file=sys.stderr)
+            bad = True
+        found = [l for l in block if field.match(l)]
+        if found and found != fields:
+            print(f"{path}: field lines\n  " + "\n  ".join(found), file=sys.stderr)
+            bad = True
+sys.exit(1 if bad else 0)
+EOF
+echo "check: task block formats match the template"
+
+# 5. Every release is numbered and recorded.
 version="$(tr -d '[:space:]' < VERSION)"
 [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || fail "VERSION holds '$version', not a version number"
 grep -q "^## $version\b" CHANGELOG.md || fail "CHANGELOG.md has no '## $version' entry"
@@ -124,7 +182,7 @@ grep -qx "/session-open kit-update-${version//./-}" README.md \
   || fail "README.md's update block does not open with /session-open kit-update-${version//./-}"
 echo "check: version $version is recorded"
 
-# 5. End to end, in a scratch repository with nothing of its own.
+# 6. End to end, in a scratch repository with nothing of its own.
 scratch="$(mktemp -d)"
 trap 'rm -rf "$scratch"' EXIT
 repo="$scratch/repo"
@@ -221,7 +279,7 @@ if (cd "$repo" && python3 .claude/kit/todo_sweep.py >/dev/null 2>&1); then
 fi
 echo "check: the TODO sweep works"
 
-# 6. The secrets tool, in a scratch repository of its own, with keys made
+# 7. The secrets tool, in a scratch repository of its own, with keys made
 # outside it as the owner would make them. Values are fixed strings, so a
 # grep for one proves it never reached a file in plaintext.
 if command -v age >/dev/null 2>&1 && command -v age-keygen >/dev/null 2>&1; then
@@ -385,6 +443,6 @@ else
   echo "check: the secrets tool was not tested (age is not installed)"
 fi
 
-# 7. This repository keeps its own TODO.md by the sweep it ships. This file is
+# 8. This repository keeps its own TODO.md by the sweep it ships. This file is
 # excluded because the fixtures above are TODOs by design.
 python3 .claude/kit/todo_sweep.py --exclude check.sh --check
