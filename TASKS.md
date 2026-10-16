@@ -53,6 +53,45 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+### Hold The Task Block Fields To One Format In check.sh
+
+ACTIVE | GRM / MRFIELDTECH | 261016 201442
+
+**Slug:** `check-block-fields`
+**Status:** ACTIVE
+**Opened:** 2026-10-16
+
+**Why.** MrFieldTech, 2026-10-16, answering the retrospective of
+`grill-position-diff`: open a task for it later. A task block's fields
+(`Slug`, `Status`, `Opened`, `Blocked`, `Closed`, `Dropped`) are written out
+in three places: `.claude/kit/templates/TASKS.md`, `session-close`'s Format
+section, and this repository's own `TASKS.md`. Release 1.8.0's `Dropped:`
+line reached the template first and `session-close` only on a second look
+(`6580c0f`), and `bash check.sh` passed both ways. A check would make a field
+added to one copy and missed in another fail.
+
+**Background.** `check.sh` already fails on a missing practice file and on a
+README update slug that does not match `VERSION`, so a cross-file
+consistency check fits it. Find the copies with
+`grep -rn 'Closed:\*\* <' .claude TASKS.md`.
+
+**Open questions.**
+
+1. Which copies does the check hold to the template?
+   a. (recommended) The template and `session-close`'s Format, both
+      kit-owned. This repository's `TASKS.md` is a state file and changes
+      only when a release says so.
+   b. All three.
+2. How strictly?
+   a. (recommended) The fenced block of field lines must match line for
+      line.
+   b. Only the field names must match, in order.
+
+**Stopping point.** Not started. First: settle the open questions above,
+then write the check in `check.sh`. Touching only `check.sh` is not a
+change to a kit-owned file, so it needs no release unless the work also
+changes one.
+
 ## Closed Tasks
 
 ### Claim A New Task's Branch Before Grilling It
