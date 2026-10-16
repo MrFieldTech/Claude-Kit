@@ -475,6 +475,7 @@ first, one per session that took or dropped the task, as Developers in
 **Opened:** <YYYY-MM-DD>
 **Blocked:** <what would unblock it, only when BLOCKED>
 **Closed:** <YYYY-MM-DD, only when DONE>
+**Dropped:** <why the work was not done, only when dropped>
 ```
 
 Then the detail block as prose. Task slugs are unique and permanent, and a task
