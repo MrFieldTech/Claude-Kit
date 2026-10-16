@@ -53,13 +53,17 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+## Closed Tasks
+
 ### Claim A New Task's Branch Before Grilling It
 
+INACTIVE | GRM / MRFIELDTECH | 261016 160327
 ACTIVE | GRM / MRFIELDTECH | 261016 145848
 
 **Slug:** `grill-position-diff`
-**Status:** ACTIVE
+**Status:** DONE
 **Opened:** 2026-10-16
+**Closed:** 2026-10-16
 
 **Why.** MrFieldTech, 2026-10-15: "It seems the grill skill is being required
 prior to creating a named task branch. What is the reasoning for this? It
@@ -126,12 +130,15 @@ branch taken then start the grilling."
 
 The frontier is empty after round 2.
 
-**Stopping point.** Release 1.8.0 is written and `bash check.sh` passes.
-Next: `/session-close`, which merges it into `preview`; the open question in
-`HANDOFF.md` on writing rounds into the block is answered by it and comes
-out at that close.
+**Done, 2026-10-16.** Release 1.8.0, as decided: `session-open` step 4
+cases c and d and step 6, `grilling.md`, `HOUSE.md`'s Grilling pointer,
+`session-close` step 3 and its Format, the `TASKS.md` template's `Dropped:`
+line, `VERSION`, `CHANGELOG.md` and `README.md`. `bash check.sh` passes.
+This session grilled on its claimed branch by hand, before the skill said
+to.
 
-## Closed Tasks
+**Closed, 2026-10-16.** Merged into `preview` and then `main` at
+MrFieldTech's request.
 
 ### Write Session References And Import Them Into Other Repositories
 
