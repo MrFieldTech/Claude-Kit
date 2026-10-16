@@ -163,6 +163,11 @@ None.
   conversation. The full decisions are in the `grill-position-diff` block in
   `TASKS.md`.
 
+- **Every close writes a session reference, even one that learned
+  nothing.** GRM / MRFIELDTECH, 2026-10-16, so the record has no gaps. A
+  reference already covers only its own task branch since that branch's
+  last close.
+
 ## Open Questions
 
 - **Should the private repository the default import follows name its
@@ -180,14 +185,6 @@ None.
 - **Should the kit take a more distinctive name?** Raised by GRM /
   MRFIELDTECH, 2026-10-15. Claude-Kit used publicly is too generic. Open a
   task to choose one?
-
-- **Should a close that learned nothing write a session reference?**
-  Raised by GRM / MRFIELDTECH, 2026-10-16, closing `check-block-fields`,
-  which was only opened for later. A reference already covers only its own
-  task branch's commits since that branch's last close, but
-  `.claude/kit/references.md` has every close write one, even with `None.`
-  under every heading. Skipping it when a parked task's close learned
-  nothing would save a file per such close. Open a task for it?
 
 - **Should the kit make every remote branch tracked from the start?** A
   session working from a single-branch clone pushed its task branch, but git
