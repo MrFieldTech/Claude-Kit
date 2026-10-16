@@ -4,6 +4,29 @@ Every change to a kit-owned file is a release, recorded here with the version
 `VERSION` carries. A project's `/session-open` reports when a newer release
 exists, and the project takes it by `kit.sh update` when its owner asks.
 
+## 1.8.0
+
+A new task is claimed before it is grilled, so no answer lives only in the
+conversation.
+
+- `session-open` step 5 claims a new task's branch and writes its block with
+  what was asked, and step 6 grills it there before any other work. A slug
+  that breaks the slug rule is still settled before the claim.
+- Each grilling round is written into the task's block and pushed before it
+  is asked. An answer replaces its question with a decision: who, the date,
+  what was decided, what it changes and why. The block keeps no transcript.
+- With no slug named but work described, `session-open` first offers any
+  open task that already covers it, then claims a new one under a slug it
+  chooses.
+- A task grilling drops, or finds duplicating another, closes `DONE` with a
+  `Dropped:` line and merges like any finished task. `TASKS.md` gains the
+  line in its format.
+- A task that closes `DONE` with questions still open in its block moves
+  them to Open Questions in `HANDOFF.md`.
+
+A repository needs to do nothing after updating. Its own `TASKS.md` may add
+the `Dropped:` line to its format section by hand.
+
 ## 1.7.0
 
 Session references: each session leaves its facts where another repository

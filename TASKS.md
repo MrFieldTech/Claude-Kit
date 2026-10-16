@@ -27,7 +27,7 @@ permanent and name the task's branch.
 | `TODO` | Not started, and has no branch |
 | `ACTIVE` | In progress on its branch, or parked there between sessions |
 | `BLOCKED` | Cannot proceed, and its `Blocked:` line says what would unblock it. A task whose remaining work only the owner can do stays here rather than leaving the queue |
-| `DONE` | Finished, merged, and moved to Closed Tasks |
+| `DONE` | Finished, or dropped with a `Dropped:` line, merged, and moved to Closed Tasks |
 
 Each task's heading is its title. Directly under it are its holder lines,
 newest first, which record who took the task and who dropped it, as
@@ -46,6 +46,7 @@ Then:
 **Opened:** <YYYY-MM-DD>
 **Blocked:** <what would unblock it, only when BLOCKED>
 **Closed:** <YYYY-MM-DD, only when DONE>
+**Dropped:** <why the work was not done, only when dropped>
 ```
 
 Then the detail block, as prose.

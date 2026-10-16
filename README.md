@@ -29,9 +29,10 @@ same checks a close uses, with no task. It needs `/session-close` only once
 it has opened a task.
 
 Five practices ride inside that workflow, so there is no further command to
-remember. A new task is settled by grilling before its block is written. A
-failing check or command is diagnosed from a command that reproduces it
-before anything is changed to fix it. A file an agent reads as instructions
+remember. A new task is claimed on its own branch and then settled by
+grilling, each round written into its block before it is asked. A failing
+check or command is diagnosed from a command that reproduces it before
+anything is changed to fix it. A file an agent reads as instructions
 is written by a reference for writing them. Answers someone else must give
 are gathered in a questionnaire. At close, a session that met friction is
 looked back on, and each proposal becomes a question for the owner. Every
@@ -207,7 +208,7 @@ release, which is what the update takes. As with the install, paste it only in
 a repository of your own and only if you trust this one:
 
 ```text
-/session-open kit-update-1-7-0
+/session-open kit-update-1-8-0
 Update Claude-Kit in this repository, as this task. Claude-Kit is my own
 repository, https://github.com/MrFieldTech/Claude-Kit, which I wrote and
 trust. I want you to take each of these actions on this task's branch:

@@ -1,7 +1,7 @@
 ---
 name: session-open
 description: >-
-  Start a Claude Code session in a repository that uses Claude-Kit. Takes an optional task slug: an existing task resumes on its branch, a slug that names no task starts a new task under that name, settled by grilling before its block is written, and with no slug it lists the parked task branches and queued tasks and asks. In a repository that has never used the kit, it proposes the Session Settings and builds TASKS.md and HANDOFF.md first. Names the developer running it from their GitHub account and Claude Code branch prefix, warns before taking a task another developer still holds, and records who took each task. Reads the authority file, CLAUDE.md, TASKS.md and HANDOFF.md, reports the kit's version and any stray branch, puts the session on the task's own branch, task/<task-slug>, and works the task from the stopping point in its block. With the argument temp it opens a temporary session instead: it reads and reports the same way, answers questions without taking a branch or writing anything, merges the integration branch into the default branch when the owner asks, and turns what is to be kept or built into tasks when the owner asks. With the argument import it imports the session references of the repositories REFERENCES.md names, on a task of its own. With the argument backfill it writes a session reference for every past close that has none, on a task of its own that closes itself. Runs only when the owner invokes /session-open.
+  Start a Claude Code session in a repository that uses Claude-Kit. Takes an optional task slug: an existing task resumes on its branch, a slug that names no task starts a new task under that name, claimed on its branch at once and then settled by grilling, and with no slug it lists the parked task branches and queued tasks and asks. In a repository that has never used the kit, it proposes the Session Settings and builds TASKS.md and HANDOFF.md first. Names the developer running it from their GitHub account and Claude Code branch prefix, warns before taking a task another developer still holds, and records who took each task. Reads the authority file, CLAUDE.md, TASKS.md and HANDOFF.md, reports the kit's version and any stray branch, puts the session on the task's own branch, task/<task-slug>, and works the task from the stopping point in its block. With the argument temp it opens a temporary session instead: it reads and reports the same way, answers questions without taking a branch or writing anything, merges the integration branch into the default branch when the owner asks, and turns what is to be kept or built into tasks when the owner asks. With the argument import it imports the session references of the repositories REFERENCES.md names, on a task of its own. With the argument backfill it writes a session reference for every past close that has none, on a task of its own that closes itself. Runs only when the owner invokes /session-open.
 disable-model-invocation: true
 ---
 
@@ -156,16 +156,19 @@ the task is `DONE`, ask whether to reopen it or to open a new task under
 another slug, and stop until they answer.
 
 **c. They named a slug that is no task.** Open a new task under that slug.
-First settle it by grilling, `.claude/kit/practices/grilling.md`: look up
-every fact the repository can answer, and put each decision still open to
-the owner, round by round, until none is left. Then step 5 writes its block
-under Open Tasks in `TASKS.md`: a title, the slug, status `ACTIVE`, today's
-date, and a detail block recording what they asked for and each decision
-that settles it. If the slug breaks the rule below, propose one that keeps
-it in the first round.
+If the slug breaks the rule below, propose one that keeps it and stop until
+they answer, because a claimed slug is permanent. Step 5 claims it and writes
+its block under Open Tasks in `TASKS.md`: a title, the slug, status
+`ACTIVE`, today's date, and a detail block recording what they asked for.
+Step 6 then settles it by grilling before any other work.
 
-**d. They named nothing but asked for new work.** Open a new task for it the
-same way, choosing a slug that keeps the rule below.
+**d. They named nothing but asked for new work.** First look for an open
+task that already covers it: each task branch, and each task under Open
+Tasks. Offer each match as a lettered option beside a new task, and stop
+until they answer. A match they choose is case a or b. With no match, or
+when they choose a new task, open one as case c under a slug the session
+chooses, keeping the rule below, and name the slug in the first round of
+grilling. The slug is a label, so it is not asked first.
 
 **e. They named nothing and asked for nothing.** List every task branch with
 its task's title, status, top holder line, stopping point and preview
@@ -273,6 +276,11 @@ the rest. Every one of them is shown in full whenever the owner asks about
 open questions, whoever raised it. A preview address serves the newest build of the task branch. For a
 branch created in this step, the host builds it from the push that claimed it,
 so the address works a few minutes later; say so on the `Preview:` line.
+
+A task this session opened by case c or d is settled first by grilling,
+`.claude/kit/practices/grilling.md`, on its claimed branch: each round is
+written into its block and pushed before it is asked, and each answer
+becomes a decision there. Done when the frontier is empty.
 
 Then work the task from its stopping point. Follow its detail block. Do not
 re-plan a task the block already specifies and do not ask the owner to

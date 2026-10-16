@@ -6,8 +6,8 @@ output `HOUSE.md` warns about. Grilling interviews the owner relentlessly
 about every decision the task depends on, so the block records decisions
 rather than assumptions.
 
-`session-open` runs this before it writes a new task's block, and for any
-decision a task's block leaves open before the step that needs it. It also
+`session-open` runs this on a new task's branch, right after the claim, and
+for any decision a task's block leaves open before the step that needs it. It also
 runs whenever the owner asks for a plan, a design or an idea to be
 stress-tested, in any words.
 
@@ -37,8 +37,16 @@ session's recommended answer, listed first as option `a` and marked
 `(recommended)`, so the owner can accept a round with `1a, 2a`, or with
 `all recommended`.
 
+Before asking a round, write it into the task's block as its open
+questions, numbered, with their options, and commit and push. A round asked
+only in the reply is lost with the conversation.
+
 Then wait for the answers. Each answer settles a branch and opens the
-decisions behind it. Recompute the frontier and ask the next round. A
+decisions behind it. Remove the answered question from the block and write
+a decision in its place under the block's decisions: the owner's name, the
+date, what was decided, what it changes and why, in the owner's sense rather
+than their words. The block keeps decisions, never a transcript of the
+rounds. Commit and push, recompute the frontier, and ask the next round. A
 question whose answer depends on another question in the same round
 belongs in a later round.
 
@@ -49,12 +57,20 @@ left silently assumed, and the owner agreeing the understanding is shared.
 A request that already settles every branch takes no round at all. Say so
 in one line and go on.
 
-Every decision goes into the task's block, with the owner's name and the
-date, and every question still open is written out there. When the session
-has to stop before the frontier is empty, it writes the block anyway with
-what is settled, makes the next round its stopping point, and claims and
-parks the task as usual, because a decision held only in the conversation
-does not survive it.
+When the session has to stop before the frontier is empty, the open round
+is already in the block. Its stopping point names that round, and the task
+parks as usual. Open questions stay in the block, and reach `HANDOFF.md` only
+when the task blocks on one or closes with one unanswered.
+
+When grilling shows the task should not go ahead, because the owner drops it
+or it duplicates another task, mark it `DONE` with a `Dropped:` line saying
+why. It merges at close like any finished task, so its branch is deleted and
+its block keeps the reason. A slug that turns out misleading stays, because
+it is a label; the task is dropped and another opened only when the owner
+asks.
+
+Grilling with no task, such as a plan stress-tested in a temporary session,
+asks its rounds in the reply until the owner keeps the result as a task.
 
 Adapted under the MIT License from a public collection of agent skills.
 `NOTICE.md` in the kit's own repository holds its notice.

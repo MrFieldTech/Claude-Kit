@@ -103,9 +103,11 @@ It drops the task, so the next developer to open it finds it free.
 
 Set the status:
 
-- `DONE` when the work is finished. Move the block from Open Tasks to Closed
-  Tasks and add a `Closed:` date. The merge in step 8 is what makes it true, and
-  if that merge does not happen, step 8 sets it back.
+- `DONE` when the work is finished, or dropped with a `Dropped:` line saying
+  why. Move the block from Open Tasks to Closed Tasks and add a `Closed:`
+  date. Move any question still open in the block to Open Questions in
+  `HANDOFF.md`. The merge in step 8 is what makes it true, and if that merge
+  does not happen, step 8 sets it back.
 - `BLOCKED` when it needs something only the owner can supply, with the question
   written out and a `Blocked:` line naming what would unblock it. Say in the
   block what is already done, because with an integration branch that work
