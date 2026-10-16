@@ -55,6 +55,7 @@ Then the detail block, as prose.
 
 ### Hold The Task Block Fields To One Format In check.sh
 
+INACTIVE | GRM / MRFIELDTECH | 261016 201729
 ACTIVE | GRM / MRFIELDTECH | 261016 201442
 
 **Slug:** `check-block-fields`

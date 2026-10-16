@@ -13,6 +13,7 @@ file at the same time.
 
 | Date | Developer | Tasks touched | Work commits |
 |---|---|---|---|
+| 2026-10-16 | GRM / MRFIELDTECH | `check-block-fields`, ACTIVE, parked: opened for later from `grill-position-diff`'s retrospective, with its two open decisions in its block | `4a2f938` |
 | 2026-10-16 | GRM / MRFIELDTECH | `grill-position-diff`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.8.0 claims a new task's branch before grilling it, and writes each round into its block | `df78d4f..6580c0f` |
 | 2026-10-15 | GRM / MRFIELDTECH | `session-references`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.7.0 adds session references, `/session-open import` and `/session-open backfill`, after taking in 1.6.0 | `6233007..7e0bf1f` |
 | 2026-10-15 | GRM / MRFIELDTECH | `multi-dev-setup`, DONE, merged into `preview`: release 1.6.0 lets several developers share a repository, every one an owner, with holder lines on each task | `824ed6f..fe201c3` |
@@ -180,11 +181,13 @@ None.
   MRFIELDTECH, 2026-10-15. Claude-Kit used publicly is too generic. Open a
   task to choose one?
 
-- **Should `check.sh` hold the task fields in `session-close`'s Format to
-  the `TASKS.md` template?** Raised by GRM / MRFIELDTECH, 2026-10-16, in
-  `grill-position-diff`. The fields are written out in both, and 1.8.0's
-  `Dropped:` line reached the template first and `session-close` only on a
-  second look. Open a task for it?
+- **Should a close that learned nothing write a session reference?**
+  Raised by GRM / MRFIELDTECH, 2026-10-16, closing `check-block-fields`,
+  which was only opened for later. A reference already covers only its own
+  task branch's commits since that branch's last close, but
+  `.claude/kit/references.md` has every close write one, even with `None.`
+  under every heading. Skipping it when a parked task's close learned
+  nothing would save a file per such close. Open a task for it?
 
 - **Should the kit make every remote branch tracked from the start?** A
   session working from a single-branch clone pushed its task branch, but git
