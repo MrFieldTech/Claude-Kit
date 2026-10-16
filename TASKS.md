@@ -55,13 +55,17 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+## Closed Tasks
+
 ### Rename The Holder Words And Add A DISMISSED Status
 
+DROPPED | GRM / MRFIELDTECH | 261016 214943
 HOLDING | GRM / MRFIELDTECH | 261016 213749
 
 **Slug:** `task-name-changes`
-**Status:** ACTIVE
+**Status:** DONE
 **Opened:** 2026-10-16
+**Closed:** 2026-10-16
 
 **Why.** MrFieldTech, 2026-10-16: "Within the task holder lines, change
 ACTIVE to HOLDING and INACTIVE to DROPPED (as to not confuse these terms
@@ -107,7 +111,8 @@ reference template. `check.sh` section 4 also matches the old holder words,
 so a copy left on them fails. The changelog entry says what an updating
 repository renames.
 
-## Closed Tasks
+**Closed, 2026-10-16.** Merged into `preview` and then `main` at
+MrFieldTech's request.
 
 ### Hold The Task Block Fields To One Format In check.sh
 
