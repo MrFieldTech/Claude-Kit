@@ -53,6 +53,59 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+### Rename The Holder Words And Add A DISMISSED Status
+
+ACTIVE | GRM / MRFIELDTECH | 261016 213749
+
+**Slug:** `task-name-changes`
+**Status:** ACTIVE
+**Opened:** 2026-10-16
+
+**Why.** MrFieldTech, 2026-10-16: "Within the task holder lines, change
+ACTIVE to HOLDING and INACTIVE to DROPPED (as to not confuse these terms
+with the Status options (TODO, ACTIVE, BLOCKED, DONE). Additionally, when a
+task is no longer going to be developed, it is "Dropped:" with the
+reasoning. This should be changed to DISMISSED so as not to confuse it with
+the new holder status. DISMISSED should be a new status option for a task
+(although redundant with the dismissed information in the task and the fact
+that it was promoted, but still, it's an outline for future changes that
+may come)."
+
+**Facts looked up, 2026-10-16.**
+
+- Holder words are written in `HOUSE.md` (Developers), the `TASKS.md`
+  template, `session-open` steps 4 to 6, `session-close` step 3 and its
+  Format, `check.sh` section 4 (`(IN)?ACTIVE \| `), `README.md` line 16
+  ("dropped it"), and this repository's `TASKS.md`, where four closed
+  tasks carry holder lines.
+- The `Dropped:` field is in the `TASKS.md` template's marker table and
+  field block, `session-close` step 3 and its Format, and `grilling.md`'s
+  Done section. No task here has ever been dropped.
+- Session references carry no holder lines. Their `Task:` line names the
+  status at close, `<DONE | BLOCKED | ACTIVE>`.
+
+**Open questions, round 1.**
+
+1. Holder lines already written, in this repository's closed tasks and in
+   every repository that installs the kit, still read `ACTIVE` and
+   `INACTIVE`. What happens to them?
+   a. (recommended) They are renamed: this release rewrites this
+      repository's, and its changelog entry tells an updating repository
+      to replace them in its `TASKS.md` in the update's commit, so only one
+      pair of words ever exists.
+   b. They stay as written, and `session-open` reads an old `ACTIVE` top
+      line as `HOLDING`.
+   c. They stay as written and nothing reads them differently.
+2. Where does a `DISMISSED` task go?
+   a. (recommended) Wherever a `DONE` one goes: it gets a `Closed:` date
+      and a `Dismissed:` line, merges at close, moves to Closed Tasks, and
+      counts as closed in every check that asks about `DONE`.
+   b. Somewhere else, which you describe.
+3. Which release number?
+   a. (recommended) 1.10.0, as 1.6.0 added holder lines as a minor
+      release.
+   b. 2.0.0, because an updating repository must rewrite its own lines.
+
 ## Closed Tasks
 
 ### Hold The Task Block Fields To One Format In check.sh
