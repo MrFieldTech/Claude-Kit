@@ -93,29 +93,18 @@ opposite orders, both newest first.
   field block, because both are format that one copy can gain and another
   miss.
 
-**Open questions, round 2.**
+- MrFieldTech, 2026-10-16: the check holds all three copies to the
+  template, this repository's `TASKS.md` included. Only the fenced
+  examples above its Open Tasks are compared, never a task's real lines,
+  and a release changes all three in one pull request.
+- MrFieldTech, 2026-10-16: a two-line holder example matches the template
+  in order too, so `HOUSE.md`'s pair is swapped to the template's order
+  (`INACTIVE` above `ACTIVE`, newest first) and this task is a release.
+  Copies of a template's details never differ, even by order. A one-line
+  holder example must equal one of the template's lines.
 
-1. Does the check also hold this repository's `TASKS.md` to the template?
-   It compares only the fenced example blocks in its How Tasks Are Worked
-   section, which hold the same placeholders as the template, never a
-   task's real lines. MrFieldTech first asked for all three copies, then
-   for two on the understanding that this file's copy holds real data.
-   a. (recommended) Yes, all three. A release changes all three in one
-      pull request, so they agree whenever a check runs.
-   b. No, only the template and `session-close`.
-2. How does the holder line match? `HOUSE.md` and the template both show a
-   two-line example, in opposite orders (`ACTIVE` first in `HOUSE.md`,
-   `INACTIVE` first in the template), and `session-open` and
-   `session-close` each show one line.
-   a. (recommended) Each fenced holder line must equal one of the
-      template's two lines exactly, in any order.
-   b. The two-line examples must also match in order, which changes
-      `HOUSE.md` and makes this task a release.
-
-**Stopping point.** Grilling round 2 asked, unanswered. Next: record the
-answers as decisions, then write the check in `check.sh`. Touching only `check.sh` is not a
-change to a kit-owned file, so it needs no release unless the work also
-changes one.
+**Stopping point.** Grilling done. Next: write the check in `check.sh`,
+swap `HOUSE.md`'s holder pair, and release it as 1.9.0.
 
 ## Closed Tasks
 
