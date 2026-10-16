@@ -15,7 +15,8 @@ slug names no task. With no slug, `session-open` lists the parked task branches
 and the queued tasks and asks what to work on. Open Tasks are in the order they
 are to be worked. Sessions on different tasks can run at the same time.
 
-At close, a finished task merges by pull request and GitHub deletes its branch.
+At close, a finished or dismissed task merges by pull request and GitHub
+deletes its branch.
 A task stopped partway stays `ACTIVE` and parked on its branch.
 
 Tasks carry a slug and never a number, so a task can be reordered, split, or
@@ -27,26 +28,27 @@ permanent and name the task's branch.
 | `TODO` | Not started, and has no branch |
 | `ACTIVE` | In progress on its branch, or parked there between sessions |
 | `BLOCKED` | Cannot proceed, and its `Blocked:` line says what would unblock it. A task whose remaining work only the owner can do stays here rather than leaving the queue |
-| `DONE` | Finished, or dropped with a `Dropped:` line, merged, and moved to Closed Tasks |
+| `DONE` | Finished, merged, and moved to Closed Tasks |
+| `DISMISSED` | Not to be done, with a `Dismissed:` line saying why, merged, and moved to Closed Tasks |
 
 Each task's heading is its title. Directly under it are its holder lines,
 newest first, which record who took the task and who dropped it, as
 `.claude/kit/HOUSE.md` describes under Developers:
 
 ```markdown
-INACTIVE | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
-ACTIVE | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
+DROPPED | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
+HOLDING | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
 ```
 
 Then:
 
 ```markdown
 **Slug:** `<task-slug>`
-**Status:** TODO | ACTIVE | BLOCKED | DONE
+**Status:** TODO | ACTIVE | BLOCKED | DONE | DISMISSED
 **Opened:** <YYYY-MM-DD>
 **Blocked:** <what would unblock it, only when BLOCKED>
-**Closed:** <YYYY-MM-DD, only when DONE>
-**Dropped:** <why the work was not done, only when dropped>
+**Closed:** <YYYY-MM-DD, only when DONE or DISMISSED>
+**Dismissed:** <why the work will not be done, only when DISMISSED>
 ```
 
 Then the detail block, as prose.

@@ -143,7 +143,8 @@ def examples(path):
             block.append(line)
     return blocks
 
-holder = re.compile(r"(IN)?ACTIVE \| ")
+# The holder words before 1.10.0 are matched too, so a copy left on them fails.
+holder = re.compile(r"(HOLDING|DROPPED|(IN)?ACTIVE) \| ")
 template = ".claude/kit/templates/TASKS.md"
 blocks = examples(template)
 holders = [b for b in ([l for l in b if holder.match(l)] for b in blocks) if b]

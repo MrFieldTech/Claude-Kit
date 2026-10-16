@@ -108,7 +108,7 @@ Sort every remote branch except `origin/HEAD`:
   right now, and the two look the same from here. Read its task's status and
   stopping point from the branch itself, with
   `git show origin/task/<slug>:TASKS.md`.
-- A task branch whose task is `DONE` on the base should have been deleted by
+- A task branch whose task is `DONE` or `DISMISSED` on the base should have been deleted by
   GitHub when its pull request merged. Report it for the owner to delete and
   carry on.
 - Anything else is a stray: a branch by any other name, including one the cloud
@@ -152,7 +152,7 @@ applies.
 **a. They named a task that has a branch.** Resume it.
 
 **b. They named a task in `TASKS.md` that has no branch.** Start its branch. If
-the task is `DONE`, ask whether to reopen it or to open a new task under
+the task is `DONE` or `DISMISSED`, ask whether to reopen it or to open a new task under
 another slug, and stop until they answer.
 
 **c. They named a slug that is no task.** Open a new task under that slug.
@@ -187,8 +187,8 @@ and one another session is working look the same, and two sessions on one task
 is the collision the task branches exist to prevent.
 
 **A held task.** Read the top holder line of the chosen task's block, on its
-branch when it has one. When it is `ACTIVE` for another developer, the task is
-held: say who holds it and since when, that they may be working it right now
+branch when it has one. When it is `HOLDING` for another developer, the task
+is held: say who holds it and since when, that they may be working it right now
 or may have ended their session without a close, and stop until the owner
 says to take it over. When they do not, go back to this step without it.
 
@@ -225,7 +225,7 @@ git push -u origin task/<slug>
 lines already there, add one for this session, with the UTC time now:
 
 ```
-ACTIVE | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
+HOLDING | <PREFIX> / <HANDLE> | <YYMMDD HHMMSS>
 ```
 
 The pushed branch is the claim, and the holder line says whose it is. A

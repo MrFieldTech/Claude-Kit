@@ -4,6 +4,28 @@ Every change to a kit-owned file is a release, recorded here with the version
 `VERSION` carries. A project's `/session-open` reports when a newer release
 exists, and the project takes it by `kit.sh update` when its owner asks.
 
+## 1.10.0
+
+The words in a holder line are no longer the same as a task's status
+words, and a task that will not be done has its own status.
+
+- Holder lines read `HOLDING` where they read `ACTIVE`, and `DROPPED` where
+  they read `INACTIVE`. `session-open` adds a `HOLDING` line when it takes a
+  task, and `session-close` adds a `DROPPED` line above it.
+- `DISMISSED` is a new task status, for a task that will not be done. Its
+  `Dismissed:` line says why, in place of the `Dropped:` line, and it closes
+  like `DONE`: it gets a `Closed:` date, moves to Closed Tasks and merges at
+  close.
+
+After updating, a repository renames the holder lines in its own `TASKS.md`
+in a commit of its own on the update's branch, including the line its
+update session added: `ACTIVE | ` at the start of a line becomes
+`HOLDING | `, and `INACTIVE | ` becomes `DROPPED | `. It changes any
+`Dropped:` line to `Dismissed:` and that task's `DONE` status to
+`DISMISSED`. It also replaces the example lines above Open Tasks with the
+template's. Until it does, `session-open` does not recognize an old
+`ACTIVE` line as a task someone holds.
+
 ## 1.9.0
 
 A task block's format reads the same in every file that writes it out.
