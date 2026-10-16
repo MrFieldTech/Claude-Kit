@@ -173,7 +173,7 @@ Five practices hold how recurring kinds of work are done. Each is a file in
 `.claude/kit/practices/`, read in full when its case comes up. The session
 reaches for it on its own, and the owner never has to name one.
 
-- **Grilling**, `grilling.md`: before a new task's block is written, and
+- **Grilling**, `grilling.md`: when a new task's branch is claimed, and
   when the owner asks for a plan, a design or an idea to be stress-tested.
 - **Diagnosing**, `diagnosing.md`: when something fails that should pass,
   such as a check, a build, a Regenerate command or a command the work
