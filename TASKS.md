@@ -52,6 +52,89 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+### Claim A New Task's Branch Before Grilling It
+
+ACTIVE | GRM / MRFIELDTECH | 261016 145848
+
+**Slug:** `grill-position-diff`
+**Status:** ACTIVE
+**Opened:** 2026-10-16
+
+**Why.** MrFieldTech, 2026-10-15: "It seems the grill skill is being required
+prior to creating a named task branch. What is the reasoning for this? It
+seems like a lot of information is gathered and decided before ever having a
+branch dedicated to it, when it doesn't seem like a problem to have the
+branch taken then start the grilling."
+
+**Facts looked up, 2026-10-15.**
+
+- The order was never decided. `workflow-practices` (1.3.0) was asked to run
+  the interview "before a task's block is written", and `session-open` step
+  5 writes the block in the commit that claims the branch, so grilling
+  landed before the claim as well.
+- What the order guards against: a slug and its branch are permanent and a
+  session never deletes a branch, so a branch claimed for a slug that
+  grilling renames, finds duplicated, or drops is left for the owner to
+  delete.
+- What it costs: every answer lives only in the conversation until grilling
+  ends. `grilling.md` says so, and claims and parks only when the session
+  has to stop. In `secrets-self-sufficient`, round 1 was asked only in the
+  reply and reached the block after the owner asked where the questions
+  lived, which is the open question in `HANDOFF.md` on writing each round
+  into the block before asking it. A second session can also take the same
+  slug while the first is still grilling, and finds out only at its push.
+
+**Decisions made.** MrFieldTech, 2026-10-16, round 1 of grilling.
+
+- This session claimed `task/grill-position-diff` before grilling further,
+  as the first use of the new order.
+- A new task is claimed first. Step 5 writes the block with what was asked
+  and pushes, then each round is written into the block and pushed before it
+  is asked, and each answer is committed as it comes. This settles the
+  `HANDOFF.md` open question on writing rounds into the block. The change is
+  release 1.8.0, in `session-open` step 4 and the temporary session's task
+  path, `grilling.md`, and `HOUSE.md`'s Grilling pointer.
+- The block does not keep a transcript of the grilling. A round is written as
+  a list of unanswered questions, like Open Questions in `HANDOFF.md`, and an
+  answer turns its question into a record of what was decided. How exactly is
+  round 2, question 1.
+
+**Open questions, round 2.**
+
+1. When the owner answers a question in the block, what replaces it?
+   a. (recommended) The question is removed and a decision is written under
+      Decisions made: who, the date, what was decided, what it changes, and
+      why, in the owner's sense rather than their words.
+   b. The question stays, marked answered, with the answer under it.
+2. What happens when grilling, after the claim, shows the task should not go
+   ahead as claimed?
+   a. (recommended) The slug is checked against the slug rule before the
+      claim, as now. A task dropped or found to duplicate another is marked
+      `DONE` with a `Dropped:` line saying why, and merges by pull request at
+      close like any done task, so GitHub deletes its branch and the block
+      records why. A slug that turns out to be misleading stays, because a
+      slug is a label; only when the owner asks is the task dropped and a new
+      one opened under the slug they want.
+   b. The same, but a dropped task stays parked for the owner to delete its
+      branch, and nothing merges.
+3. With no slug named (step 4 case d), the session chooses the slug. Under
+   the new order it claims that slug before the owner sees it. Should it?
+   a. (recommended) Yes. It claims at once with the slug it chose and names
+      it in the first round, and question 2's rule covers a slug the owner
+      dislikes.
+   b. No. Case d asks the slug alone first, as a round of one question, and
+      claims once the owner answers.
+4. Should a parked task with unanswered grilling questions also list them
+   under Open Questions in `HANDOFF.md`?
+   a. (recommended) No. They stay in the task's block; `session-open` shows
+      the stopping point, which names the round, whenever it lists or resumes
+      the task. `HANDOFF.md` takes a question only when the task is
+      `BLOCKED` on it, as now.
+   b. Yes, every unanswered grilling question is copied there too.
+
+**Stopping point.** Round 2 of grilling is asked and not answered. Next:
+record the answers, then write 1.8.0.
+
 ## Closed Tasks
 
 ### Write Session References And Import Them Into Other Repositories
