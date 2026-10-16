@@ -103,8 +103,12 @@ opposite orders, both newest first.
   Copies of a template's details never differ, even by order. A one-line
   holder example must equal one of the template's lines.
 
-**Stopping point.** Grilling done. Next: write the check in `check.sh`,
-swap `HOUSE.md`'s holder pair, and release it as 1.9.0.
+**Stopping point.** Work done, not closed. `check.sh` section 4 holds the
+field block and holder lines to the template, `HOUSE.md`'s pair is
+swapped, and release 1.9.0 is recorded; `bash check.sh` passes. Each
+mismatch kind was shown to fail: a dropped field, a changed placeholder,
+a changed holder line, and the old `HOUSE.md` order. Next:
+`/session-close`.
 
 ## Closed Tasks
 
