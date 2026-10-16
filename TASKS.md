@@ -55,6 +55,97 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+### Let A Repository Set Where And How The Default Import Writes
+
+HOLDING | GRM / MRFIELDTECH | 261016 230745
+
+**Slug:** `import-update-match`
+**Status:** ACTIVE
+**Opened:** 2026-10-16
+
+**Why.** MrFieldTech, 2026-10-16: update the way import works to best match
+the repository it is intended for while staying generic. The kit default's
+steps already fit any repository: match each subject to a home, add the
+facts the home lacks, keep a conflicting fact beside the existing one with a
+`TODO:` asking which holds, turn unverified facts into `TODO:`s, send
+questions to `HANDOFF.md`, and handle credentials by comparing each
+source's keys with this repository's. Three values it uses are hard-coded,
+and they are what make it wrong for the repository it is meant for, a
+private one whose subjects live one file per subject under a directory per
+section, and whose rules file says how such a file is written:
+
+1. Where a subject's home is. Fixed at `imported/<subject-slug>.md`; it
+   could be a path pattern.
+2. How a new home is written. A plain subject file; it could point to a
+   file and heading in the repository's own rules.
+3. Whether a new home waits for the owner to confirm where it goes. It does
+   not; there it should.
+
+The private repository's own file and path names are left out of this
+block, by the project rule that nothing here names the owner's other
+projects.
+
+**Facts looked up, 2026-10-16.**
+
+- The kit is at 1.11.0. The kit default is `.claude/kit/references.md`,
+  The kit default procedure: subjects go to `imported/<subject-slug>.md`,
+  credentials to `imported/<subject-slug>.secrets.md`, and a new file is
+  written without asking.
+- `REFERENCES.md`, from `.claude/kit/templates/REFERENCES.md`, holds the
+  Procedure section: `Import procedure:` (`kit default`, or a file and
+  heading giving the repository's own) and `Default warning:`.
+- While the warning is `shown`, every import asks once whether to keep the
+  default or write the repository's own procedure into `CLAUDE.md`.
+- `session-open` Import step 2 stops when any `task/import-` branch exists,
+  while `references.md` One at a time names `task/import-<yymmddhhmmss>`.
+  The looser check matches this task's own branch.
+- This repository has no `REFERENCES.md`, so imports are off here.
+
+**Open questions, round 1.**
+
+1. Where do the three values live?
+   a. (recommended) In `REFERENCES.md`'s Procedure section, beside Import
+      procedure, set when imports are turned on. Only a repository that
+      imports needs them, and the file already holds its import settings.
+   b. As Session Settings keys in `CLAUDE.md`, defined in `HOUSE.md` with
+      defaults in the `CLAUDE.md` template.
+2. What form does the home value take?
+   a. (recommended) A path pattern holding `<subject-slug>`, with `*`
+      allowed for one directory level. A subject's home is the one file
+      matching it; none is a new home; more than one is a question. The
+      credentials home is the same path ending `.secrets.md`. Default
+      `imported/<subject-slug>.md`.
+   b. The same, without `*`: one fixed directory per repository.
+3. How is a new home written?
+   a. (recommended) A value naming `kit default` or a file and heading in
+      the repository's own rules, which the import reads and follows for a
+      new home's layout and for where added facts go in an existing one.
+   b. The same, but used only for a new home; facts added to an existing
+      one are appended as the default does.
+4. When new homes wait for confirmation, how is it asked?
+   a. (recommended) Before importing anything, read every new reference,
+      propose a home for each subject with no match, and ask in one round,
+      with the proposed path as the recommended answer. The import waits
+      for the answers, then runs. Default: no confirmation.
+   b. Ask per reference as the import reaches it, parking the task between.
+5. What becomes of the Default warning's second option, write the
+   repository's own procedure?
+   a. (recommended) It asks the three values, reading the repository's
+      rules to propose each. A full procedure of the repository's own stays
+      possible as now. The warning shows only while all three are default.
+   b. Leave the warning as it is; the three values are set only by hand.
+6. Tighten `session-open` Import step 2 to `task/import-<yymmddhhmmss>`, as
+   One at a time says, so a task like this one does not stop an import?
+   a. (recommended) Yes, in this release.
+   b. No.
+7. The release?
+   a. (recommended) 1.12.0. A `REFERENCES.md` missing the new lines reads
+      them as their defaults, so an updating repository does nothing.
+   b. 1.12.0, and the update adds the three lines to an existing
+      `REFERENCES.md`.
+
+**Stopping point.** Round 1 of grilling asked; waiting on the answers.
+
 ## Closed Tasks
 
 ### Backfill Only The Session It Was Opened In
