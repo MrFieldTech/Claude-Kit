@@ -13,6 +13,7 @@ file at the same time.
 
 | Date | Developer | Tasks touched | Work commits |
 |---|---|---|---|
+| 2026-10-16 | GRM / MRFIELDTECH | `grill-position-diff`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.8.0 claims a new task's branch before grilling it, and writes each round into its block | `df78d4f..6580c0f` |
 | 2026-10-15 | GRM / MRFIELDTECH | `session-references`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.7.0 adds session references, `/session-open import` and `/session-open backfill`, after taking in 1.6.0 | `6233007..7e0bf1f` |
 | 2026-10-15 | GRM / MRFIELDTECH | `multi-dev-setup`, DONE, merged into `preview`: release 1.6.0 lets several developers share a repository, every one an owner, with holder lines on each task | `824ed6f..fe201c3` |
 | 2026-10-12 | not recorded | `secrets-self-sufficient`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.5.0 adds `secrets.py decrypt` and `keys`, a Node decrypter, the Secrets checks setting, and the setup a repository runs to take the secrets standard, and makes Credentials default to `none` | `7f3de9e..a96379a` |
@@ -155,6 +156,12 @@ None.
   before commit.** GRM / MRFIELDTECH, 2026-10-15. Moved to `CLAUDE.md` as a
   project rule.
 
+- **A new task is claimed before it is grilled.** GRM / MRFIELDTECH,
+  2026-10-16. The order was never decided, it followed from the block being
+  written in the claim's commit, and it left every answer only in the
+  conversation. The full decisions are in the `grill-position-diff` block in
+  `TASKS.md`.
+
 ## Open Questions
 
 - **Should the private repository the default import follows name its
@@ -173,13 +180,11 @@ None.
   MRFIELDTECH, 2026-10-15. Claude-Kit used publicly is too generic. Open a
   task to choose one?
 
-- **Should grilling write each round into the task's block before asking
-  it?** `grilling.md` says every open question is written out in the block,
-  but only when the session stops. In the session that opened
-  `secrets-self-sufficient`, the first round was asked only in the reply and
-  reached the block after the owner asked where the questions lived. Asking
-  a round only after it is committed would have prevented that. Open a task
-  for it?
+- **Should `check.sh` hold the task fields in `session-close`'s Format to
+  the `TASKS.md` template?** Raised by GRM / MRFIELDTECH, 2026-10-16, in
+  `grill-position-diff`. The fields are written out in both, and 1.8.0's
+  `Dropped:` line reached the template first and `session-close` only on a
+  second look. Open a task for it?
 
 - **Should the kit make every remote branch tracked from the start?** A
   session working from a single-branch clone pushed its task branch, but git
@@ -240,10 +245,14 @@ steps` prints for Windows Command Prompt and for macOS or Linux have not been
 run on either. The first repository to take 1.4.0 and store a value verifies
 them.
 
-**No session has grilled a new task or diagnosed a failure under 1.3.0.**
-The close of `workflow-practices` ran the new pull request body and the
-retrospective. The first task opened under 1.3.0 tries the grilling, and the
-first failing check or Regenerate command tries the diagnosis.
+**No session has run 1.8.0's `session-open` from the skill.**
+`grill-position-diff` claimed first and wrote its rounds into its block by
+hand, under 1.7.0's text. The next new task verifies the claim before
+grilling, the search for a matching task when no slug is named, and, when
+one is dropped, the `Dropped:` close.
+
+**No session has diagnosed a failure under 1.3.0.** The first failing check
+or Regenerate command tries the diagnosis.
 
 **No temporary session has promoted the integration branch.** 1.2.0 was
 checked by `check.sh` only. The first promotion asked for in a

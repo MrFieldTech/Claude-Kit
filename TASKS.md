@@ -27,7 +27,7 @@ permanent and name the task's branch.
 | `TODO` | Not started, and has no branch |
 | `ACTIVE` | In progress on its branch, or parked there between sessions |
 | `BLOCKED` | Cannot proceed, and its `Blocked:` line says what would unblock it. A task whose remaining work only the owner can do stays here rather than leaving the queue |
-| `DONE` | Finished, merged, and moved to Closed Tasks |
+| `DONE` | Finished, or dropped with a `Dropped:` line, merged, and moved to Closed Tasks |
 
 Each task's heading is its title. Directly under it are its holder lines,
 newest first, which record who took the task and who dropped it, as
@@ -46,6 +46,7 @@ Then:
 **Opened:** <YYYY-MM-DD>
 **Blocked:** <what would unblock it, only when BLOCKED>
 **Closed:** <YYYY-MM-DD, only when DONE>
+**Dropped:** <why the work was not done, only when dropped>
 ```
 
 Then the detail block, as prose.
@@ -53,6 +54,91 @@ Then the detail block, as prose.
 ## Open Tasks
 
 ## Closed Tasks
+
+### Claim A New Task's Branch Before Grilling It
+
+INACTIVE | GRM / MRFIELDTECH | 261016 160327
+ACTIVE | GRM / MRFIELDTECH | 261016 145848
+
+**Slug:** `grill-position-diff`
+**Status:** DONE
+**Opened:** 2026-10-16
+**Closed:** 2026-10-16
+
+**Why.** MrFieldTech, 2026-10-15: "It seems the grill skill is being required
+prior to creating a named task branch. What is the reasoning for this? It
+seems like a lot of information is gathered and decided before ever having a
+branch dedicated to it, when it doesn't seem like a problem to have the
+branch taken then start the grilling."
+
+**Facts looked up, 2026-10-15.**
+
+- The order was never decided. `workflow-practices` (1.3.0) was asked to run
+  the interview "before a task's block is written", and `session-open` step
+  5 writes the block in the commit that claims the branch, so grilling
+  landed before the claim as well.
+- What the order guards against: a slug and its branch are permanent and a
+  session never deletes a branch, so a branch claimed for a slug that
+  grilling renames, finds duplicated, or drops is left for the owner to
+  delete.
+- What it costs: every answer lives only in the conversation until grilling
+  ends. `grilling.md` says so, and claims and parks only when the session
+  has to stop. In `secrets-self-sufficient`, round 1 was asked only in the
+  reply and reached the block after the owner asked where the questions
+  lived, which is the open question in `HANDOFF.md` on writing each round
+  into the block before asking it. A second session can also take the same
+  slug while the first is still grilling, and finds out only at its push.
+
+**Decisions made.** MrFieldTech, 2026-10-16, round 1 of grilling.
+
+- This session claimed `task/grill-position-diff` before grilling further,
+  as the first use of the new order.
+- A new task is claimed first. Step 5 writes the block with what was asked
+  and pushes, then each round is written into the block and pushed before it
+  is asked, and each answer is committed as it comes. This settles the
+  `HANDOFF.md` open question on writing rounds into the block. The change is
+  release 1.8.0, in `session-open` step 4 and the temporary session's task
+  path, `grilling.md`, and `HOUSE.md`'s Grilling pointer.
+- The block does not keep a transcript of the grilling. A round is written as
+  a list of unanswered questions, like Open Questions in `HANDOFF.md`, and an
+  answer turns its question into a record of what was decided. How exactly is
+  round 2, question 1.
+
+**Decisions made.** MrFieldTech, 2026-10-16, round 2 of grilling.
+
+- An answered question leaves the block's open questions and becomes a
+  decision under Decisions made: who, the date, what was decided, what it
+  changes and why, in the owner's sense rather than their words.
+- The slug is checked against the slug rule before the claim, as now. A task
+  grilling drops, or finds duplicating another, is marked `DONE` with a
+  `Dropped:` line saying why and merges by pull request at close, so GitHub
+  deletes its branch and the block keeps the reason. A slug that turns out
+  misleading stays, because the slug is inconsequential to the work; the
+  task is dropped and a new one opened only when the owner asks.
+- With no slug named but work described (step 4 case d), the session first
+  looks for an open task that already covers it, on a task branch or under
+  Open Tasks, and offers each match as an option alongside a new task. With
+  no match it chooses a slug and claims at once, naming the slug in the
+  first round. With neither a slug nor work named (case e), the session
+  lists the task branches and open tasks and asks, which is how case e
+  already works.
+- Unanswered grilling questions stay in the task's block, and `session-open`
+  shows them through the stopping point. `HANDOFF.md` takes a question only
+  when the task is `BLOCKED` on it, as now, or when the task closes `DONE`
+  with questions it raised still unanswered, which then move from the block
+  to Open Questions in `HANDOFF.md`.
+
+The frontier is empty after round 2.
+
+**Done, 2026-10-16.** Release 1.8.0, as decided: `session-open` step 4
+cases c and d and step 6, `grilling.md`, `HOUSE.md`'s Grilling pointer,
+`session-close` step 3 and its Format, the `TASKS.md` template's `Dropped:`
+line, `VERSION`, `CHANGELOG.md` and `README.md`. `bash check.sh` passes.
+This session grilled on its claimed branch by hand, before the skill said
+to.
+
+**Closed, 2026-10-16.** Merged into `preview` and then `main` at
+MrFieldTech's request.
 
 ### Write Session References And Import Them Into Other Repositories
 
