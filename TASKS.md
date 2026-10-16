@@ -126,11 +126,10 @@ branch taken then start the grilling."
 
 The frontier is empty after round 2.
 
-**Stopping point.** Grilling is done. Next: write 1.8.0 in
-`session-open` step 4 cases c and d and the temporary session's task path,
-`grilling.md`, `HOUSE.md`'s Grilling pointer, `session-close` step 3 for a
-`DONE` or dropped task, `TASKS.md`'s template for the `Dropped:` line, then
-`VERSION`, `CHANGELOG.md` and `README.md`.
+**Stopping point.** Release 1.8.0 is written and `bash check.sh` passes.
+Next: `/session-close`, which merges it into `preview`; the open question in
+`HANDOFF.md` on writing rounds into the block is answered by it and comes
+out at that close.
 
 ## Closed Tasks
 
