@@ -56,17 +56,18 @@ terms="${KIT_PRIVATE_TERMS:-}"
 if [ -z "$terms" ] && [ -f .private-terms ]; then
   terms="$(tr -d '\n' < .private-terms)"
 fi
-# This repository's own session references are public too, so they are
-# held to the same list. CLAUDE.md has the close redact a match before the
-# reference is committed.
+# This repository's own session references and copies are public too, so
+# they are held to the same list. CLAUDE.md has the close redact a match
+# before a reference is committed, and a copy holding one is not made.
 TERMS_SCANNED=("${KIT_OWNED[@]}")
 [ -d .claude/references ] && TERMS_SCANNED+=(.claude/references)
+[ -d .claude/imported ] && TERMS_SCANNED+=(.claude/imported)
 if [ -n "$terms" ]; then
   status=0
   grep -rnIE "$terms" "${TERMS_SCANNED[@]}" || status=$?
   [ "$status" -ne 0 ] && [ "$status" -ne 1 ] && fail "the private terms are not a valid pattern"
   [ "$status" -eq 0 ] && fail "the lines above name something that belongs to one project"
-  echo "check: kit-owned files hold no address, and they and the references name no project"
+  echo "check: kit-owned files hold no address, and they, the references and the copies name no project"
 else
   echo "check: kit-owned files hold no address (no private terms given, so names were not checked)"
 fi
@@ -365,6 +366,19 @@ if command -v age >/dev/null 2>&1 && command -v age-keygen >/dev/null 2>&1; then
   secrets set "$companion" "Token" >/dev/null <<< 'check-value-companion'
   grep -qx 'slug: 261015000000-check' "$srepo/$companion" || fail "a companion's slug is not its name"
   secrets check >/dev/null || fail "secrets check fails on a companion"
+
+  # A copy under .claude/imported/ keeps its source's encryption and a name
+  # its frontmatter does not give. Check reads it, and rekey and both
+  # decrypters leave it alone.
+  imported=".claude/imported/session-import/261015000000-check-261017000000.secrets.md"
+  mkdir -p "$srepo/.claude/imported/session-import"
+  age -a -r "$(pub one)" > "$scratch/block" <<< 'check-value-imported'
+  { printf -- '---\nslug: 261015000000-check\nupdated: 2026-10-15\n---\n\n**Token**\n\n```age\n'
+    cat "$scratch/block"; printf '```\n'; } > "$srepo/$imported"
+  cp "$srepo/$imported" "$scratch/imported"
+  secrets check >/dev/null || fail "secrets check fails on a copy under .claude/imported/"
+  secrets rekey --identity "$keys/three" >/dev/null || fail "secrets rekey tried to re-encrypt a copy"
+  cmp -s "$srepo/$imported" "$scratch/imported" || fail "secrets rekey changed a copy under .claude/imported/"
 
   # Decrypt for a build: a copy at the same path under a gitignored
   # directory, the check build's placeholders, and every refusal.

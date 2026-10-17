@@ -57,6 +57,13 @@ here, never in a kit-owned file.
   reference with `[redacted]`. When the variable is not set, the close
   writes the reference naming no other project and says in its report that
   the terms were not checked. `check.sh` fails on any match left.
+- **This repository never imports from other repositories.** It has no
+  `REFERENCES.md` and never turns imports on. A file uploaded to a session
+  here is copied under `.claude/imported/session-import/` only when it holds
+  no term from `KIT_PRIVATE_TERMS`, read from the environment as the close
+  reads it; one that holds a term, or that cannot be checked because the
+  variable is not set, gets the placeholder instead, naming no other project.
+  `check.sh` fails on any match under `.claude/imported/`.
 - **A skill stays generic by reading Session Settings.** A value that differs
   between repositories becomes a settings key, defined at the end of
   `HOUSE.md` and given a default in `.claude/kit/templates/CLAUDE.md`, never a

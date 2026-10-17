@@ -7,8 +7,8 @@
 //
 //   node .claude/kit/secrets-decrypt.mjs --out <dir>
 //
-// Copies every <slug>.secrets.md outside .claude/references/ to the same
-// path under <dir>, which git must ignore, with each value in plaintext.
+// Copies every <slug>.secrets.md outside .claude/references/ and
+// .claude/imported/ to the same path under <dir>, which git must ignore, with each value in plaintext.
 // The private key comes from the SECRETS_AGE_KEY environment variable.
 // Fails on a missing key or a value that will not decrypt, naming the file
 // and label and never the value.
@@ -26,6 +26,8 @@ import { dirname, join, relative, resolve, isAbsolute } from "node:path";
 const SUFFIX = ".secrets.md";
 // A session reference's companion is a dated copy, never read by a build.
 const REFERENCES = ".claude/references/";
+// A verbatim copy of what the repository was given, never read by a build.
+const IMPORTED = ".claude/imported/";
 const PLACEHOLDER = "secrets-check-build-placeholder";
 const AGE_FENCE = /^```age\s*$/;
 const ANY_FENCE = /^\s*(`{3,}|~{3,})\s*([^`]*?)\s*$/;
@@ -127,7 +129,7 @@ async function main(argv) {
 
   const listed = git(["ls-files", "-z", "--cached", "--others", "--exclude-standard", "--", "*" + SUFFIX], top);
   const files = [...new Set(listed.split("\0").filter(Boolean))]
-    .filter((rel) => !rel.startsWith(REFERENCES))
+    .filter((rel) => !rel.startsWith(REFERENCES) && !rel.startsWith(IMPORTED))
     .sort();
   const written = [];
   let total = 0;
