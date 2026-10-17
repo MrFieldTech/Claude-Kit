@@ -55,13 +55,16 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+## Closed Tasks
 ### Keep A Verbatim Copy Of Each Imported Reference
 
+DROPPED | GRM / MRFIELDTECH | 261017 032428
 HOLDING | GRM / MRFIELDTECH | 261017 023701
 
 **Slug:** `import-file-process`
-**Status:** ACTIVE
+**Status:** DONE
 **Opened:** 2026-10-17
+**Closed:** 2026-10-17
 
 **Why.** MrFieldTech, 2026-10-17: an import parses each new session
 reference and places its facts in the importing repository's own files,
@@ -227,9 +230,9 @@ reads it without the frontmatter name check; `check.sh` tests that and
 scans `.claude/imported/` for private terms; `CLAUDE.md` holds the rule that
 this repository never imports. `bash check.sh` passed.
 
-**Stopping point.** Work done; `/session-close` merges it into `preview`.
+**Closed, 2026-10-17.** Merged into `preview` and then `main` at
+MrFieldTech's request.
 
-## Closed Tasks
 
 ### Let A Repository Set Where And How The Default Import Writes
 

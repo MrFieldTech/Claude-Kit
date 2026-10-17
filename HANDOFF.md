@@ -13,6 +13,7 @@ file at the same time.
 
 | Date | Developer | Tasks touched | Work commits |
 |---|---|---|---|
+| 2026-10-17 | GRM / MRFIELDTECH | `import-file-process`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.13.0 keeps a bit for bit copy of each imported reference and its companion, and of every file uploaded to a session, under `.claude/imported/` | `94754b0..90bd2f0` |
 | 2026-10-17 | GRM / MRFIELDTECH | `import-update-match`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.12.0 lets `REFERENCES.md` set where the kit default import puts a subject's file, how it is written, and whether a new one waits for the owner | `ce39f97..0ce6163` |
 | 2026-10-16 | GRM / MRFIELDTECH | `backfill-intent`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.11.0 has `/session-open backfill` write only the reference its own session is missing, and ask which past closes to write when run first in a new session | `3184930..11fd4f0` |
 | 2026-10-16 | GRM / MRFIELDTECH | `task-name-changes`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.10.0 renames holder lines to `HOLDING` and `DROPPED` and adds a `DISMISSED` status | `c386626..3ff816d` |
@@ -185,6 +186,15 @@ None.
   asks which past closes to write. The full decisions are in the
   `backfill-intent` block in `TASKS.md`.
 
+- **A repository keeps a bit for bit copy of what it is given, under
+  `.claude/imported/`.** GRM / MRFIELDTECH, 2026-10-17. An imported
+  reference and its companion are copied whole, and every upload too, so the
+  record survives the source; a file that cannot be kept gets a placeholder
+  describing it. The full decisions are in the `import-file-process` block
+  in `TASKS.md`.
+- **This repository never imports from other repositories.** GRM /
+  MRFIELDTECH, 2026-10-17. Moved to `CLAUDE.md` as a project rule.
+
 ## Open Questions
 
 - **Should the private repository the default import follows name its
@@ -230,6 +240,16 @@ None.
   task for it?
 
 ## Flagged As Unverified
+
+**No session has made a copy under `.claude/imported/`.** 1.13.0 was checked
+by `check.sh` only, which tests the secrets tools on a copy, not the skills.
+Verified by: a file uploaded to a task session, which should be copied under
+`session-import/` with the time in its name, and an import, which should
+copy each reference and its companion in that reference's commit.
+
+**How a session sees an uploaded file's original name.** The copy's name is
+built from it, and no session has looked at where Claude Code puts an
+upload. Verified by: the first upload to a task session.
 
 **No import has run 1.12.0's three values.** Imports are not on in any
 repository known here. Verified by: a `/session-open import` in a
