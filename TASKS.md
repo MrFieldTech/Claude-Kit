@@ -197,24 +197,31 @@ beside `.claude/references/`, and asked for the pros and cons.
   session still reads it, and writes in its place a file
   `<original file name>-<yymmddhhmmss>.md` saying why it was not copied.
 
-**Open questions, round 4.**
+**Decisions made.** MrFieldTech, 2026-10-17, round 4 of grilling.
 
-1. Round 3 gave a placeholder file to an upload too large to copy. Do the
-   other uploads that are not copied get one too: a file holding a
-   plaintext credential, one omitted at the public-repository warning, and
-   a companion not copied where Credentials is `none` or the repository is
-   not confirmed private?
-   a. Yes, each gets `<original file name>-<yymmddhhmmss>.md` saying why it
-      was not copied, holding no credential value and none of the omitted
-      content (recommended).
-   b. Only the large file; the others are only reported.
-2. This repository is public, and `check.sh` fails CI on any term from
-   `KIT_PRIVATE_TERMS` in `.claude/references/`. A bit-for-bit copy cannot
-   be redacted. Does `check.sh` cover `.claude/imported/` too?
-   a. Yes; here, an upload or copy holding a private term gets the
-      placeholder instead, since continuing at the warning would fail CI
-      (recommended).
-   b. No; `.claude/imported/` is not checked here.
+- The placeholder for an upload not copied says more than why. It names
+  the original file, its name, type and size, what it held, what it was
+  meant for or tried to provide, and where the session put its data,
+  without any credential value. This supersedes round 3's placeholder that
+  said only why.
+- Every upload not copied gets that placeholder: one too large, one
+  holding a plaintext credential, one omitted at the public-repository
+  warning, and a companion not copied where Credentials is `none` or the
+  repository is not confirmed private. An omitted one describes its
+  purpose without the content omitted.
+- `check.sh` scans `.claude/imported/` for `KIT_PRIVATE_TERMS` here as it
+  scans `.claude/references/`. An upload holding a private term gets the
+  placeholder instead of a copy, with no private term in it.
+- This repository never imports from other repositories, so it never has a
+  `REFERENCES.md`. Written into `CLAUDE.md` as a project rule.
+
+The frontier is empty after round 4.
+
+**Next.** Release 1.13.0: `HOUSE.md` (uploads, the credential exception),
+`.claude/kit/references.md` (the copies, the companion copy, the warning),
+`session-open` (Import, Temporary Session), `secrets.py` and
+`secrets-decrypt.mjs` (skip `.claude/imported/`), `check.sh`, `CLAUDE.md`,
+`README.md`, `CHANGELOG.md`, `VERSION`.
 
 ## Closed Tasks
 
