@@ -13,6 +13,7 @@ file at the same time.
 
 | Date | Developer | Tasks touched | Work commits |
 |---|---|---|---|
+| 2026-10-17 | GRM / MRFIELDTECH | `backfill-no-close`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.14.0 has a backfill cover everything its session did that no reference covers, names backfill references `<yymmddhhmmss>-<slug>-bf.md`, and adds the BACKFILL RECOVERY PROMPT to `README.md` | `054e960..d99a0e6` |
 | 2026-10-17 | GRM / MRFIELDTECH | `import-file-process`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.13.0 keeps a bit for bit copy of each imported reference and its companion, and of every file uploaded to a session, under `.claude/imported/` | `94754b0..90bd2f0` |
 | 2026-10-17 | GRM / MRFIELDTECH | `import-update-match`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.12.0 lets `REFERENCES.md` set where the kit default import puts a subject's file, how it is written, and whether a new one waits for the owner | `ce39f97..0ce6163` |
 | 2026-10-16 | GRM / MRFIELDTECH | `backfill-intent`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.11.0 has `/session-open backfill` write only the reference its own session is missing, and ask which past closes to write when run first in a new session | `3184930..11fd4f0` |
@@ -195,6 +196,13 @@ None.
 - **This repository never imports from other repositories.** GRM /
   MRFIELDTECH, 2026-10-17. Moved to `CLAUDE.md` as a project rule.
 
+- **`/session-open backfill` covers everything its session did that no
+  reference covers, kit close or not.** GRM / MRFIELDTECH, 2026-10-17,
+  superseding `backfill-intent`'s rule that it covers only kit closes with
+  no reference: work from before the kit was being lost. A session too old
+  to run it is brought back by the BACKFILL RECOVERY PROMPT in `README.md`.
+  The full decisions are in the `backfill-no-close` block in `TASKS.md`.
+
 ## Open Questions
 
 - **Should the private repository the default import follows name its
@@ -228,7 +236,7 @@ None.
   current'", which reads as a broken installer rather than "commit first".
   It happened again in `session-references` on 2026-10-14, and in
   `check-block-fields`, `task-name-changes` and `backfill-intent` on
-2026-10-16. Open a task for
+2026-10-16, and in `backfill-no-close` on 2026-10-17. Open a task for
   it?
 - **Should `grilling.md` have a question carried from an earlier session
   rewritten before it is asked?** Raised by GRM / MRFIELDTECH, 2026-10-16,
@@ -239,17 +247,26 @@ None.
   would have saved a round. This is a change to a kit-owned file. Open a
   task for it?
 
+- **Should `grilling.md` have each option show, by a concrete example,
+  what the kit would then do?** Raised by GRM / MRFIELDTECH, 2026-10-17, in
+  `backfill-no-close`. MrFieldTech chose an option on what a backfill
+  covers, saw in the next round what it meant, and replaced it, which cost
+  a round and a rewrite of the decisions. This is a change to a kit-owned
+  file. Open a task for it?
+
 ## Flagged As Unverified
 
-**No session has made a copy under `.claude/imported/`.** 1.13.0 was checked
-by `check.sh` only, which tests the secrets tools on a copy, not the skills.
-Verified by: a file uploaded to a task session, which should be copied under
-`session-import/` with the time in its name, and an import, which should
-copy each reference and its companion in that reference's commit.
+**No session has made a copy under `.claude/imported/`.** `backfill-no-close`
+wrote four placeholders under `session-import/`, by this repository's rule
+for uploads it cannot check, but copied nothing. Verified by: an upload
+copied whole, and an import, which should copy each reference and its
+companion in that reference's commit.
 
-**How a session sees an uploaded file's original name.** The copy's name is
-built from it, and no session has looked at where Claude Code puts an
-upload. Verified by: the first upload to a task session.
+**How a session sees an uploaded file's original name.** In one cloud
+session, `backfill-no-close`, uploads sat under `/root/.claude/uploads/`
+with eight hex digits and a hyphen in front of each original name, and the
+session took the rest as the name. Verified by: an upload in a local
+session, and one whose original name itself starts with eight hex digits.
 
 **No import has run 1.12.0's three values.** Imports are not on in any
 repository known here. Verified by: a `/session-open import` in a
@@ -257,9 +274,12 @@ repository whose `REFERENCES.md` sets Subject home to a pattern with `*`
 and Confirm new homes to `yes`, which should ask every new home's path in
 one round before importing.
 
-**No session has run 1.11.0's backfill.** Verified by: a
-`/session-open backfill` run after a close that wrote no reference, and
-one run first in a new session, which should list and ask.
+**No session has run 1.14.0's backfill or the BACKFILL RECOVERY PROMPT.**
+One session in another repository ran 1.13.0's backfill and correctly
+found nothing to cover, by its rules then. Verified by: `/session-open
+backfill` in a session that did work with no close, which should write one
+`-bf` reference; one run first in a new session, which should list and ask;
+and the prompt pasted into a session whose checkout predates the kit.
 
 **No session has written a reference at close, imported, or backfilled.**
 1.7.0 was checked by `check.sh` only, which tests the companion and the

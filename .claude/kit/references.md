@@ -133,39 +133,59 @@ upload gets its placeholder.
 Backfill section of `session-open`, on a task of its own,
 `backfill-<yymmddhhmmss>`. The rules it applies are here.
 
-**What a backfill covers.** It is for a session whose close wrote no
-reference, such as one that closed under a release before 1.7.0. Run in a
+**What a backfill covers.** It is for work no reference covers. Run in a
 session that has done something before `/session-open backfill`, it covers
-only that session: each close the conversation ran that added no reference,
-and a temporary session that opened no task, named for the slug `temp`. A
-close that wrote its reference is never written again, because a second
-one would duplicate it rather than fill a gap. A task the session worked
-and has not closed is left to its close, which writes its reference. Run as
-the first thing in a brand new session, it has no session of its own to
-cover, so it lists the past closes with no reference and writes those the
-developer chooses.
+everything that session did that no reference covers: what it did before
+the kit was installed, work it did outside any task, each close it ran that
+added no reference, such as one under a release before 1.7.0, and a
+temporary session. A reference already covers what a close that wrote one
+closed, and what an earlier backfill in the same conversation wrote, so
+that work is never written again: a second reference would duplicate it
+rather than fill a gap. With nothing left uncovered, it writes nothing. A
+task the session worked and has not closed is left to its close, which
+writes its reference. Run as the first thing in a brand new session, it has
+no session of its own to cover, so it lists the past closes with no
+reference and writes those the developer chooses.
 
 **Past closes.** Every close made one commit whose message begins
 `handoff: `, so `git log --grep='^handoff: '` on the base lists them all,
 back to the first, whether or not their task branches still exist. A close
 already has a reference when its `handoff:` commit added one under
-`.claude/references/`, or when a file there is named for it, below. A
-`handoff:` commit only on a parked task branch is left alone: that task's
-next close writes its reference.
+`.claude/references/`, or when a file there starts with that commit's
+time, below. A `handoff:` commit only on a parked task branch is left
+alone: that task's next close writes its reference.
 
-**Its name.** `<yymmddhhmmss>-<task-slug>.md`, the time the UTC commit time
-of the `handoff:` commit, so it sorts where the session ran. The slug is
-the task the Session Log row that commit added names, or else the task
-whose block it changed. When neither names one, the slug is `unknown` and
-Current State says so. A temporary session has no `handoff:` commit,
-so its reference takes the time it is written and the slug `temp`.
+**Its name.** `<yymmddhhmmss>-<slug>-bf.md`, where `-bf` marks it a
+backfill.
 
-**From a conversation.** A close this conversation itself ran, or its temporary session, is written
-from the conversation, by The reference above, as its own close would have
-written it.
+- **The time** sorts it where the work ran. For a past close it is the UTC
+  commit time of the `handoff:` commit. For a session's own work it is the
+  UTC commit time of the last commit of that work that reached the default
+  branch, and the time the reference is written when none did, as for a
+  temporary session.
+- **The slug** is the task's slug when the work has exactly one: for a past
+  close, the task the Session Log row that commit added names, or else the
+  task whose block it changed. Otherwise the session chooses one from what
+  the reference covers, lowercase letters, digits and hyphens, and asks the
+  developer nothing about it.
+- **When `<slug>-bf` is longer than the Task slug limit,** characters are
+  cut from the end of the slug, and then any hyphen left at its end, until
+  it fits: under a limit of 20, `sonarr-update-emails` becomes
+  `sonarr-update-ema-bf`.
+
+One backfill writes one reference for the session it runs in, however many
+closes and other pieces of work that holds. In a brand new session it
+writes one for each past close chosen.
+
+**From a conversation.** What this conversation itself did is written from
+the conversation, by The reference above, as a close would have written
+it, with the commits it made cited by hash. Its Task line names the task
+the slug came from, or reads `none, no kit task` when the session chose the
+slug. What is not in the conversation any more, because it was compacted
+away, is written from the repository instead, by the rule below.
 
 **From the repository.** Any other is transcribed, never reconstructed by
-inference. It holds only what committed files say about that close: the
+inference. It holds only what committed files say about that close or that work: the
 task's block in `TASKS.md` as that `handoff:` commit left it, the Session
 Log row and Decisions Made entries the commit added, the messages of the
 commits in its range, and the body of the pull request that merged it,
@@ -179,7 +199,7 @@ A fact those files state without a source of their own goes under Flagged
 As Unverified, which an import turns into a `TODO:`. With no developer
 recorded, as before release 1.6.0, the Developer line reads
 `not recorded`. A credential is named by its label and never copied: a
-backfill writes no companion.
+transcribed reference has no companion.
 
 **It closes itself.** Once every reference it listed is written, the backfill
 task runs `session-close`'s steps for itself, as `DONE`, without waiting

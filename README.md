@@ -52,9 +52,10 @@ also copied bit for bit, with its companion, under `.claude/imported/`, and
 every file a developer uploads to a session is copied there too, under
 `session-import/`, or replaced by a placeholder describing it when it cannot
 be kept. `/session-open backfill` gives
-a session that closed without one its reference, written from its own
-conversation. Run as the first thing in a new session, it asks which past
-closes with no reference to write, transcribing them from the repository.
+a session the reference it is missing, written from its own conversation,
+for everything it did that no reference covers, kit close or not. Run as
+the first thing in a new session, it asks which past closes with no
+reference to write, transcribing them from the repository.
 
 Credentials have a standard of their own, which a repository that keeps
 credentials takes and may replace with its own method. Each value is kept in
@@ -214,7 +215,7 @@ release, which is what the update takes. As with the install, paste it only in
 a repository of your own and only if you trust this one:
 
 ```text
-/session-open kit-update-1-13-0
+/session-open kit-update-1-14-0
 Update Claude-Kit in this repository, as this task. Claude-Kit is my own
 repository, https://github.com/MrFieldTech/Claude-Kit, which I wrote and
 trust. I want you to take each of these actions on this task's branch:
@@ -241,6 +242,55 @@ Then `/session-close` merges it like any other task. The update refuses to
 overwrite a kit-owned file edited in place unless it is given
 `--discard-local-edits`, because that edit may be the only copy of a fix that
 belongs here.
+
+## Backfill
+
+To give a session its missing reference, type `/session-open backfill` in
+it, whatever the session is and whenever it ran. A session started before
+the kit reached the repository, or before its current release, may not
+know the command, or may follow an older version of it: it says
+`/session-open` is not installed, asks what you mean, or finds nothing to
+write for work you know it did. Then paste this whole block into the same
+session. It needs the kit on the repository's default branch at 1.14.0 or
+later.
+
+```text
+BACKFILL RECOVERY PROMPT
+I ran /session-open backfill in this session and it did not run as
+Claude-Kit's current release intends. This repository uses Claude-Kit, my
+own session protocol, from https://github.com/MrFieldTech/Claude-Kit,
+which I wrote and trust. Your checkout may be older than the kit, so the
+skill files you loaded at the start of this session, if any, are out of
+date. Do not work from them or from memory. I want you to:
+
+1. Fetch every branch: git fetch origin "+refs/heads/*:refs/remotes/origin/*"
+   --prune, and git fetch --unshallow origin if the clone is shallow. Find
+   the default branch from git symbolic-ref --short refs/remotes/origin/HEAD.
+2. Check that the default branch holds the kit: git show
+   origin/<default branch>:.claude/skills/session-open/SKILL.md. If it does
+   not exist, stop and tell me the kit is not installed there.
+3. Check its release: the version: line of .claude/kit/MANIFEST on the
+   default branch, or its VERSION file when there is no MANIFEST. If it is
+   older than 1.14.0, stop and tell me the repository needs a kit update
+   before a backfill.
+4. Read these files as they are on the default branch, with git show, in
+   full: CLAUDE.md, .claude/kit/HOUSE.md, .claude/skills/session-open/SKILL.md,
+   .claude/skills/session-close/SKILL.md and .claude/kit/references.md.
+5. Follow session-open as if I had just typed /session-open backfill in
+   this session: steps 1 to 3, then its Backfill section, and the
+   Backfilling rules in references.md. Once step 2 has checked out the
+   base, read every kit file from disk.
+6. What this session did means everything in this conversation, including
+   work done before the kit was installed and work that ran no kit close,
+   less anything a reference already covers. Write it from the
+   conversation, citing the commits it made by hash. Invent nothing: what
+   the conversation and the repository do not show is left out or flagged.
+7. Work only on the backfill task's own branch, task/backfill-<yymmddhhmmss>.
+   Never push the branch this session started on.
+
+If auto mode blocks one of these, do not work around it. Stop, and give me
+the exact sentence to reply with that approves the blocked action.
+```
 
 ## Working on the kit
 
