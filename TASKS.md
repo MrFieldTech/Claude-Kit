@@ -55,13 +55,17 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+## Closed Tasks
+
 ### Let A Repository Set Where And How The Default Import Writes
 
+DROPPED | GRM / MRFIELDTECH | 261017 000016
 HOLDING | GRM / MRFIELDTECH | 261016 230745
 
 **Slug:** `import-update-match`
-**Status:** ACTIVE
+**Status:** DONE
 **Opened:** 2026-10-16
+**Closed:** 2026-10-17
 
 **Why.** MrFieldTech, 2026-10-16: update the way import works to best match
 the repository it is intended for while staying generic. The kit default's
@@ -129,6 +133,11 @@ answer the recommended one.
 
 The frontier is empty after round 1.
 
+- A Subject home holding `*` names no single path for a new home, so its
+  new homes are confirmed even when Confirm new homes is `no`. Proposed by
+  GRM / MRFIELDTECH while writing the release; MrFieldTech kept it,
+  2026-10-17.
+
 **Done, 2026-10-16.** Release 1.12.0, as decided: the `REFERENCES.md`
 template gains Subject home, New home format and Confirm new homes.
 `references.md` The kit default procedure holds Its three values, The
@@ -138,9 +147,8 @@ import's Questions rule names an unsettled home. `session-open` Import step
 2 matches only `task/import-<yymmddhhmmss>`, and step 7 runs the Homes step
 first. `README.md` and `CHANGELOG.md` say the same. `bash check.sh` passed.
 
-**Stopping point.** Work done; waiting on `/session-close`.
-
-## Closed Tasks
+**Closed, 2026-10-17.** Merged into `preview` and then `main` at
+MrFieldTech's request.
 
 ### Backfill Only The Session It Was Opened In
 
