@@ -103,37 +103,55 @@ under `.claude/imported/session-import/`.
 - **A backfill reference is named `<yymmddhhmmss>-<slug>-bf.md`.**
   MrFieldTech, 2026-10-17. The time is the UTC commit time of the session's
   last commit that reached the default branch, so it sorts where the work
-  ran, or the time it is written when there is none. The slug is chosen by
-  the session from what the reference covers, with no question to the
-  developer, and `-bf` marks it a backfill.
-- **The README gains a short prompt for a session whose checkout has no
-  usable skill.** MrFieldTech, 2026-10-17. A block of about ten lines under
-  Update: fetch the default branch, read `session-open`, `session-close`
-  and `.claude/kit/references.md` from it with `git show`, follow Backfill
-  as if `/session-open backfill` had run, and stop when the default branch
-  holds no kit. It must not bloat the README.
+  ran, or the time it is written when there is none. The slug is the task's
+  slug when the work has one, a past close's included, and otherwise one the
+  session chooses from what the reference covers, with no question to the
+  developer. `-bf` marks it a backfill. When the slug and `-bf` together
+  pass the Task slug limit, the end of the slug's last word is cut to fit,
+  as `sonarr-update-emails` becoming `sonarr-update-ema-bf`.
+- **A backfill in a session that already has a reference writes one for
+  only the work no reference covers.** MrFieldTech, 2026-10-17, so nothing
+  is lost and nothing is written twice. It writes nothing when every piece
+  of the session's work is already covered.
+- **A backfill writes one reference for its whole session,** however many
+  kit closes and other pieces of work it holds. MrFieldTech, 2026-10-17.
+- **The developer types only `/session-open backfill`.** MrFieldTech,
+  2026-10-17. A session that cannot run the skill finds the instructions
+  in `README.md`, of whatever length the job needs, and is never handed a
+  pasted prompt.
 
-**Open questions, round 2.**
+**Facts looked up after round 2, 2026-10-17.**
 
-1. A session ran a kit close that wrote its reference, and also did other
-   work no close covered, such as commits before the kit. Does a backfill
-   in it write anything?
-   a. (recommended) Yes, one reference for only the work no reference
-      covers, so nothing is lost and nothing is written twice.
-   b. No. The session already has a reference, so it writes nothing.
-2. A session ran two kit closes with no reference, plus other work. How
-   many references does its backfill write?
-   a. (recommended) One for the whole session, since the decision is
-      written per session.
-   b. One per kit close, named for its task, plus one for the rest.
-3. Do backfill references written in a brand new session, transcribed from
-   the repository for a past close, take the new name too?
-   a. (recommended) Yes. Every backfill reference ends `-bf`, and for a
-      past close the session picks the task's slug as the content slug.
-   b. No. Only references written from a conversation take `-bf`; a past
-      close keeps `<time>-<task-slug>.md`.
+- Claude Code loads skills and `CLAUDE.md` from the checkout when a
+  session starts. A session whose checkout predates the kit holds nothing
+  that names the kit, the README or the skill, so no file the kit writes
+  reaches it until the session reads it of its own accord. In the uploads,
+  two such sessions searched only their own checkout and stopped; one
+  fetched the default branch and found the skill.
+- A session whose checkout holds an older kit does run `session-open`,
+  and step 2 then checks out the base, which puts the current skill on
+  disk. It follows the older text it loaded at start.
+- `sonarr-update-emails-bf` is 23 characters, which the limit of 23 allows.
 
-**Stopping point.** Grilling, round 2 asked.
+**Open questions, round 3.**
+
+1. How does a session with no kit in its checkout come to read the README,
+   when nothing in it names the README?
+   a. (recommended) Two parts. A session with an older kit, after step 2
+      checks out the base, compares the `session-open` on disk with the
+      one it loaded and follows the disk version, which needs no developer
+      input. A session with no kit at all says `/session-open` is not
+      installed, and the developer answers with one fixed line the README
+      gives, such as `Read README.md on the default branch.`
+   b. Rely on the session to fetch the default branch and find the README
+      itself, with no reply. It did so in one of the three uploads.
+2. When does the end of the slug's last word get cut?
+   a. (recommended) Only when the slug and `-bf` together pass the Task
+      slug limit, so `sonarr-update-emails-bf`, at 23 characters, stays
+      whole under a limit of 23.
+   b. Always, to a set length, which the developer names.
+
+**Stopping point.** Grilling, round 3 asked.
 
 ## Closed Tasks
 ### Keep A Verbatim Copy Of Each Imported Reference
