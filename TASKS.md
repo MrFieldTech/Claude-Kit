@@ -133,25 +133,30 @@ under `.claude/imported/session-import/`.
   disk. It follows the older text it loaded at start.
 - `sonarr-update-emails-bf` is 23 characters, which the limit of 23 allows.
 
-**Open questions, round 3.**
+- **A session that cannot run the backfill gets the BACKFILL RECOVERY
+  PROMPT from the kit's README.** MrFieldTech, 2026-10-17. The developer
+  always types `/session-open backfill` first, and when the session plainly
+  does not know what to do, pastes the prompt, of whatever length the job
+  needs, which has it read the current kit from the default branch and
+  follow Backfill. It replaces the decision that the developer never pastes
+  a prompt.
+- **A session that loaded an older `session-open` follows the one on
+  disk.** GRM / MRFIELDTECH, 2026-10-17, chosen by the session as part of
+  the recovery: once step 2 checks out the base, a skill on disk that
+  differs from the loaded one is read and followed, so a session with an
+  older kit needs no prompt.
+- **The slug is cut only when `<slug>-bf` passes the Task slug limit.**
+  MrFieldTech, 2026-10-17. `sonarr-update-emails-bf` is 23 characters and
+  stays whole under a limit of 23.
 
-1. How does a session with no kit in its checkout come to read the README,
-   when nothing in it names the README?
-   a. (recommended) Two parts. A session with an older kit, after step 2
-      checks out the base, compares the `session-open` on disk with the
-      one it loaded and follows the disk version, which needs no developer
-      input. A session with no kit at all says `/session-open` is not
-      installed, and the developer answers with one fixed line the README
-      gives, such as `Read README.md on the default branch.`
-   b. Rely on the session to fetch the default branch and find the README
-      itself, with no reply. It did so in one of the three uploads.
-2. When does the end of the slug's last word get cut?
-   a. (recommended) Only when the slug and `-bf` together pass the Task
-      slug limit, so `sonarr-update-emails-bf`, at 23 characters, stays
-      whole under a limit of 23.
-   b. Always, to a set length, which the developer names.
+The frontier is empty after round 3.
 
-**Stopping point.** Grilling, round 3 asked.
+**Done, 2026-10-17.** Release 1.14.0 in `.claude/kit/references.md`,
+Backfilling; `session-open` step 2 and Backfill; `HOUSE.md`; a Backfill
+section in `README.md` with the recovery prompt; `CHANGELOG.md` and
+`VERSION`. `bash check.sh` passed on the release commit.
+
+**Stopping point.** Done; waiting for `/session-close`.
 
 ## Closed Tasks
 ### Keep A Verbatim Copy Of Each Imported Reference
