@@ -147,59 +147,70 @@ beside `.claude/references/`, and asked for the pros and cons.
   uploaded file carries no proof of it, and the session has no
   `secrets-recipients.txt` for it to compare keys with.
 
-**Open questions, round 2.**
+**Decisions made.** MrFieldTech, 2026-10-17, round 2 of grilling.
 
-1. A companion copy is encrypted credentials. Where the importing
-   repository's Credentials setting is `none`, or the repository is not
-   confirmed private, `HOUSE.md` forbids committing any credential. What
-   happens to the companion copy there?
-   a. It is not copied; the report says why, and the reference copy still
-      is, subject to question 3 (recommended).
-   b. It is copied anyway, and `HOUSE.md` gains an exception for
-      encrypted copies of another repository's companion.
-2. A companion copy is encrypted to the source's keys. How do the
-   secrets tools treat `.claude/imported/`?
-   a. `secrets.py rekey`, `decrypt` and the Node decrypter skip it
-      entirely, so copies stay exactly as the source encrypted them
+- Where Credentials is `none` or the repository is not confirmed private,
+  the companion copy is not made and the developer is told why. The
+  reference copy still is, subject to the warning below. A developer's
+  explicit instruction overrides it, which needs an exception in
+  `HOUSE.md`'s credential rule.
+- `secrets.py rekey`, `decrypt` and `secrets-decrypt.mjs` skip
+  `.claude/imported/` entirely, so copies stay as the source encrypted them.
+- The public-repository warning is per reference, asked in one round
+  before anything is imported, with the homes questions. Continue copies
+  it and places its facts; omit does neither, and marks it `omitted` in
+  the task's block. A source whose visibility cannot be read, and every
+  upload, counts as not public.
+- An import reads only a source's `.claude/references/`, the references
+  and their companions, never its `.claude/imported/`. `.claude/imported/`
+  is the repository's own record, not for other repositories.
+- Every file uploaded to a session is copied bit for bit to
+  `.claude/imported/session-import/<original file name>-<yymmddhhmmss>.<ext>`.
+  Uploads belong to this repository alone, so there is no
+  `<owner>/<repository>` level, and the time keeps names from colliding.
+- An uploaded companion's keys are treated as `differ`, unless the
+  developer says where it came from and gives that source's
+  `secrets-recipients.txt`; the session asks when they have not said.
+- No table of uploads in `REFERENCES.md`: with the copy per session upload,
+  round 2's question 7 no longer applies.
+
+**Open questions, round 3.**
+
+1. Which sessions copy uploads? A temporary session commits nothing.
+   a. Every session working a task. A temporary session copies nothing,
+      says the uploads are kept only if it opens a task, and copies them
+      onto the task's branch when it does (recommended).
+   b. Temporary sessions too, which makes them commit and push.
+2. An uploaded file may hold a credential in plaintext, such as a `.env`.
+   `HOUSE.md` never commits one in plaintext. What happens to it?
+   a. It is not copied; the session says so and handles each value by the
+      Credentials setting and the credential rule (recommended).
+   b. It is copied when the developer explicitly says so, as round 2's
+      companion override.
+3. When an upload is a session reference, or its companion, when is it
+   imported?
+   a. It is copied on the session's current task, and the session offers
+      to import it by opening an `import-<yymmddhhmmss>` task, which runs
+      the Import procedure `REFERENCES.md` names (recommended).
+   b. It is imported on the current task at once, by that procedure.
+   c. It is only copied, and imported when the developer asks.
+4. What counts as `<ext>`, so a companion stays a `*.secrets.md`, which
+   the secrets tools look for?
+   a. The last extension, except `.secrets.md`, kept whole:
+      `x.secrets.md` becomes `x-<yymmddhhmmss>.secrets.md`, `a.tar.gz`
+      becomes `a.tar-<yymmddhhmmss>.gz`, and a name with no extension takes
+      the time at its end (recommended).
+   b. Everything from the first dot: `a.tar.gz` becomes
+      `a-<yymmddhhmmss>.tar.gz`.
+5. Whose time is `<yymmddhhmmss>`?
+   a. The UTC time the session copies them, one time for the files of one
+      message, so a reference and its companion uploaded together keep a
+      matching pair of names (recommended).
+   b. Each file's own copy time.
+6. GitHub refuses a file over 100 MB. What about large uploads?
+   a. A file of 100 MB or more is not copied, and the session says so
       (recommended).
-   b. `rekey` re-encrypts the copies whose keys `match` and skips the rest.
-3. The public-repository warning. What may the developer omit, and when
-   is it asked?
-   a. Per reference, asked in one round before anything is imported, with
-      the homes questions: continue, which copies it and places its facts,
-      or omit, which neither copies nor places it and marks it `omitted`
-      in the task's block. A source whose visibility the session cannot
-      read, and every upload, counts as not public (recommended).
-   b. Per reference, as in a, but omit skips only the copy and still
-      places its facts.
-   c. Per fact: the developer names what to leave out of the homes, and a
-      reference with any omission is not copied, since a copy with lines
-      removed is not verbatim.
-4. When are uploaded files imported?
-   a. By `/session-open import`, which takes reference files uploaded to
-      the session beside the sources' new references; imports must be on,
-      because `REFERENCES.md` holds the procedure (recommended).
-   b. In any session, when the developer uploads a reference and asks for
-      it to be imported, which then opens an import task.
-5. Where under `.claude/imported/session-import/` does an upload go?
-   Names collide across repositories.
-   a. `session-import/<owner>/<repository>/<reference name>`, from the
-      upload's own `**Repository:**` line (recommended).
-   b. `session-import/<reference name>`, flat; a name already there with
-      different contents is asked about.
-6. An upload's companion has no source keys to compare. How is it placed?
-   a. Treated as `differ`, so its values become `TODO:`s, unless the
-      developer also uploads the source's `secrets-recipients.txt`, which
-      is then compared as for a source (recommended).
-   b. Always treated as `differ`.
-7. How is an upload recorded, so the same file is not imported twice?
-   a. A table in `REFERENCES.md`, Uploaded: the reference name, its
-      `**Repository:**` line, the date and the developer. An upload whose
-      name and repository are already imported, from a source or an
-      upload, is skipped, and a home's `Sources:` line marks a fact from an
-      upload as uploaded by that developer (recommended).
-   b. No record but the copy itself; the copy's path is checked before
-      importing.
+   b. No limit; the push fails and the session reports it.
 
 ## Closed Tasks
 
