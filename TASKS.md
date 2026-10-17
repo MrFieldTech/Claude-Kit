@@ -55,13 +55,16 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+## Closed Tasks
 ### Backfill Work That Ran No Kit Close
 
+DROPPED | GRM / MRFIELDTECH | 261017 204755
 HOLDING | GRM / MRFIELDTECH | 261017 064044
 
 **Slug:** `backfill-no-close`
-**Status:** ACTIVE
+**Status:** DONE
 **Opened:** 2026-10-17
+**Closed:** 2026-10-17
 
 **Why.** MrFieldTech, 2026-10-17: several old sessions in another of the
 owner's repositories ran `/session-open backfill` expecting it to write a
@@ -156,9 +159,7 @@ Backfilling; `session-open` step 2 and Backfill; `HOUSE.md`; a Backfill
 section in `README.md` with the recovery prompt; `CHANGELOG.md` and
 `VERSION`. `bash check.sh` passed on the release commit.
 
-**Stopping point.** Done; waiting for `/session-close`.
 
-## Closed Tasks
 ### Keep A Verbatim Copy Of Each Imported Reference
 
 DROPPED | GRM / MRFIELDTECH | 261017 032428
