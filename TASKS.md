@@ -55,6 +55,86 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+### Keep A Verbatim Copy Of Each Imported Reference
+
+HOLDING | GRM / MRFIELDTECH | 261017 023701
+
+**Slug:** `import-file-process`
+**Status:** ACTIVE
+**Opened:** 2026-10-17
+
+**Why.** MrFieldTech, 2026-10-17: an import parses each new session
+reference and places its facts in the importing repository's own files,
+and handles the companion's credentials. MrFieldTech proposes that it also
+copy the reference itself bit for bit, perhaps into `.claude/imported/`
+beside `.claude/references/`, and asked for the pros and cons.
+
+**Facts looked up, 2026-10-17.**
+
+- The kit is at 1.12.0. `.claude/kit/references.md`, The kit default
+  procedure, step 7: "Nothing is deleted. The reference stays in its
+  source." No copy of the reference is kept in the importing repository.
+  A new home records the references it came from by name and repository.
+- The companion is not copied as a file. Under `kit standard`, private,
+  with recipients `match`, each label's block is copied as it stands into
+  the subject home's `.secrets.md` by `secrets.py place`. Otherwise a
+  `TODO:` stands in for the value.
+- What is new is found by `git diff --diff-filter=A` under the source's
+  `.claude/references/`. A copy kept outside `.claude/references/` is never
+  read as one of the importer's own references, so two repositories
+  importing each other would not send copies back.
+- `.claude/references/` is project-owned and skipped by the TODO sweep and
+  both decrypters. A new directory would need the same exclusions in
+  kit-owned files, and this repository's `check.sh` private-terms check
+  would need to cover it.
+- Reference names are `<yymmddhhmmss>-<task-slug>.md` per repository, so
+  two sources can hold the same name.
+- Imports are not on in any repository known here, so no repository holds
+  an import done without a copy.
+- A change to kit-owned files is a release: 1.13.0.
+
+**Pros and cons, as given to MrFieldTech.**
+
+- For: provenance, since a reader can check what the source said against
+  what the import wrote, conflicts included; it survives the source being
+  deleted, made private or access lost; a later change of procedure or of
+  the three values can re-import from the copies without attaching the
+  sources; a home's `Sources:` line resolves inside the repository; small,
+  immutable files.
+- Against: every imported fact is in the repository twice, and a session
+  searching it may take a copy's stale or conflicting fact as current; the
+  sweep, both decrypters and `check.sh` need the new directory excluded or
+  covered; a copy into a public repository from a private source publishes
+  the whole reference at once; names collide across sources without a
+  directory per source; a copy is more source text in the repository that
+  a session must treat as data, never instructions.
+
+**Open questions, round 1.**
+
+1. Should an import keep a verbatim copy of each reference it imports?
+   a. Yes, committed in the same commit as that reference's import, never
+      edited afterwards (recommended).
+   b. No; record the source commit each reference was read at instead, so
+      it can be found while the source exists.
+2. Where does the copy go?
+   a. `.claude/imported/<owner>/<repository>/<reference name>`, one
+      directory per source, project-owned like `.claude/references/`
+      (recommended).
+   b. `.claude/imported/<reference name>`, flat.
+   c. Beside each subject's home.
+3. Is the companion copied whole as well?
+   a. No; its values are placed per label as now, and the copy of the
+      reference names where each went (recommended).
+   b. Yes, beside the reference copy, when the recipients `match`.
+4. When the importing repository is public or not confirmed private and
+   the source is not public, is the copy kept?
+   a. No; the import says in its report and its block that the copy was
+      skipped and why (recommended).
+   b. Yes, as for any source.
+5. Does the copy belong to every import procedure, or only the kit default?
+   a. Every procedure, as part of The import (recommended).
+   b. The kit default only.
+
 ## Closed Tasks
 
 ### Let A Repository Set Where And How The Default Import Writes
