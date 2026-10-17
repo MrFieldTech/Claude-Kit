@@ -56,6 +56,183 @@ Then the detail block, as prose.
 ## Open Tasks
 
 ## Closed Tasks
+### Keep A Verbatim Copy Of Each Imported Reference
+
+DROPPED | GRM / MRFIELDTECH | 261017 032428
+HOLDING | GRM / MRFIELDTECH | 261017 023701
+
+**Slug:** `import-file-process`
+**Status:** DONE
+**Opened:** 2026-10-17
+**Closed:** 2026-10-17
+
+**Why.** MrFieldTech, 2026-10-17: an import parses each new session
+reference and places its facts in the importing repository's own files,
+and handles the companion's credentials. MrFieldTech proposes that it also
+copy the reference itself bit for bit, perhaps into `.claude/imported/`
+beside `.claude/references/`, and asked for the pros and cons.
+
+**Facts looked up, 2026-10-17.**
+
+- The kit is at 1.12.0. `.claude/kit/references.md`, The kit default
+  procedure, step 7: "Nothing is deleted. The reference stays in its
+  source." No copy of the reference is kept in the importing repository.
+  A new home records the references it came from by name and repository.
+- The companion is not copied as a file. Under `kit standard`, private,
+  with recipients `match`, each label's block is copied as it stands into
+  the subject home's `.secrets.md` by `secrets.py place`. Otherwise a
+  `TODO:` stands in for the value.
+- What is new is found by `git diff --diff-filter=A` under the source's
+  `.claude/references/`. A copy kept outside `.claude/references/` is never
+  read as one of the importer's own references, so two repositories
+  importing each other would not send copies back.
+- `.claude/references/` is project-owned and skipped by the TODO sweep and
+  both decrypters. A new directory would need the same exclusions in
+  kit-owned files, and this repository's `check.sh` private-terms check
+  would need to cover it.
+- Reference names are `<yymmddhhmmss>-<task-slug>.md` per repository, so
+  two sources can hold the same name.
+- Imports are not on in any repository known here, so no repository holds
+  an import done without a copy.
+- A change to kit-owned files is a release: 1.13.0.
+
+**Pros and cons, as given to MrFieldTech.**
+
+- For: provenance, since a reader can check what the source said against
+  what the import wrote, conflicts included; it survives the source being
+  deleted, made private or access lost; a later change of procedure or of
+  the three values can re-import from the copies without attaching the
+  sources; a home's `Sources:` line resolves inside the repository; small,
+  immutable files.
+- Against: every imported fact is in the repository twice, and a session
+  searching it may take a copy's stale or conflicting fact as current; the
+  sweep, both decrypters and `check.sh` need the new directory excluded or
+  covered; a copy into a public repository from a private source publishes
+  the whole reference at once; names collide across sources without a
+  directory per source; a copy is more source text in the repository that
+  a session must treat as data, never instructions.
+
+**Decisions made.** MrFieldTech, 2026-10-17, round 1 of grilling.
+
+- Every import keeps a verbatim copy of each reference it imports,
+  committed with that reference's import and never edited afterwards. It
+  is the record of what the source said, kept even if the source is lost.
+- The copy goes at `.claude/imported/<owner>/<repository>/<reference
+  name>`, `<owner>/<repository>` being the source as GitHub names it, such
+  as `MrFieldTech/Claude-Kit`. `.claude/references/` keeps no such
+  directories; only the copies need them, so names cannot collide across
+  sources.
+- The companion is copied whole too, always, beside the reference copy.
+  Its blocks are then placed into the subject's home only when the keys
+  `match`, as before.
+- When the importing repository is public or not confirmed private and
+  the source is not public, the session warns of it and the developer
+  chooses to continue or to omit what may be private.
+- The copy belongs to every import procedure, as part of The import, not
+  only the kit default.
+- Files uploaded directly to the Claude Code session are imported too: each
+  copied bit for bit into `.claude/imported/session-import/`, then parsed and
+  placed like any reference.
+
+**Facts looked up after round 1, 2026-10-17.**
+
+- `HOUSE.md`: a credential is committed nowhere "in a repository not
+  confirmed private" or with no method named, even encrypted. A companion
+  copy is encrypted credentials, so round 1's "always" meets that rule.
+- `secrets.py rekey` re-encrypts every tracked `*.secrets.md`, references'
+  companions included, and refuses when a block will not decrypt with the
+  key given. A companion copy encrypted to another repository's keys would
+  make every rekey fail. `secrets.py decrypt` and `secrets-decrypt.mjs`
+  skip only `.claude/references/`.
+- The TODO sweep already skips everything under `.claude/`, so copies need
+  no change there.
+- A reference's own `**Repository:**` line names its source, but an
+  uploaded file carries no proof of it, and the session has no
+  `secrets-recipients.txt` for it to compare keys with.
+
+**Decisions made.** MrFieldTech, 2026-10-17, round 2 of grilling.
+
+- Where Credentials is `none` or the repository is not confirmed private,
+  the companion copy is not made and the developer is told why. The
+  reference copy still is, subject to the warning below. A developer's
+  explicit instruction overrides it, which needs an exception in
+  `HOUSE.md`'s credential rule.
+- `secrets.py rekey`, `decrypt` and `secrets-decrypt.mjs` skip
+  `.claude/imported/` entirely, so copies stay as the source encrypted them.
+- The public-repository warning is per reference, asked in one round
+  before anything is imported, with the homes questions. Continue copies
+  it and places its facts; omit does neither, and marks it `omitted` in
+  the task's block. A source whose visibility cannot be read, and every
+  upload, counts as not public.
+- An import reads only a source's `.claude/references/`, the references
+  and their companions, never its `.claude/imported/`. `.claude/imported/`
+  is the repository's own record, not for other repositories.
+- Every file uploaded to a session is copied bit for bit to
+  `.claude/imported/session-import/<original file name>-<yymmddhhmmss>.<ext>`.
+  Uploads belong to this repository alone, so there is no
+  `<owner>/<repository>` level, and the time keeps names from colliding.
+- An uploaded companion's keys are treated as `differ`, unless the
+  developer says where it came from and gives that source's
+  `secrets-recipients.txt`; the session asks when they have not said.
+- No table of uploads in `REFERENCES.md`: with the copy per session upload,
+  round 2's question 7 no longer applies.
+
+**Decisions made.** MrFieldTech, 2026-10-17, round 3 of grilling.
+
+- Every session working a task copies its uploads. A temporary session
+  copies nothing, says the uploads are kept only if it opens a task, and
+  copies them onto that task's branch when it does.
+- An upload holding a credential in plaintext is not copied. The session
+  says so and handles each value by the Credentials setting and the
+  credential rule.
+- An upload, a session reference or its companion included, is used as
+  Claude Code uses any file a developer presents: reviewed, read,
+  understood, and its data put where it belongs. It is not run through
+  the Import procedure; `/session-open import` stays for sources. The
+  copy is the record that it was given.
+- `<ext>` is the last extension, except `.secrets.md`, kept whole:
+  `x.secrets.md` becomes `x-<yymmddhhmmss>.secrets.md`, `a.tar.gz` becomes
+  `a.tar-<yymmddhhmmss>.gz`, and a name with no extension takes the time at
+  its end.
+- The time is the UTC time the session copies them, one time for the files
+  of one message, so files uploaded together keep matching names.
+- A file of 100 MB or more, which GitHub refuses, is not copied. The
+  session still reads it, and writes in its place a file
+  `<original file name>-<yymmddhhmmss>.md` saying why it was not copied.
+
+**Decisions made.** MrFieldTech, 2026-10-17, round 4 of grilling.
+
+- The placeholder for an upload not copied says more than why. It names
+  the original file, its name, type and size, what it held, what it was
+  meant for or tried to provide, and where the session put its data,
+  without any credential value. This supersedes round 3's placeholder that
+  said only why.
+- Every upload not copied gets that placeholder: one too large, one
+  holding a plaintext credential, one omitted at the public-repository
+  warning, and a companion not copied where Credentials is `none` or the
+  repository is not confirmed private. An omitted one describes its
+  purpose without the content omitted.
+- `check.sh` scans `.claude/imported/` for `KIT_PRIVATE_TERMS` here as it
+  scans `.claude/references/`. An upload holding a private term gets the
+  placeholder instead of a copy, with no private term in it.
+- This repository never imports from other repositories, so it never has a
+  `REFERENCES.md`. Written into `CLAUDE.md` as a project rule.
+
+The frontier is empty after round 4.
+
+**Done, 2026-10-17.** Release 1.13.0, as decided: `HOUSE.md` points at
+Copies and makes the encrypted companion copy the one exception to its
+credential rule; `.claude/kit/references.md` gains Copies, and The import
+copies in each reference's commit and asks the warning with its questions;
+`session-open` Import step 7 and Temporary Session follow it; `secrets.py`
+and `secrets-decrypt.mjs` skip `.claude/imported/`, and `secrets.py check`
+reads it without the frontmatter name check; `check.sh` tests that and
+scans `.claude/imported/` for private terms; `CLAUDE.md` holds the rule that
+this repository never imports. `bash check.sh` passed.
+
+**Closed, 2026-10-17.** Merged into `preview` and then `main` at
+MrFieldTech's request.
+
 
 ### Let A Repository Set Where And How The Default Import Writes
 

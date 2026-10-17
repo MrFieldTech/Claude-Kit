@@ -25,18 +25,20 @@ Commands, run from anywhere in the repository:
       Print the file with its values decrypted.
   secrets.py decrypt --out <dir> [--identity <key file>]
       For a build: copy every <slug>.secrets.md outside .claude/references/
-      to the same path under <dir>, which git must ignore, with each value in
+      and .claude/imported/ to the same path under <dir>, which git must ignore, with each value in
       plaintext. Fails on a missing key or a value that will not decrypt,
       naming the file and label and never the value. With
       SECRETS_CHECK_BUILD=1 it needs no key and no age tool, and writes a
       placeholder for every value.
   secrets.py rekey [--identity <key file>]
       Re-encrypt every value, HANDOFF.md included, to the keys now listed in
-      secrets-recipients.txt, after one is added or removed.
+      secrets-recipients.txt, after one is added or removed. Files under
+      .claude/imported/ are left as their source encrypted them.
   secrets.py check
       Fail on a value outside an encrypted block, a block that is not armored
       age, a value with no label, or a file whose frontmatter does not name
-      it. Needs no key and no age tool.
+      it. A copy under .claude/imported/ keeps the name it was given, so its
+      frontmatter is not checked. Needs no key and no age tool.
   secrets.py steps
       Print the steps the owner follows to encrypt a value on their own
       computer, with the keys from secrets-recipients.txt written in.
@@ -68,6 +70,10 @@ SUFFIX = ".secrets.md"
 # companion is a dated copy of values whose home is elsewhere, so a build
 # never decrypts it.
 REFERENCES = ".claude/references/"
+# Verbatim copies of what the repository was given, .claude/kit/references.md
+# Copies. A copy may be encrypted to another repository's keys, so nothing
+# here re-encrypts or decrypts it.
+IMPORTED = ".claude/imported/"
 RECIPIENTS = "secrets-recipients.txt"
 HANDOFF = "HANDOFF.md"
 TRANSIT = "## Credentials In Transit"
@@ -197,6 +203,10 @@ def root():
     except (OSError, subprocess.CalledProcessError):
         raise Refusal("not inside a git repository")
     return out.stdout.strip()
+
+
+def under(top, path, prefix):
+    return os.path.relpath(path, top).replace(os.sep, "/").startswith(prefix)
 
 
 def secrets_files(top):
@@ -453,7 +463,7 @@ def cmd_rekey(args, ids):
     need_identities(ids)
     top = root()
     keys = recipients(top)
-    files = secrets_files(top)
+    files = [p for p in secrets_files(top) if not under(top, p, IMPORTED)]
     if os.path.exists(os.path.join(top, HANDOFF)):
         files.append(os.path.join(top, HANDOFF))
     total = 0
@@ -520,7 +530,7 @@ def cmd_check(args, ids):
     files = secrets_files(top)
     for path in files:
         lines = read(path)
-        problems += problems_in(path, lines, (0, len(lines)), True)
+        problems += problems_in(path, lines, (0, len(lines)), not under(top, path, IMPORTED))
     handoff = os.path.join(top, HANDOFF)
     held = 0
     if os.path.exists(handoff):
@@ -589,7 +599,7 @@ def cmd_decrypt(args, ids):
     total = 0
     for path in secrets_files(top):
         rel = os.path.relpath(path, top)
-        if rel.replace(os.sep, "/").startswith(REFERENCES):
+        if under(top, path, REFERENCES) or under(top, path, IMPORTED):
             continue
         lines = read(path)
         reps = []
