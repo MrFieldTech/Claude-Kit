@@ -217,11 +217,17 @@ beside `.claude/references/`, and asked for the pros and cons.
 
 The frontier is empty after round 4.
 
-**Next.** Release 1.13.0: `HOUSE.md` (uploads, the credential exception),
-`.claude/kit/references.md` (the copies, the companion copy, the warning),
-`session-open` (Import, Temporary Session), `secrets.py` and
-`secrets-decrypt.mjs` (skip `.claude/imported/`), `check.sh`, `CLAUDE.md`,
-`README.md`, `CHANGELOG.md`, `VERSION`.
+**Done, 2026-10-17.** Release 1.13.0, as decided: `HOUSE.md` points at
+Copies and makes the encrypted companion copy the one exception to its
+credential rule; `.claude/kit/references.md` gains Copies, and The import
+copies in each reference's commit and asks the warning with its questions;
+`session-open` Import step 7 and Temporary Session follow it; `secrets.py`
+and `secrets-decrypt.mjs` skip `.claude/imported/`, and `secrets.py check`
+reads it without the frontmatter name check; `check.sh` tests that and
+scans `.claude/imported/` for private terms; `CLAUDE.md` holds the rule that
+this repository never imports. `bash check.sh` passed.
+
+**Stopping point.** Work done; `/session-close` merges it into `preview`.
 
 ## Closed Tasks
 
