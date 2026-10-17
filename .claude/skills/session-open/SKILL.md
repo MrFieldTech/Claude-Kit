@@ -328,7 +328,8 @@ repository new to the kit it does not run First Run, and says so, and a stray
 does not stop it, because it changes nothing, though every stray is reported.
 
 **It stays read-only.** It stays detached on the base, takes no branch, and
-writes, commits and pushes nothing. It never pushes the branch the cloud
+writes, commits and pushes nothing. A file uploaded to it is kept only if it
+opens a task, by Copies in `.claude/kit/references.md`. It never pushes the branch the cloud
 harness assigned. The one exception is a promotion the owner asks for, below. Report these lines, as one fenced code block with no
 backticks inside it, then answer what the owner asked:
 
@@ -453,10 +454,11 @@ each step.
 7. **Import** each reference by The import in `.claude/kit/references.md`,
    by the Import procedure `REFERENCES.md` names, the kit default first
    settling every subject's home by its Homes step, one commit per reference
-   holding the import, its source's row in `REFERENCES.md`, and the
-   reference marked `imported` in the task's block, pushed after each. Done
-   when every listed reference is `imported`, or the task parks or blocks
-   on a question by the usual rules.
+   holding the import, its copies by Copies, its source's row in
+   `REFERENCES.md`, and the reference marked `imported` or `omitted` in the
+   task's block, pushed after each. Done when every listed reference is
+   `imported` or `omitted`, or the task parks or blocks on a question by
+   the usual rules.
 
 It then ends with `/session-close`, like any task.
 

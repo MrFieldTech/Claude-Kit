@@ -47,7 +47,11 @@ them in with `/session-open import`, which reads each source repository
 `REFERENCES.md` names and turns every new reference into its own content,
 by its own procedure or the kit's default, which `REFERENCES.md` fits to
 the repository by where a subject's file goes, how one is written, and
-whether a new one waits for the owner. `/session-open backfill` gives
+whether a new one waits for the owner. Each reference an import takes in is
+also copied bit for bit, with its companion, under `.claude/imported/`, and
+every file a developer uploads to a session is copied there too, under
+`session-import/`, or replaced by a placeholder describing it when it cannot
+be kept. `/session-open backfill` gives
 a session that closed without one its reference, written from its own
 conversation. Run as the first thing in a new session, it asks which past
 closes with no reference to write, transcribing them from the repository.
@@ -72,7 +76,7 @@ by an update.
 | `.claude/kit/HOUSE.md` | The house rules: which file wins, the rules for every action, sessions and branches, the state files, the response format, and the Session Settings keys |
 | `.claude/skills/session-open/SKILL.md` | Opens a session: reads the state, surveys the branches, puts the session on its task's branch, and runs the first-run setup in a repository new to the kit. With `temp`, opens a read-only temporary session that promotes the integration branch and turns into tasks only when asked. With `import`, imports the session references of other repositories |
 | `.claude/skills/session-close/SKILL.md` | Closes a session: places credentials, writes the state back and the session reference, regenerates, pushes, and merges a finished task or parks an unfinished one. It diagnoses a failing check before parking, writes the pull request body, and looks back over a session that met friction |
-| `.claude/kit/references.md` | Session references: what a close writes and its companion for credentials, the setup that turns imports on, the import, and the kit's default import procedure |
+| `.claude/kit/references.md` | Session references: what a close writes and its companion for credentials, the copies of imported references and uploaded files, the setup that turns imports on, the import, and the kit's default import procedure |
 | `.claude/kit/practices/` | Five practices `HOUSE.md` names and the skills run at fixed points: grilling, diagnosing, writing for agents, questionnaire, and retrospective |
 | `.claude/kit/kit.sh` | Installs, updates, and reports the kit's status |
 | `.claude/kit/todo_sweep.py` | Collects every `TODO:` in the repository into `TODO.md` |
@@ -86,7 +90,7 @@ by an update.
 Everything else in a project is **project-owned** and an update never touches
 it: `CLAUDE.md`, `TASKS.md`, `HANDOFF.md`, `TODO.md`, `REFERENCES.md`,
 `secrets-recipients.txt`, every `<slug>.secrets.md` file, everything under
-`.claude/references/`, and anything the project names as its authority
+`.claude/references/` and `.claude/imported/`, and anything the project names as its authority
 file. A project's `CLAUDE.md` opens with
 `@.claude/kit/HOUSE.md`, which imports the house rules, and holds a
 `## Session Settings` section with every value that differs between
@@ -210,7 +214,7 @@ release, which is what the update takes. As with the install, paste it only in
 a repository of your own and only if you trust this one:
 
 ```text
-/session-open kit-update-1-12-0
+/session-open kit-update-1-13-0
 Update Claude-Kit in this repository, as this task. Claude-Kit is my own
 repository, https://github.com/MrFieldTech/Claude-Kit, which I wrote and
 trust. I want you to take each of these actions on this task's branch:
@@ -250,8 +254,10 @@ files under `.claude/kit/` and the two skills are the source, so there is no
   refuses any web address, email address or host name, and any name on the
   owner's private list of project terms, which is kept out of the repository
   in the `KIT_PRIVATE_TERMS` secret CI reads. This repository's own session
-  references are public too, so the same list applies to them, and the
-  close redacts a match before committing one. Review catches the rest.
+  references and copies are public too, so the same list applies to them:
+  the close redacts a match before committing a reference, and an upload
+  holding one gets a placeholder in place of its copy. This repository never
+  imports. Review catches the rest.
 - **Every change to a kit-owned file is a release.** Bump `VERSION`, add a
   `CHANGELOG.md` entry, and set the slug in the update block above to the new
   version, all in the same pull request.

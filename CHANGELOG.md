@@ -4,6 +4,32 @@ Every change to a kit-owned file is a release, recorded here with the version
 `VERSION` carries. A project's `/session-open` reports when a newer release
 exists, and the project takes it by `kit.sh update` when its owner asks.
 
+## 1.13.0
+
+A repository keeps a bit for bit copy of what it is given, under
+`.claude/imported/`.
+
+- An import copies each reference it imports to
+  `.claude/imported/<owner>/<repository>/<reference name>`, in the same
+  commit, and its companion whole beside it, whatever the recipients. Its
+  blocks are still placed only when the recipients `match`. Where
+  Credentials is `none` or the repository is not confirmed private, the
+  companion is not copied unless the developer explicitly says to, the one
+  exception `HOUSE.md`'s credential rule now makes.
+- Every file a developer uploads to a session working a task is copied to
+  `.claude/imported/session-import/<name>-<yymmddhhmmss>.<ext>`, then used
+  as any file a developer presents. A file of 100 MB or more, one holding a
+  credential in plaintext, a companion the rule above would not copy, and
+  one omitted or barred gets a placeholder of the same name ending `.md`,
+  describing what it was and what it was for, with no credential value.
+- A public or unconfirmed repository asks, for each reference from a source
+  that is not public and each upload, whether to continue or omit it.
+- `secrets.py rekey`, `decrypt` and `secrets-decrypt.mjs` skip
+  `.claude/imported/`, and `secrets.py check` reads it without checking a
+  copy's frontmatter against its name.
+
+A repository needs to do nothing after updating.
+
 ## 1.12.0
 
 The kit's default import fits the repository it imports into.

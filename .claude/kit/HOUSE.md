@@ -47,7 +47,10 @@ owner is not resolved by picking one. Say so plainly and stop.
   encrypted `<slug>.secrets.md` file, by `.claude/kit/credentials.md`. With no
   rule set, with no method named or none the container can run, or in a
   repository not confirmed private, it is committed nowhere: it goes in the
-  reply for the owner to place, and the reply says it is the only copy.
+  reply for the owner to place, and the reply says it is the only copy. The
+  one exception is an encrypted companion copied bit for bit under
+  `.claude/imported/`, committed there only on the developer's explicit
+  instruction, by Copies in `.claude/kit/references.md`.
 
 ## Sessions and branches
 
@@ -165,6 +168,12 @@ credentials in a companion file. Another repository imports them by
 `/session-open import`. `.claude/kit/references.md` holds the rules: read it
 before writing one at close, before turning imports on, before an import,
 and before a backfill.
+
+**Copies** under `.claude/imported/` are the repository's own bit for bit
+record of what it was given: each reference it imports, with its companion,
+and every file a developer uploads to a session. A file that is not copied
+gets a placeholder describing it. Read Copies in `.claude/kit/references.md`
+whenever a developer uploads a file, and before an import.
 
 When Generated files lists `TODO.md`, it holds every `TODO:` in the repository
 as a question and is never edited by hand. Answer a question where it is asked
