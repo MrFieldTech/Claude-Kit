@@ -109,31 +109,97 @@ beside `.claude/references/`, and asked for the pros and cons.
   directory per source; a copy is more source text in the repository that
   a session must treat as data, never instructions.
 
-**Open questions, round 1.**
+**Decisions made.** MrFieldTech, 2026-10-17, round 1 of grilling.
 
-1. Should an import keep a verbatim copy of each reference it imports?
-   a. Yes, committed in the same commit as that reference's import, never
-      edited afterwards (recommended).
-   b. No; record the source commit each reference was read at instead, so
-      it can be found while the source exists.
-2. Where does the copy go?
-   a. `.claude/imported/<owner>/<repository>/<reference name>`, one
-      directory per source, project-owned like `.claude/references/`
+- Every import keeps a verbatim copy of each reference it imports,
+  committed with that reference's import and never edited afterwards. It
+  is the record of what the source said, kept even if the source is lost.
+- The copy goes at `.claude/imported/<owner>/<repository>/<reference
+  name>`, `<owner>/<repository>` being the source as GitHub names it, such
+  as `MrFieldTech/Claude-Kit`. `.claude/references/` keeps no such
+  directories; only the copies need them, so names cannot collide across
+  sources.
+- The companion is copied whole too, always, beside the reference copy.
+  Its blocks are then placed into the subject's home only when the keys
+  `match`, as before.
+- When the importing repository is public or not confirmed private and
+  the source is not public, the session warns of it and the developer
+  chooses to continue or to omit what may be private.
+- The copy belongs to every import procedure, as part of The import, not
+  only the kit default.
+- Files uploaded directly to the Claude Code session are imported too: each
+  copied bit for bit into `.claude/imported/session-import/`, then parsed and
+  placed like any reference.
+
+**Facts looked up after round 1, 2026-10-17.**
+
+- `HOUSE.md`: a credential is committed nowhere "in a repository not
+  confirmed private" or with no method named, even encrypted. A companion
+  copy is encrypted credentials, so round 1's "always" meets that rule.
+- `secrets.py rekey` re-encrypts every tracked `*.secrets.md`, references'
+  companions included, and refuses when a block will not decrypt with the
+  key given. A companion copy encrypted to another repository's keys would
+  make every rekey fail. `secrets.py decrypt` and `secrets-decrypt.mjs`
+  skip only `.claude/references/`.
+- The TODO sweep already skips everything under `.claude/`, so copies need
+  no change there.
+- A reference's own `**Repository:**` line names its source, but an
+  uploaded file carries no proof of it, and the session has no
+  `secrets-recipients.txt` for it to compare keys with.
+
+**Open questions, round 2.**
+
+1. A companion copy is encrypted credentials. Where the importing
+   repository's Credentials setting is `none`, or the repository is not
+   confirmed private, `HOUSE.md` forbids committing any credential. What
+   happens to the companion copy there?
+   a. It is not copied; the report says why, and the reference copy still
+      is, subject to question 3 (recommended).
+   b. It is copied anyway, and `HOUSE.md` gains an exception for
+      encrypted copies of another repository's companion.
+2. A companion copy is encrypted to the source's keys. How do the
+   secrets tools treat `.claude/imported/`?
+   a. `secrets.py rekey`, `decrypt` and the Node decrypter skip it
+      entirely, so copies stay exactly as the source encrypted them
       (recommended).
-   b. `.claude/imported/<reference name>`, flat.
-   c. Beside each subject's home.
-3. Is the companion copied whole as well?
-   a. No; its values are placed per label as now, and the copy of the
-      reference names where each went (recommended).
-   b. Yes, beside the reference copy, when the recipients `match`.
-4. When the importing repository is public or not confirmed private and
-   the source is not public, is the copy kept?
-   a. No; the import says in its report and its block that the copy was
-      skipped and why (recommended).
-   b. Yes, as for any source.
-5. Does the copy belong to every import procedure, or only the kit default?
-   a. Every procedure, as part of The import (recommended).
-   b. The kit default only.
+   b. `rekey` re-encrypts the copies whose keys `match` and skips the rest.
+3. The public-repository warning. What may the developer omit, and when
+   is it asked?
+   a. Per reference, asked in one round before anything is imported, with
+      the homes questions: continue, which copies it and places its facts,
+      or omit, which neither copies nor places it and marks it `omitted`
+      in the task's block. A source whose visibility the session cannot
+      read, and every upload, counts as not public (recommended).
+   b. Per reference, as in a, but omit skips only the copy and still
+      places its facts.
+   c. Per fact: the developer names what to leave out of the homes, and a
+      reference with any omission is not copied, since a copy with lines
+      removed is not verbatim.
+4. When are uploaded files imported?
+   a. By `/session-open import`, which takes reference files uploaded to
+      the session beside the sources' new references; imports must be on,
+      because `REFERENCES.md` holds the procedure (recommended).
+   b. In any session, when the developer uploads a reference and asks for
+      it to be imported, which then opens an import task.
+5. Where under `.claude/imported/session-import/` does an upload go?
+   Names collide across repositories.
+   a. `session-import/<owner>/<repository>/<reference name>`, from the
+      upload's own `**Repository:**` line (recommended).
+   b. `session-import/<reference name>`, flat; a name already there with
+      different contents is asked about.
+6. An upload's companion has no source keys to compare. How is it placed?
+   a. Treated as `differ`, so its values become `TODO:`s, unless the
+      developer also uploads the source's `secrets-recipients.txt`, which
+      is then compared as for a source (recommended).
+   b. Always treated as `differ`.
+7. How is an upload recorded, so the same file is not imported twice?
+   a. A table in `REFERENCES.md`, Uploaded: the reference name, its
+      `**Repository:**` line, the date and the developer. An upload whose
+      name and repository are already imported, from a source or an
+      upload, is skipped, and a home's `Sources:` line marks a fact from an
+      upload as uploaded by that developer (recommended).
+   b. No record but the copy itself; the copy's path is checked before
+      importing.
 
 ## Closed Tasks
 
