@@ -4,6 +4,28 @@ Every change to a kit-owned file is a release, recorded here with the version
 `VERSION` carries. A project's `/session-open` reports when a newer release
 exists, and the project takes it by `kit.sh update` when its owner asks.
 
+## 1.12.0
+
+The kit's default import fits the repository it imports into.
+
+- `REFERENCES.md`'s Procedure section gains three lines the default reads.
+  Subject home is a path pattern for a subject's file, where `*` stands for
+  any one directory, default `imported/<subject-slug>.md`. New home format
+  names a file and heading in the repository's own rules that say how a
+  subject's file is written and where an added fact goes, default `kit
+  default`. Confirm new homes, default `no`, makes the import ask where
+  each new subject file goes, in one round before it imports anything.
+- Turning imports on proposes the three values from the repository's own
+  rules when they show how it keeps a file per subject. The Default warning
+  shows only while all three are at their defaults, and its second option
+  now asks for them.
+- `/session-open import` waits only on a `task/import-<yymmddhhmmss>`
+  branch, so a task whose slug merely starts with `import-` does not stop
+  an import.
+
+A repository needs to do nothing after updating: a `REFERENCES.md` without
+the new lines reads them as their defaults.
+
 ## 1.11.0
 
 `/session-open backfill` writes the reference the session it runs in is

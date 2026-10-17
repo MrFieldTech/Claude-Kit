@@ -13,6 +13,7 @@ file at the same time.
 
 | Date | Developer | Tasks touched | Work commits |
 |---|---|---|---|
+| 2026-10-17 | GRM / MRFIELDTECH | `import-update-match`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.12.0 lets `REFERENCES.md` set where the kit default import puts a subject's file, how it is written, and whether a new one waits for the owner | `ce39f97..0ce6163` |
 | 2026-10-16 | GRM / MRFIELDTECH | `backfill-intent`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.11.0 has `/session-open backfill` write only the reference its own session is missing, and ask which past closes to write when run first in a new session | `3184930..11fd4f0` |
 | 2026-10-16 | GRM / MRFIELDTECH | `task-name-changes`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.10.0 renames holder lines to `HOLDING` and `DROPPED` and adds a `DISMISSED` status | `c386626..3ff816d` |
 | 2026-10-16 | GRM / MRFIELDTECH | `check-block-fields`, DONE, merged into `preview`: release 1.9.0 has `check.sh` hold every fenced task field block and holder line to the `TASKS.md` template, and swaps `HOUSE.md`'s holder pair to the template's order | `85e0cb5..68b60a4` |
@@ -189,9 +190,11 @@ None.
 - **Should the private repository the default import follows name its
   import procedure?** Raised by GRM / MRFIELDTECH, 2026-10-15, in
   `session-references`. Its authority file governs it and names none, so
-  an import there would stop or run the kit default. Open a task there,
-  after it updates to 1.7.0, pointing at the kit default or writing its
-  own?
+  an import there would stop or run the kit default. From 1.12.0 it can
+  fit the kit default to itself by the three values in `REFERENCES.md`
+  instead (GRM / MRFIELDTECH, 2026-10-17, `import-update-match`). Open a
+  task there, after it updates to 1.12.0, setting those values or writing
+  its own?
 
 - **Should the kit offer a review step for task pull requests?** Raised by
   GRM / MRFIELDTECH, 2026-10-15, in `multi-dev-setup`. Sessions merge their
@@ -227,6 +230,12 @@ None.
   task for it?
 
 ## Flagged As Unverified
+
+**No import has run 1.12.0's three values.** Imports are not on in any
+repository known here. Verified by: a `/session-open import` in a
+repository whose `REFERENCES.md` sets Subject home to a pattern with `*`
+and Confirm new homes to `yes`, which should ask every new home's path in
+one round before importing.
 
 **No session has run 1.11.0's backfill.** Verified by: a
 `/session-open backfill` run after a close that wrote no reference, and

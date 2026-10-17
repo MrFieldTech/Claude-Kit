@@ -57,6 +57,99 @@ Then the detail block, as prose.
 
 ## Closed Tasks
 
+### Let A Repository Set Where And How The Default Import Writes
+
+DROPPED | GRM / MRFIELDTECH | 261017 000016
+HOLDING | GRM / MRFIELDTECH | 261016 230745
+
+**Slug:** `import-update-match`
+**Status:** DONE
+**Opened:** 2026-10-16
+**Closed:** 2026-10-17
+
+**Why.** MrFieldTech, 2026-10-16: update the way import works to best match
+the repository it is intended for while staying generic. The kit default's
+steps already fit any repository: match each subject to a home, add the
+facts the home lacks, keep a conflicting fact beside the existing one with a
+`TODO:` asking which holds, turn unverified facts into `TODO:`s, send
+questions to `HANDOFF.md`, and handle credentials by comparing each
+source's keys with this repository's. Three values it uses are hard-coded,
+and they are what make it wrong for the repository it is meant for, a
+private one whose subjects live one file per subject under a directory per
+section, and whose rules file says how such a file is written:
+
+1. Where a subject's home is. Fixed at `imported/<subject-slug>.md`; it
+   could be a path pattern.
+2. How a new home is written. A plain subject file; it could point to a
+   file and heading in the repository's own rules.
+3. Whether a new home waits for the owner to confirm where it goes. It does
+   not; there it should.
+
+The private repository's own file and path names are left out of this
+block, by the project rule that nothing here names the owner's other
+projects.
+
+**Facts looked up, 2026-10-16.**
+
+- The kit is at 1.11.0. The kit default is `.claude/kit/references.md`,
+  The kit default procedure: subjects go to `imported/<subject-slug>.md`,
+  credentials to `imported/<subject-slug>.secrets.md`, and a new file is
+  written without asking.
+- `REFERENCES.md`, from `.claude/kit/templates/REFERENCES.md`, holds the
+  Procedure section: `Import procedure:` (`kit default`, or a file and
+  heading giving the repository's own) and `Default warning:`.
+- While the warning is `shown`, every import asks once whether to keep the
+  default or write the repository's own procedure into `CLAUDE.md`.
+- `session-open` Import step 2 stops when any `task/import-` branch exists,
+  while `references.md` One at a time names `task/import-<yymmddhhmmss>`.
+  The looser check matches this task's own branch.
+- This repository has no `REFERENCES.md`, so imports are off here.
+
+**Decisions made.** MrFieldTech, 2026-10-16, round 1 of grilling, every
+answer the recommended one.
+
+- The three values live in `REFERENCES.md`'s Procedure section, beside
+  Import procedure, and are set when imports are turned on: only a
+  repository that imports needs them. They apply only under `kit default`.
+- Subject home is a path pattern holding `<subject-slug>`, with `*` for one
+  directory level. The one matching file is the subject's home, none means
+  a new home, and more than one is a question. Credentials go beside the
+  home, ending `.secrets.md`. Default `imported/<subject-slug>.md`.
+- New home format is `kit default` or a file and heading in the
+  repository's own rules, followed both when writing a new home and when
+  placing added facts in an existing one.
+- Confirm new homes, when `yes`, is asked once, before anything is
+  imported: every new reference is read, and each unmatched subject gets a
+  proposed path as the recommended answer. The import waits for the
+  answers. Default `no`.
+- The Default warning's second option asks for the three values, proposing
+  each from the repository's own rules. A full procedure of the
+  repository's own stays possible. The warning shows only while all three
+  are at their defaults.
+- `session-open` Import step 2 matches only `task/import-<yymmddhhmmss>`,
+  as One at a time says, in this release.
+- The release is 1.12.0. A `REFERENCES.md` without the new lines reads them
+  as their defaults, so an updating repository does nothing.
+
+The frontier is empty after round 1.
+
+- A Subject home holding `*` names no single path for a new home, so its
+  new homes are confirmed even when Confirm new homes is `no`. Proposed by
+  GRM / MRFIELDTECH while writing the release; MrFieldTech kept it,
+  2026-10-17.
+
+**Done, 2026-10-16.** Release 1.12.0, as decided: the `REFERENCES.md`
+template gains Subject home, New home format and Confirm new homes.
+`references.md` The kit default procedure holds Its three values, The
+warning and The steps, whose first settles every subject's home before
+anything is imported; Turning imports on proposes the values and the
+import's Questions rule names an unsettled home. `session-open` Import step
+2 matches only `task/import-<yymmddhhmmss>`, and step 7 runs the Homes step
+first. `README.md` and `CHANGELOG.md` say the same. `bash check.sh` passed.
+
+**Closed, 2026-10-17.** Merged into `preview` and then `main` at
+MrFieldTech's request.
+
 ### Backfill Only The Session It Was Opened In
 
 DROPPED | GRM / MRFIELDTECH | 261016 224318

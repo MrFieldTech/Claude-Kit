@@ -420,9 +420,10 @@ each step.
 1. **Turned on?** Read `REFERENCES.md` on the base. With none, say imports
    are not turned on, offer the setup in `.claude/kit/references.md` as a
    numbered question, and stop. Nothing is written.
-2. **One at a time.** When a `task/import-` branch exists on the remote,
-   follow One at a time in `.claude/kit/references.md` and stop until the
-   developer answers. Nothing is written.
+2. **One at a time.** When a `task/import-<yymmddhhmmss>` branch exists on
+   the remote, `import-` and twelve digits and nothing else, follow One at
+   a time in `.claude/kit/references.md` and stop until the developer
+   answers. Nothing is written.
 3. **Attach each source** under Sources, read-only, through the session's
    GitHub access: in a cloud session, attach it with read access and clone
    it, never registering it as one of the session's repositories. Fetch the
@@ -450,7 +451,8 @@ each step.
    reference, oldest first, each `not imported`, and the Import procedure
    `REFERENCES.md` names. Claim it by step 5.
 7. **Import** each reference by The import in `.claude/kit/references.md`,
-   by the Import procedure `REFERENCES.md` names, one commit per reference
+   by the Import procedure `REFERENCES.md` names, the kit default first
+   settling every subject's home by its Homes step, one commit per reference
    holding the import, its source's row in `REFERENCES.md`, and the
    reference marked `imported` in the task's block, pushed after each. Done
    when every listed reference is `imported`, or the task parks or blocks
