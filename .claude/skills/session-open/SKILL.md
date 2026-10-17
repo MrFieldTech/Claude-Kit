@@ -74,6 +74,14 @@ Read, in this order, as they exist on the base:
 3. `TASKS.md`
 4. `HANDOFF.md`
 
+**If the skill on disk is newer than the one loaded.** A session whose
+checkout was older than the base loaded the older `session-open` when it
+started. When `.claude/skills/session-open/SKILL.md` on disk now differs
+from the text this session is following, read the file on disk and follow
+it from step 2, and do the same for `session-close` at close. A session
+with no kit in its checkout never loaded the skill at all; the Backfill
+recovery prompt in the kit's `README.md` brings it here.
+
 Read `HANDOFF.md` in full. Flagged As Unverified names facts that look settled
 and are not, and acting on one of them is how a wrong fact gets written down
 and stops being questioned.
@@ -474,18 +482,21 @@ before anything below.
    over, and stop until the developer answers.
 2. **List what this backfill writes,** by What a backfill covers. In a
    session that has done something before `/session-open backfill`, that
-   is what the session itself did that has no reference, and nothing else.
-   With none, say so and stop. In a brand new session, list the past closes
-   with no reference, by Past closes, numbered, oldest first, with their
-   count, and ask which to write: all, the numbers the developer names, or
-   none. With none listed, or none chosen, say so and stop. Nothing is
-   written and no branch is taken.
+   is one reference for everything the session did that no reference
+   covers, whether or not it ran a kit close, and before the kit was
+   installed as much as after. With nothing uncovered, say so and stop. In
+   a brand new session, list the past closes with no reference, by Past
+   closes, numbered, oldest first, with their count, and ask which to
+   write: all, the numbers the developer names, or none. With none listed,
+   or none chosen, say so and stop. Nothing is written and no branch is
+   taken.
 3. **Open the task** `backfill-<yymmddhhmmss>`, the time in UTC now, by
-   step 4 case c with no grilling: its block lists each reference to write,
-   a past close by its `handoff:` commit, oldest first, each `not written`.
-   Claim it by step 5 and report step 6's lines.
+   step 4 case c with no grilling: its block lists each reference to write
+   by its name, from Its name, and what it covers, the session's own work
+   or a past close by its `handoff:` commit, oldest first, each `not
+   written`. Claim it by step 5 and report step 6's lines.
 4. **Write each reference** by Backfilling: from this conversation for what
-   it ran, otherwise from the repository. One commit per reference, with
+   it did, otherwise from the repository. One commit per reference, with
    its entry marked `written` in the task's block, pushed after each. Done
    when every entry is `written`.
 5. **Close** by `session-close`, steps 1 to 11, with no `/session-close`.

@@ -69,8 +69,8 @@ that opened no task needs no close.
 `/session-open import` imports the session references of the repositories
 `REFERENCES.md` names, on a task of its own, `import-<yymmddhhmmss>`.
 `/session-open backfill` writes the session reference the session it runs
-in is missing, on a task of its own, `backfill-<yymmddhhmmss>`, which closes
-itself. Run as the first thing in a new session, it asks which past closes
+in is missing, for everything it did that no reference covers, on a task of
+its own, `backfill-<yymmddhhmmss>`, which closes itself. Run as the first thing in a new session, it asks which past closes
 with no reference to write instead.
 
 There are three kinds of branch, and no others.
