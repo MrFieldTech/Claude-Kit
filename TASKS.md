@@ -90,44 +90,50 @@ under `.claude/imported/session-import/`.
 
 - **The slug is `backfill-no-close`.** MrFieldTech, 2026-10-17, since
   `backfill-troubleshooting` is 24 characters and the limit is 23.
-- **A session that did work covers also what it did before the kit was
-  installed.** MrFieldTech, 2026-10-17. Work done before the kit, with no
-  close to write a reference, is written from the conversation. A session
-  that has a kit close is still covered for that work only by its close.
-  Work done after the kit arrived without a close stays uncovered.
-- **A kit close that wrote no reference because it predates references
-  gets a backfill reference.** MrFieldTech, 2026-10-17. Already the rule,
-  by the fact above; the fix is that such a session can reach the skill.
-- **The README gains a prompt that lets a session older than the kit run
-  the backfill.** MrFieldTech, 2026-10-17, provided it stays short and does
-  not bloat the README.
+- **A backfill writes a reference for everything its session did, unless
+  that session already has one.** MrFieldTech, 2026-10-17, replacing an
+  earlier answer that covered only pre-kit work. Run in a session that has
+  done work, the backfill writes from the conversation for all of it,
+  whether or not it closed under the kit, and a kit close that wrote no
+  reference gets one. There is no cutoff at the kit's arrival: what was
+  done before the kit counts like what was done after. It writes nothing
+  when a reference for that session already exists. This changes What a
+  backfill covers, which since `backfill-intent` covered only kit closes
+  with no reference and a `temp` session.
+- **A backfill reference is named `<yymmddhhmmss>-<slug>-bf.md`.**
+  MrFieldTech, 2026-10-17. The time is the UTC commit time of the session's
+  last commit that reached the default branch, so it sorts where the work
+  ran, or the time it is written when there is none. The slug is chosen by
+  the session from what the reference covers, with no question to the
+  developer, and `-bf` marks it a backfill.
+- **The README gains a short prompt for a session whose checkout has no
+  usable skill.** MrFieldTech, 2026-10-17. A block of about ten lines under
+  Update: fetch the default branch, read `session-open`, `session-close`
+  and `.claude/kit/references.md` from it with `git show`, follow Backfill
+  as if `/session-open backfill` had run, and stop when the default branch
+  holds no kit. It must not bloat the README.
 
-**Open questions, round 1.**
+**Open questions, round 2.**
 
-1. What names a reference for pre-kit work, which has no `handoff:` commit
-   and no task slug?
-   a. (recommended) The UTC commit time of the session's last commit that
-      reached the default branch, so it sorts where the work ran, and the
-      slug `pre-kit`; with no such commit, the time it is written.
-   b. The time it is written and the slug `pre-kit`, as a `temp` reference
-      takes now.
-   c. A slug the developer gives for each.
-2. Where does "before the kit was installed" end?
-   a. (recommended) At the commit that first added `.claude/kit/MANIFEST`
-      to the default branch: the session's work that reached the base
-      before it is pre-kit, which a later session can check from history.
-   b. At the conversation's first `/session-open`, whatever the history
-      shows.
-3. What does the README prompt do?
-   a. (recommended) A short block under Update, about ten lines: fetch the
-      default branch, read `session-open`, `session-close` and
-      `.claude/kit/references.md` from it with `git show`, and follow
-      Backfill as if `/session-open backfill` had run; stop when the
-      default branch holds no kit.
-   b. The same steps written once in `.claude/kit/references.md`, and the
-      README gives a two-line prompt pointing at them.
+1. A session ran a kit close that wrote its reference, and also did other
+   work no close covered, such as commits before the kit. Does a backfill
+   in it write anything?
+   a. (recommended) Yes, one reference for only the work no reference
+      covers, so nothing is lost and nothing is written twice.
+   b. No. The session already has a reference, so it writes nothing.
+2. A session ran two kit closes with no reference, plus other work. How
+   many references does its backfill write?
+   a. (recommended) One for the whole session, since the decision is
+      written per session.
+   b. One per kit close, named for its task, plus one for the rest.
+3. Do backfill references written in a brand new session, transcribed from
+   the repository for a past close, take the new name too?
+   a. (recommended) Yes. Every backfill reference ends `-bf`, and for a
+      past close the session picks the task's slug as the content slug.
+   b. No. Only references written from a conversation take `-bf`; a past
+      close keeps `<time>-<task-slug>.md`.
 
-**Stopping point.** Grilling, round 1 asked.
+**Stopping point.** Grilling, round 2 asked.
 
 ## Closed Tasks
 ### Keep A Verbatim Copy Of Each Imported Reference
