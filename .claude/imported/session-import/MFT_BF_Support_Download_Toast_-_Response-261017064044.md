@@ -1,0 +1,20 @@
+# Placeholder: MFT_BF_Support_Download_Toast_-_Response.txt
+
+**Original name:** `MFT_BF_Support_Download_Toast_-_Response.txt`
+**Type:** plain text, a transcript of Claude's replies in one earlier session
+**Size:** 3709 bytes
+**Uploaded:** 2026-10-17, by GRM / MRFIELDTECH, to the session that opened
+`backfill-no-close`
+
+**What it held.** A reply finding that `/session-open` existed on the repository's default branch but not in that session's checkout, which predated the kit, so the skill never registered, and that a backfill would not cover work that merged with no kit close.
+
+**What it was for.** Evidence of how `/session-open backfill` behaved in
+sessions in another of the owner's repositories, so the kit could be fixed.
+
+**Where its data went.** The findings are written, naming no project, in the
+`backfill-no-close` block in `TASKS.md`.
+
+**Why it was not copied.** This repository is public and copies an upload
+only when it holds no term from `KIT_PRIVATE_TERMS`. The variable was not
+set in this session, so the file could not be checked, and it names details
+of another project.

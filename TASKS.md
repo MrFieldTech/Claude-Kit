@@ -56,6 +56,110 @@ Then the detail block, as prose.
 ## Open Tasks
 
 ## Closed Tasks
+### Backfill Work That Ran No Kit Close
+
+DROPPED | GRM / MRFIELDTECH | 261017 204755
+HOLDING | GRM / MRFIELDTECH | 261017 064044
+
+**Slug:** `backfill-no-close`
+**Status:** DONE
+**Opened:** 2026-10-17
+**Closed:** 2026-10-17
+
+**Why.** MrFieldTech, 2026-10-17: several old sessions in another of the
+owner's repositories ran `/session-open backfill` expecting it to write a
+reference from the conversation for what the session did, and none did.
+MrFieldTech uploaded four of the replies; each is kept as a placeholder
+under `.claude/imported/session-import/`.
+
+**Facts looked up, 2026-10-17.**
+
+- Three of the four sessions had no `/session-open` at all. Their checkout
+  predated the kit, and Claude Code registers skills from the checkout when
+  a session starts, so the command did not exist there. One found the skill
+  on the default branch and said a fresh session was the only way to run it.
+- The fourth ran the skill at 1.13.0 and reported nothing to cover. By
+  Backfilling, What a backfill covers, in `.claude/kit/references.md`, a
+  session that has done work covers only kit closes it ran with no
+  reference, and a `temp` session. Its work predated the kit and ran no
+  close, so nothing qualified. That rule is from `backfill-intent`, 1.11.0.
+- A kit close made before references existed, 1.0.0 to 1.6.0, already
+  qualifies: it made a `handoff:` commit and added no reference, so Past
+  closes lists it in a new session, and a session that ran it covers it
+  from the conversation. What stops the second case is only that such a
+  session's checkout holds no skill that can run a backfill.
+
+**Decisions.**
+
+- **The slug is `backfill-no-close`.** MrFieldTech, 2026-10-17, since
+  `backfill-troubleshooting` is 24 characters and the limit is 23.
+- **A backfill writes a reference for everything its session did, unless
+  that session already has one.** MrFieldTech, 2026-10-17, replacing an
+  earlier answer that covered only pre-kit work. Run in a session that has
+  done work, the backfill writes from the conversation for all of it,
+  whether or not it closed under the kit, and a kit close that wrote no
+  reference gets one. There is no cutoff at the kit's arrival: what was
+  done before the kit counts like what was done after. It writes nothing
+  when a reference for that session already exists. This changes What a
+  backfill covers, which since `backfill-intent` covered only kit closes
+  with no reference and a `temp` session.
+- **A backfill reference is named `<yymmddhhmmss>-<slug>-bf.md`.**
+  MrFieldTech, 2026-10-17. The time is the UTC commit time of the session's
+  last commit that reached the default branch, so it sorts where the work
+  ran, or the time it is written when there is none. The slug is the task's
+  slug when the work has one, a past close's included, and otherwise one the
+  session chooses from what the reference covers, with no question to the
+  developer. `-bf` marks it a backfill. When the slug and `-bf` together
+  pass the Task slug limit, the end of the slug's last word is cut to fit,
+  as `sonarr-update-emails` becoming `sonarr-update-ema-bf`.
+- **A backfill in a session that already has a reference writes one for
+  only the work no reference covers.** MrFieldTech, 2026-10-17, so nothing
+  is lost and nothing is written twice. It writes nothing when every piece
+  of the session's work is already covered.
+- **A backfill writes one reference for its whole session,** however many
+  kit closes and other pieces of work it holds. MrFieldTech, 2026-10-17.
+- **The developer types only `/session-open backfill`.** MrFieldTech,
+  2026-10-17. A session that cannot run the skill finds the instructions
+  in `README.md`, of whatever length the job needs, and is never handed a
+  pasted prompt.
+
+**Facts looked up after round 2, 2026-10-17.**
+
+- Claude Code loads skills and `CLAUDE.md` from the checkout when a
+  session starts. A session whose checkout predates the kit holds nothing
+  that names the kit, the README or the skill, so no file the kit writes
+  reaches it until the session reads it of its own accord. In the uploads,
+  two such sessions searched only their own checkout and stopped; one
+  fetched the default branch and found the skill.
+- A session whose checkout holds an older kit does run `session-open`,
+  and step 2 then checks out the base, which puts the current skill on
+  disk. It follows the older text it loaded at start.
+- `sonarr-update-emails-bf` is 23 characters, which the limit of 23 allows.
+
+- **A session that cannot run the backfill gets the BACKFILL RECOVERY
+  PROMPT from the kit's README.** MrFieldTech, 2026-10-17. The developer
+  always types `/session-open backfill` first, and when the session plainly
+  does not know what to do, pastes the prompt, of whatever length the job
+  needs, which has it read the current kit from the default branch and
+  follow Backfill. It replaces the decision that the developer never pastes
+  a prompt.
+- **A session that loaded an older `session-open` follows the one on
+  disk.** GRM / MRFIELDTECH, 2026-10-17, chosen by the session as part of
+  the recovery: once step 2 checks out the base, a skill on disk that
+  differs from the loaded one is read and followed, so a session with an
+  older kit needs no prompt.
+- **The slug is cut only when `<slug>-bf` passes the Task slug limit.**
+  MrFieldTech, 2026-10-17. `sonarr-update-emails-bf` is 23 characters and
+  stays whole under a limit of 23.
+
+The frontier is empty after round 3.
+
+**Done, 2026-10-17.** Release 1.14.0 in `.claude/kit/references.md`,
+Backfilling; `session-open` step 2 and Backfill; `HOUSE.md`; a Backfill
+section in `README.md` with the recovery prompt; `CHANGELOG.md` and
+`VERSION`. `bash check.sh` passed on the release commit.
+
+
 ### Keep A Verbatim Copy Of Each Imported Reference
 
 DROPPED | GRM / MRFIELDTECH | 261017 032428

@@ -4,6 +4,36 @@ Every change to a kit-owned file is a release, recorded here with the version
 `VERSION` carries. A project's `/session-open` reports when a newer release
 exists, and the project takes it by `kit.sh update` when its owner asks.
 
+## 1.14.0
+
+`/session-open backfill` covers everything its session did, and a session
+too old to run it can be brought back on track.
+
+- Run in a session that has done work, a backfill writes one reference for
+  everything that session did that no reference covers: work before the
+  kit was installed, work outside any task, each close that wrote no
+  reference, and a temporary session. Work a reference already covers is
+  never written again, and with nothing uncovered it writes nothing. Before
+  this, it covered only kit closes with no reference and a temporary
+  session.
+- A backfill reference is named `<yymmddhhmmss>-<slug>-bf.md`: the task's
+  slug when the work has exactly one, otherwise one the session chooses
+  from what it covers, cut at its end when `<slug>-bf` passes the Task slug
+  limit. The time is the `handoff:` commit's for a past close, otherwise
+  the last commit of the work that reached the default branch, or the time
+  it is written. A past close counts as having a reference when a file
+  under `.claude/references/` starts with its `handoff:` commit's time.
+  The slug `unknown` and the reference named `temp` are gone.
+- `session-open` step 2 follows the skill on disk when it differs from the
+  one the session loaded, as it does in a session whose checkout was older
+  than the base.
+- `README.md` gains a Backfill section with the BACKFILL RECOVERY PROMPT,
+  pasted into a session where `/session-open backfill` did not run as
+  intended.
+
+A repository needs to do nothing after updating. References already
+written keep their names.
+
 ## 1.13.0
 
 A repository keeps a bit for bit copy of what it is given, under
