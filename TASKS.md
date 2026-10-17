@@ -174,43 +174,47 @@ beside `.claude/references/`, and asked for the pros and cons.
 - No table of uploads in `REFERENCES.md`: with the copy per session upload,
   round 2's question 7 no longer applies.
 
-**Open questions, round 3.**
+**Decisions made.** MrFieldTech, 2026-10-17, round 3 of grilling.
 
-1. Which sessions copy uploads? A temporary session commits nothing.
-   a. Every session working a task. A temporary session copies nothing,
-      says the uploads are kept only if it opens a task, and copies them
-      onto the task's branch when it does (recommended).
-   b. Temporary sessions too, which makes them commit and push.
-2. An uploaded file may hold a credential in plaintext, such as a `.env`.
-   `HOUSE.md` never commits one in plaintext. What happens to it?
-   a. It is not copied; the session says so and handles each value by the
-      Credentials setting and the credential rule (recommended).
-   b. It is copied when the developer explicitly says so, as round 2's
-      companion override.
-3. When an upload is a session reference, or its companion, when is it
-   imported?
-   a. It is copied on the session's current task, and the session offers
-      to import it by opening an `import-<yymmddhhmmss>` task, which runs
-      the Import procedure `REFERENCES.md` names (recommended).
-   b. It is imported on the current task at once, by that procedure.
-   c. It is only copied, and imported when the developer asks.
-4. What counts as `<ext>`, so a companion stays a `*.secrets.md`, which
-   the secrets tools look for?
-   a. The last extension, except `.secrets.md`, kept whole:
-      `x.secrets.md` becomes `x-<yymmddhhmmss>.secrets.md`, `a.tar.gz`
-      becomes `a.tar-<yymmddhhmmss>.gz`, and a name with no extension takes
-      the time at its end (recommended).
-   b. Everything from the first dot: `a.tar.gz` becomes
-      `a-<yymmddhhmmss>.tar.gz`.
-5. Whose time is `<yymmddhhmmss>`?
-   a. The UTC time the session copies them, one time for the files of one
-      message, so a reference and its companion uploaded together keep a
-      matching pair of names (recommended).
-   b. Each file's own copy time.
-6. GitHub refuses a file over 100 MB. What about large uploads?
-   a. A file of 100 MB or more is not copied, and the session says so
+- Every session working a task copies its uploads. A temporary session
+  copies nothing, says the uploads are kept only if it opens a task, and
+  copies them onto that task's branch when it does.
+- An upload holding a credential in plaintext is not copied. The session
+  says so and handles each value by the Credentials setting and the
+  credential rule.
+- An upload, a session reference or its companion included, is used as
+  Claude Code uses any file a developer presents: reviewed, read,
+  understood, and its data put where it belongs. It is not run through
+  the Import procedure; `/session-open import` stays for sources. The
+  copy is the record that it was given.
+- `<ext>` is the last extension, except `.secrets.md`, kept whole:
+  `x.secrets.md` becomes `x-<yymmddhhmmss>.secrets.md`, `a.tar.gz` becomes
+  `a.tar-<yymmddhhmmss>.gz`, and a name with no extension takes the time at
+  its end.
+- The time is the UTC time the session copies them, one time for the files
+  of one message, so files uploaded together keep matching names.
+- A file of 100 MB or more, which GitHub refuses, is not copied. The
+  session still reads it, and writes in its place a file
+  `<original file name>-<yymmddhhmmss>.md` saying why it was not copied.
+
+**Open questions, round 4.**
+
+1. Round 3 gave a placeholder file to an upload too large to copy. Do the
+   other uploads that are not copied get one too: a file holding a
+   plaintext credential, one omitted at the public-repository warning, and
+   a companion not copied where Credentials is `none` or the repository is
+   not confirmed private?
+   a. Yes, each gets `<original file name>-<yymmddhhmmss>.md` saying why it
+      was not copied, holding no credential value and none of the omitted
+      content (recommended).
+   b. Only the large file; the others are only reported.
+2. This repository is public, and `check.sh` fails CI on any term from
+   `KIT_PRIVATE_TERMS` in `.claude/references/`. A bit-for-bit copy cannot
+   be redacted. Does `check.sh` cover `.claude/imported/` too?
+   a. Yes; here, an upload or copy holding a private term gets the
+      placeholder instead, since continuing at the warning would fail CI
       (recommended).
-   b. No limit; the push fails and the session reports it.
+   b. No; `.claude/imported/` is not checked here.
 
 ## Closed Tasks
 
