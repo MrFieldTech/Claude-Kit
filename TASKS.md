@@ -55,6 +55,80 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+### Backfill Work That Ran No Kit Close
+
+HOLDING | GRM / MRFIELDTECH | 261017 064044
+
+**Slug:** `backfill-no-close`
+**Status:** ACTIVE
+**Opened:** 2026-10-17
+
+**Why.** MrFieldTech, 2026-10-17: several old sessions in another of the
+owner's repositories ran `/session-open backfill` expecting it to write a
+reference from the conversation for what the session did, and none did.
+MrFieldTech uploaded four of the replies; each is kept as a placeholder
+under `.claude/imported/session-import/`.
+
+**Facts looked up, 2026-10-17.**
+
+- Three of the four sessions had no `/session-open` at all. Their checkout
+  predated the kit, and Claude Code registers skills from the checkout when
+  a session starts, so the command did not exist there. One found the skill
+  on the default branch and said a fresh session was the only way to run it.
+- The fourth ran the skill at 1.13.0 and reported nothing to cover. By
+  Backfilling, What a backfill covers, in `.claude/kit/references.md`, a
+  session that has done work covers only kit closes it ran with no
+  reference, and a `temp` session. Its work predated the kit and ran no
+  close, so nothing qualified. That rule is from `backfill-intent`, 1.11.0.
+- A kit close made before references existed, 1.0.0 to 1.6.0, already
+  qualifies: it made a `handoff:` commit and added no reference, so Past
+  closes lists it in a new session, and a session that ran it covers it
+  from the conversation. What stops the second case is only that such a
+  session's checkout holds no skill that can run a backfill.
+
+**Decisions.**
+
+- **The slug is `backfill-no-close`.** MrFieldTech, 2026-10-17, since
+  `backfill-troubleshooting` is 24 characters and the limit is 23.
+- **A session that did work covers also what it did before the kit was
+  installed.** MrFieldTech, 2026-10-17. Work done before the kit, with no
+  close to write a reference, is written from the conversation. A session
+  that has a kit close is still covered for that work only by its close.
+  Work done after the kit arrived without a close stays uncovered.
+- **A kit close that wrote no reference because it predates references
+  gets a backfill reference.** MrFieldTech, 2026-10-17. Already the rule,
+  by the fact above; the fix is that such a session can reach the skill.
+- **The README gains a prompt that lets a session older than the kit run
+  the backfill.** MrFieldTech, 2026-10-17, provided it stays short and does
+  not bloat the README.
+
+**Open questions, round 1.**
+
+1. What names a reference for pre-kit work, which has no `handoff:` commit
+   and no task slug?
+   a. (recommended) The UTC commit time of the session's last commit that
+      reached the default branch, so it sorts where the work ran, and the
+      slug `pre-kit`; with no such commit, the time it is written.
+   b. The time it is written and the slug `pre-kit`, as a `temp` reference
+      takes now.
+   c. A slug the developer gives for each.
+2. Where does "before the kit was installed" end?
+   a. (recommended) At the commit that first added `.claude/kit/MANIFEST`
+      to the default branch: the session's work that reached the base
+      before it is pre-kit, which a later session can check from history.
+   b. At the conversation's first `/session-open`, whatever the history
+      shows.
+3. What does the README prompt do?
+   a. (recommended) A short block under Update, about ten lines: fetch the
+      default branch, read `session-open`, `session-close` and
+      `.claude/kit/references.md` from it with `git show`, and follow
+      Backfill as if `/session-open backfill` had run; stop when the
+      default branch holds no kit.
+   b. The same steps written once in `.claude/kit/references.md`, and the
+      README gives a two-line prompt pointing at them.
+
+**Stopping point.** Grilling, round 1 asked.
+
 ## Closed Tasks
 ### Keep A Verbatim Copy Of Each Imported Reference
 
