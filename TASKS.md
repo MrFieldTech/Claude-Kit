@@ -69,8 +69,79 @@ repositories that ran 1.14.0's backfill, through the BACKFILL RECOVERY
 PROMPT, at the same time. Each ended with questions for the owner. This
 task settles what in them the kit should change.
 
-**Stopping point.** Claimed. Next: write the facts from the uploads and
-grilling round 1 into this block, then ask it.
+**Facts from the uploads, 2026-10-18.** Four backfills ran in one
+repository within a minute of each other, each in a different past session,
+and each wrote its own `-bf` reference. None duplicated another. Each
+placeholder under `.claude/imported/session-import/` ending `261018042553`
+describes one upload.
+
+1. **One at a time did not hold.** Each checked Backfill step 1 in
+   `session-open` within seconds of the others, found no `task/backfill-`
+   branch, and claimed. Nothing was lost, because a backfill run in a
+   session that did work covers only that session, and two sessions cannot
+   cover the same work. Only a backfill run first in a new session, which
+   lists past closes, can write what another writes.
+2. **Step 1 matches any `task/backfill-` branch.** It would also stop on
+   this task's own branch, `task/backfill-questions`, which the slug rule
+   allows. Import's check matches `import-` and twelve digits only.
+3. **The integration branch was absent and could not be recreated.**
+   Promotion had deleted it. `session-close` step 8's push and its GitHub
+   API fallback were each denied by auto mode, as `[Production Deploy]` and
+   as a shared-resource change. Three sessions stopped; one session's close
+   got through and the others then found the branch there. The uploads do
+   not show how that one created it.
+4. **Merging a session's own pull request was denied once,** as `[Merge
+   Without Review]`, and merged without a block in the three others. The
+   BACKFILL RECOVERY PROMPT names neither action, so each block cost a
+   round trip and an approval sentence.
+5. **Every merge of the integration branch conflicted in `TASKS.md` and
+   `HANDOFF.md`.** Each side had added a whole task block at the top of
+   Closed Tasks, and git interleaved them around the lines they share,
+   `**Status:** DONE`, `**Opened:**` and `**Closed:**`. Keeping both by
+   deleting the markers gives malformed blocks, so each session rebuilt the
+   blocks whole by hand. The conflict rule in `HOUSE.md` says only "keep
+   both".
+6. **The end-of-turn hook called a merged task branch unpushed.** After
+   step 8, GitHub deleted the remote branch and the local branch had no
+   upstream. Two sessions declined to push, correctly, since a push would
+   recreate a merged branch, and detached at the integration branch.
+7. **Sessions reported each other's branches as abandoned.** A backfill's
+   branch is `DONE` with a `DROPPED` line from its own step 3 until its
+   step 8 merges it, so a survey in that window cannot tell a running close
+   from one that stopped. Two sessions offered to merge another session's
+   branch.
+8. **Each session asked about promotion,** by step 9, and one proposed
+   waiting until all four had merged. Nothing in the kit is wrong there.
+9. **1.14.0's backfill and recovery prompt worked** in sessions that did
+   work with no close, verifying part of Flagged As Unverified.
+
+**Open questions, round 1.**
+
+1. Should Backfill's one-at-a-time rule apply only to a backfill run first
+   in a new session? a) yes, a backfill of its own session's work skips it
+   (recommended); b) keep it for every backfill; c) drop it.
+2. How should step 1 recognise a backfill branch? a) `backfill-` and
+   twelve digits, as Import does (recommended); b) reserve every
+   `backfill-` slug for backfills.
+3. Should the BACKFILL RECOVERY PROMPT approve, by name, recreating the
+   integration branch at the default branch's head and merging the
+   backfill's own pull request into it? a) yes (recommended); b) no, keep
+   stopping for an approval sentence.
+4. When both sides added whole task blocks and git interleaved them, should
+   the conflict rule say to rebuild each block whole from its side, then
+   check the result by `check.sh`'s block format? a) yes, in `HOUSE.md` and
+   both skills' conflict steps (recommended); b) leave "keep both" as it is.
+5. Should `session-close` step 8, once the task branch is confirmed gone,
+   detach at `origin/<target>` so the end-of-turn hook has no branch to
+   report? a) yes (recommended); b) no.
+6. How should a survey report a task branch that is `DONE` on its own
+   branch but not merged? a) as "DONE on its branch, not merged, its close
+   may still be running", naming its top holder line, and never offer to
+   merge another session's branch (recommended); b) as now.
+7. Should these ship as one release, 1.15.0? a) yes (recommended); b) split
+   them.
+
+**Stopping point.** Grilling round 1 is written above and asked.
 
 ## Closed Tasks
 ### Backfill Work That Ran No Kit Close
