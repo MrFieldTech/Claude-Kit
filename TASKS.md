@@ -55,6 +55,23 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+### Answer What The First 1.14.0 Backfills Raised
+
+HOLDING | GRM / MRFIELDTECH | 261018 042553
+
+**Slug:** `backfill-questions`
+**Status:** ACTIVE
+**Opened:** 2026-10-18
+
+**Why.** MrFieldTech, 2026-10-18, ran `/session-open backfill-questions`
+with four uploads: the replies of four sessions in another of the owner's
+repositories that ran 1.14.0's backfill, through the BACKFILL RECOVERY
+PROMPT, at the same time. Each ended with questions for the owner. This
+task settles what in them the kit should change.
+
+**Stopping point.** Claimed. Next: write the facts from the uploads and
+grilling round 1 into this block, then ask it.
+
 ## Closed Tasks
 ### Backfill Work That Ran No Kit Close
 
