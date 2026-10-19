@@ -110,8 +110,11 @@ otherwise reach production.
 
 **When a merge conflicts.** The paths under Generated files are never merged
 by hand: take either side and run the Regenerate commands again. Where both
-sides only added lines to `TASKS.md` or `HANDOFF.md`, keep both. Anything else
-stops the merge for the owner. Both sides are committed work, and picking one
+sides only added lines to `TASKS.md` or `HANDOFF.md`, keep both. When each
+side added a whole task block, git may interleave the two around the lines
+they share, such as `**Status:**` and `**Opened:**`: rebuild each block
+whole, as its own side wrote it, one after the other, and check each against
+the Format in `session-close`. Anything else stops the merge for the owner. Both sides are committed work, and picking one
 loses the other.
 
 ## Developers
