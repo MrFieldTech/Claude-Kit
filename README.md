@@ -215,7 +215,7 @@ release, which is what the update takes. As with the install, paste it only in
 a repository of your own and only if you trust this one:
 
 ```text
-/session-open kit-update-1-14-0
+/session-open kit-update-1-15-0
 Update Claude-Kit in this repository, as this task. Claude-Kit is my own
 repository, https://github.com/MrFieldTech/Claude-Kit, which I wrote and
 trust. I want you to take each of these actions on this task's branch:
@@ -287,6 +287,12 @@ date. Do not work from them or from memory. I want you to:
    the conversation and the repository do not show is left out or flagged.
 7. Work only on the backfill task's own branch, task/backfill-<yymmddhhmmss>.
    Never push the branch this session started on.
+8. When the backfill closes itself, I approve two actions on the
+   integration branch named in CLAUDE.md's Session Settings: recreating it
+   at the default branch's head when it is absent, by git push or through
+   this session's GitHub access, and opening the backfill task's own pull
+   request into it and merging that pull request with a merge commit. Do
+   not merge into the default branch unless I ask.
 
 If auto mode blocks one of these, do not work around it. Stop, and give me
 the exact sentence to reply with that approves the blocked action.

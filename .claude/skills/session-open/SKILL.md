@@ -119,6 +119,13 @@ Sort every remote branch except `origin/HEAD`:
 - A task branch whose task is `DONE` or `DISMISSED` on the base should have been deleted by
   GitHub when its pull request merged. Report it for the owner to delete and
   carry on.
+- A task branch whose task is `DONE`, `DISMISSED` or `BLOCKED` on the branch
+  but not on the base is a close that has not merged: its session may be
+  between its handoff commit and its merge right now, or may have stopped
+  there. Report it as `<status> on its branch, not merged, its close may
+  still be running`, with its top holder line. Never offer to merge it. Its
+  pull request belongs to its own session, or to the developer who takes
+  the task over.
 - Anything else is a stray: a branch by any other name, including one the cloud
   harness assigned to an earlier session, or a `task/` branch with no task
   behind it.
@@ -244,7 +251,9 @@ it.
 **If a merge conflicts,** apply the conflict rule in `.claude/kit/HOUSE.md`.
 The paths under Generated files are never merged by hand: take either side,
 run the Regenerate commands, and stage what they write. Where both sides only
-added lines to `TASKS.md` or `HANDOFF.md`, keep both. For anything else, run
+added lines to `TASKS.md` or `HANDOFF.md`, keep both, and where git
+interleaved two whole task blocks, rebuild each whole by that rule. For
+anything else, run
 `git merge --abort`, report the conflicting file names, and stop until the
 owner answers. Do not resolve a content conflict unattended. Both sides are
 committed work and picking one loses the other.
@@ -477,7 +486,12 @@ stray stops it there. In a repository new to the kit it does not run First
 Run: say so and stop. Read Backfilling in `.claude/kit/references.md`
 before anything below.
 
-1. **One at a time.** When a `task/backfill-` branch exists on the remote,
+1. **One at a time, for past closes only.** A backfill in a session that
+   has done something covers only that session's work, which no other
+   backfill can cover, so it skips this step and any number can run at
+   once. Run first in a brand new session, it lists past closes another
+   backfill may be writing: when a `task/backfill-<yymmddhhmmss>` branch
+   exists on the remote, `backfill-` and twelve digits and nothing else,
    name its task and the developer in its top holder line, offer to take it
    over, and stop until the developer answers.
 2. **List what this backfill writes,** by What a backfill covers. In a

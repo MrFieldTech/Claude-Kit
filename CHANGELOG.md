@@ -4,6 +4,28 @@ Every change to a kit-owned file is a release, recorded here with the version
 `VERSION` carries. A project's `/session-open` reports when a newer release
 exists, and the project takes it by `kit.sh update` when its owner asks.
 
+## 1.15.0
+
+What the first 1.14.0 backfills, four run at once, ran into.
+
+- A backfill of its own session's work no longer waits for another
+  backfill: only one run first in a new session, which lists past closes,
+  keeps one at a time. It recognises a backfill branch as `backfill-` and
+  twelve digits, so a task slug that starts `backfill-` is not one.
+- The BACKFILL RECOVERY PROMPT approves recreating the integration branch
+  and merging the backfill's own pull request into it, the two actions
+  auto mode stopped.
+- The conflict rule rebuilds two task blocks that git interleaved, each
+  whole from its own side, in `HOUSE.md` and both skills.
+- `session-close` step 8 detaches at the target once the task branch is
+  gone, so a cloud end-of-turn hook does not call the merged branch
+  unpushed.
+- `session-open` step 3 and `session-close` step 10 report a task branch
+  that is finished on its branch but not merged as a close perhaps still
+  running, and never offer to merge another session's branch.
+
+A repository needs to do nothing after updating.
+
 ## 1.14.0
 
 `/session-open backfill` covers everything its session did, and a session
