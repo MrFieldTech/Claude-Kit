@@ -55,13 +55,16 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+## Closed Tasks
 ### Answer What The First 1.14.0 Backfills Raised
 
+DROPPED | GRM / MRFIELDTECH | 261019 005145
 HOLDING | GRM / MRFIELDTECH | 261018 042553
 
 **Slug:** `backfill-questions`
-**Status:** ACTIVE
+**Status:** DONE
 **Opened:** 2026-10-18
+**Closed:** 2026-10-19
 
 **Why.** MrFieldTech, 2026-10-18, ran `/session-open backfill-questions`
 with four uploads: the replies of four sessions in another of the owner's
@@ -151,9 +154,9 @@ conflict rule and detach, and step 10; `HOUSE.md`'s conflict rule; item 8
 of the BACKFILL RECOVERY PROMPT and the update block in `README.md`;
 `CHANGELOG.md` and `VERSION`. `bash check.sh` passed on the release commit.
 
-**Stopping point.** Release written and pushed. Next: `/session-close`.
+**Closed, 2026-10-19.** Merged into `preview` and then `main` at
+MrFieldTech's request.
 
-## Closed Tasks
 ### Backfill Work That Ran No Kit Close
 
 DROPPED | GRM / MRFIELDTECH | 261017 204755

@@ -13,6 +13,7 @@ file at the same time.
 
 | Date | Developer | Tasks touched | Work commits |
 |---|---|---|---|
+| 2026-10-19 | GRM / MRFIELDTECH | `backfill-questions`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.15.0 lets backfills of their own sessions run side by side, has the BACKFILL RECOVERY PROMPT approve the self-close's merge, rebuilds interleaved task blocks whole, detaches after a merged branch is deleted, and reports a finished but unmerged branch as a close perhaps still running | `049569e..51edf26` |
 | 2026-10-17 | GRM / MRFIELDTECH | `backfill-no-close`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.14.0 has a backfill cover everything its session did that no reference covers, names backfill references `<yymmddhhmmss>-<slug>-bf.md`, and adds the BACKFILL RECOVERY PROMPT to `README.md` | `054e960..d99a0e6` |
 | 2026-10-17 | GRM / MRFIELDTECH | `import-file-process`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.13.0 keeps a bit for bit copy of each imported reference and its companion, and of every file uploaded to a session, under `.claude/imported/` | `94754b0..90bd2f0` |
 | 2026-10-17 | GRM / MRFIELDTECH | `import-update-match`, DONE, merged into `preview` and then `main` at MrFieldTech's request: release 1.12.0 lets `REFERENCES.md` set where the kit default import puts a subject's file, how it is written, and whether a new one waits for the owner | `ce39f97..0ce6163` |
@@ -203,6 +204,12 @@ None.
   to run it is brought back by the BACKFILL RECOVERY PROMPT in `README.md`.
   The full decisions are in the `backfill-no-close` block in `TASKS.md`.
 
+- **Backfills of their own sessions run side by side, and the recovery
+  prompt approves the self-close's merge.** GRM / MRFIELDTECH, 2026-10-19,
+  after four backfills run at once in another repository each stopped on
+  auto mode and rebuilt interleaved task blocks by hand. The full decisions
+  are in the `backfill-questions` block in `TASKS.md`.
+
 ## Open Questions
 
 - **Should the private repository the default import follows name its
@@ -274,12 +281,18 @@ repository whose `REFERENCES.md` sets Subject home to a pattern with `*`
 and Confirm new homes to `yes`, which should ask every new home's path in
 one round before importing.
 
-**No session has run 1.14.0's backfill or the BACKFILL RECOVERY PROMPT.**
-One session in another repository ran 1.13.0's backfill and correctly
-found nothing to cover, by its rules then. Verified by: `/session-open
-backfill` in a session that did work with no close, which should write one
-`-bf` reference; one run first in a new session, which should list and ask;
-and the prompt pasted into a session whose checkout predates the kit.
+**1.14.0's backfill is verified only in sessions that did work.** Four
+sessions in another repository, which had done work with no kit close, ran
+it through the BACKFILL RECOVERY PROMPT on 2026-10-17, one after loading
+1.13.0, and each wrote one `-bf` reference. Verified by: a backfill run
+first in a new session, which should list past closes and ask, and the
+prompt pasted into a session whose checkout predates the kit.
+
+**No session has run 1.15.0.** Verified by: a backfill whose recovery
+prompt carries item 8, which should recreate the integration branch and
+merge its pull request with no auto mode block; a close whose end-of-turn
+hook stays quiet after step 8 detaches; and a merge that rebuilds two
+interleaved task blocks whole.
 
 **No session has written a reference at close, imported, or backfilled.**
 1.7.0 was checked by `check.sh` only, which tests the companion and the
