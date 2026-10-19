@@ -115,33 +115,37 @@ describes one upload.
 9. **1.14.0's backfill and recovery prompt worked** in sessions that did
    work with no close, verifying part of Flagged As Unverified.
 
-**Open questions, round 1.**
+**Decisions made.** MrFieldTech, 2026-10-19, round 1 of grilling.
 
-1. Should Backfill's one-at-a-time rule apply only to a backfill run first
-   in a new session? a) yes, a backfill of its own session's work skips it
-   (recommended); b) keep it for every backfill; c) drop it.
-2. How should step 1 recognise a backfill branch? a) `backfill-` and
-   twelve digits, as Import does (recommended); b) reserve every
-   `backfill-` slug for backfills.
-3. Should the BACKFILL RECOVERY PROMPT approve, by name, recreating the
-   integration branch at the default branch's head and merging the
-   backfill's own pull request into it? a) yes (recommended); b) no, keep
-   stopping for an approval sentence.
-4. When both sides added whole task blocks and git interleaved them, should
-   the conflict rule say to rebuild each block whole from its side, then
-   check the result by `check.sh`'s block format? a) yes, in `HOUSE.md` and
-   both skills' conflict steps (recommended); b) leave "keep both" as it is.
-5. Should `session-close` step 8, once the task branch is confirmed gone,
-   detach at `origin/<target>` so the end-of-turn hook has no branch to
-   report? a) yes (recommended); b) no.
-6. How should a survey report a task branch that is `DONE` on its own
-   branch but not merged? a) as "DONE on its branch, not merged, its close
-   may still be running", naming its top holder line, and never offer to
-   merge another session's branch (recommended); b) as now.
-7. Should these ship as one release, 1.15.0? a) yes (recommended); b) split
-   them.
+- A backfill of its own session's work skips one at a time, because no
+  other backfill can cover that session; only one run first in a new
+  session, which lists past closes, keeps it.
+- Backfill step 1 recognises a backfill branch as `backfill-` and twelve
+  digits and nothing else, as Import does, so a task slug such as
+  `backfill-questions` is not mistaken for one.
+- The BACKFILL RECOVERY PROMPT approves by name recreating the integration
+  branch at the default branch's head and merging the backfill's own pull
+  request into it, so auto mode does not stop the self-close for an
+  approval sentence.
+- When both sides added whole task blocks and git interleaved them, the
+  conflict rule rebuilds each block whole from its own side and checks it
+  against the Format in `session-close`, in `HOUSE.md` and both skills.
+  Round 1 offered `check.sh`'s block check for this, but `check.sh` is not
+  installed in other repositories and checks only fenced examples, so the
+  Format is the check.
+- `session-close` step 8 detaches at `origin/<target>` once the task branch
+  is confirmed gone, after MrFieldTech confirmed the backfill runs the
+  close: Backfill step 5 runs `session-close` steps 1 to 11, so the hook
+  fired inside the backfill.
+- A task branch that is `DONE`, `DISMISSED` or `BLOCKED` on its own branch
+  but not on the base is reported as not merged, its close perhaps still
+  running, with its top holder line, and no session offers to merge another
+  session's branch. `session-open` step 3 and `session-close` step 10.
+- All of it is one release, 1.15.0.
 
-**Stopping point.** Grilling round 1 is written above and asked.
+The frontier is empty after round 1.
+
+**Stopping point.** Grilling done. Next: write release 1.15.0 as decided.
 
 ## Closed Tasks
 ### Backfill Work That Ran No Kit Close
