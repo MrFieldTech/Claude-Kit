@@ -56,6 +56,107 @@ Then the detail block, as prose.
 ## Open Tasks
 
 ## Closed Tasks
+### Answer What The First 1.14.0 Backfills Raised
+
+DROPPED | GRM / MRFIELDTECH | 261019 005145
+HOLDING | GRM / MRFIELDTECH | 261018 042553
+
+**Slug:** `backfill-questions`
+**Status:** DONE
+**Opened:** 2026-10-18
+**Closed:** 2026-10-19
+
+**Why.** MrFieldTech, 2026-10-18, ran `/session-open backfill-questions`
+with four uploads: the replies of four sessions in another of the owner's
+repositories that ran 1.14.0's backfill, through the BACKFILL RECOVERY
+PROMPT, at the same time. Each ended with questions for the owner. This
+task settles what in them the kit should change.
+
+**Facts from the uploads, 2026-10-18.** Four backfills ran in one
+repository within a minute of each other, each in a different past session,
+and each wrote its own `-bf` reference. None duplicated another. Each
+placeholder under `.claude/imported/session-import/` ending `261018042553`
+describes one upload.
+
+1. **One at a time did not hold.** Each checked Backfill step 1 in
+   `session-open` within seconds of the others, found no `task/backfill-`
+   branch, and claimed. Nothing was lost, because a backfill run in a
+   session that did work covers only that session, and two sessions cannot
+   cover the same work. Only a backfill run first in a new session, which
+   lists past closes, can write what another writes.
+2. **Step 1 matches any `task/backfill-` branch.** It would also stop on
+   this task's own branch, `task/backfill-questions`, which the slug rule
+   allows. Import's check matches `import-` and twelve digits only.
+3. **The integration branch was absent and could not be recreated.**
+   Promotion had deleted it. `session-close` step 8's push and its GitHub
+   API fallback were each denied by auto mode, as `[Production Deploy]` and
+   as a shared-resource change. Three sessions stopped; one session's close
+   got through and the others then found the branch there. The uploads do
+   not show how that one created it.
+4. **Merging a session's own pull request was denied once,** as `[Merge
+   Without Review]`, and merged without a block in the three others. The
+   BACKFILL RECOVERY PROMPT names neither action, so each block cost a
+   round trip and an approval sentence.
+5. **Every merge of the integration branch conflicted in `TASKS.md` and
+   `HANDOFF.md`.** Each side had added a whole task block at the top of
+   Closed Tasks, and git interleaved them around the lines they share,
+   `**Status:** DONE`, `**Opened:**` and `**Closed:**`. Keeping both by
+   deleting the markers gives malformed blocks, so each session rebuilt the
+   blocks whole by hand. The conflict rule in `HOUSE.md` says only "keep
+   both".
+6. **The end-of-turn hook called a merged task branch unpushed.** After
+   step 8, GitHub deleted the remote branch and the local branch had no
+   upstream. Two sessions declined to push, correctly, since a push would
+   recreate a merged branch, and detached at the integration branch.
+7. **Sessions reported each other's branches as abandoned.** A backfill's
+   branch is `DONE` with a `DROPPED` line from its own step 3 until its
+   step 8 merges it, so a survey in that window cannot tell a running close
+   from one that stopped. Two sessions offered to merge another session's
+   branch.
+8. **Each session asked about promotion,** by step 9, and one proposed
+   waiting until all four had merged. Nothing in the kit is wrong there.
+9. **1.14.0's backfill and recovery prompt worked** in sessions that did
+   work with no close, verifying part of Flagged As Unverified.
+
+**Decisions made.** MrFieldTech, 2026-10-19, round 1 of grilling.
+
+- A backfill of its own session's work skips one at a time, because no
+  other backfill can cover that session; only one run first in a new
+  session, which lists past closes, keeps it.
+- Backfill step 1 recognises a backfill branch as `backfill-` and twelve
+  digits and nothing else, as Import does, so a task slug such as
+  `backfill-questions` is not mistaken for one.
+- The BACKFILL RECOVERY PROMPT approves by name recreating the integration
+  branch at the default branch's head and merging the backfill's own pull
+  request into it, so auto mode does not stop the self-close for an
+  approval sentence.
+- When both sides added whole task blocks and git interleaved them, the
+  conflict rule rebuilds each block whole from its own side and checks it
+  against the Format in `session-close`, in `HOUSE.md` and both skills.
+  Round 1 offered `check.sh`'s block check for this, but `check.sh` is not
+  installed in other repositories and checks only fenced examples, so the
+  Format is the check.
+- `session-close` step 8 detaches at `origin/<target>` once the task branch
+  is confirmed gone, after MrFieldTech confirmed the backfill runs the
+  close: Backfill step 5 runs `session-close` steps 1 to 11, so the hook
+  fired inside the backfill.
+- A task branch that is `DONE`, `DISMISSED` or `BLOCKED` on its own branch
+  but not on the base is reported as not merged, its close perhaps still
+  running, with its top holder line, and no session offers to merge another
+  session's branch. `session-open` step 3 and `session-close` step 10.
+- All of it is one release, 1.15.0.
+
+The frontier is empty after round 1.
+
+**Done, 2026-10-19.** Release 1.15.0, as decided: `session-open` step 3,
+step 5's conflict rule and Backfill step 1; `session-close` step 8's
+conflict rule and detach, and step 10; `HOUSE.md`'s conflict rule; item 8
+of the BACKFILL RECOVERY PROMPT and the update block in `README.md`;
+`CHANGELOG.md` and `VERSION`. `bash check.sh` passed on the release commit.
+
+**Closed, 2026-10-19.** Merged into `preview` and then `main` at
+MrFieldTech's request.
+
 ### Backfill Work That Ran No Kit Close
 
 DROPPED | GRM / MRFIELDTECH | 261017 204755

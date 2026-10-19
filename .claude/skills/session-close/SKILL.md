@@ -242,7 +242,9 @@ git merge --no-edit origin/<default branch>
 If a merge conflicts, apply the conflict rule in `.claude/kit/HOUSE.md`. The
 paths under Generated files are never merged by hand: take either side, run the
 Regenerate commands again, and stage what they write. Where both sides only
-added lines to `TASKS.md` or `HANDOFF.md`, keep both. For anything else, run
+added lines to `TASKS.md` or `HANDOFF.md`, keep both, and where git
+interleaved two whole task blocks, rebuild each whole by that rule. For
+anything else, run
 `git merge --abort` and park the task, below. Do not resolve a content conflict
 unattended.
 
@@ -324,6 +326,15 @@ The second command prints nothing when the branch is gone. If it is still there,
 report it for the owner to delete, and say on the `Branch:` line that
 Automatically delete head branches is off and needs turning on.
 
+When it is gone, leave the local branch, whose upstream no longer exists:
+
+```
+git checkout --detach origin/<target>
+```
+
+A cloud end-of-turn hook reads a branch with no upstream as unpushed work.
+Never push it to answer the hook, which would recreate a merged branch.
+
 **To park a task instead,** set a `DONE` or `DISMISSED` task back to `ACTIVE` and move its
 block back to Open Tasks, or leave a `BLOCKED` task as it is. Write in the block
 why the merge did not happen, naming the conflicting files or the failing check.
@@ -400,6 +411,11 @@ Anything besides `origin/HEAD`, the default branch, the integration branch, the
 Other branches, and `origin/task/<slug>` for a task in `TASKS.md` is a stray.
 Report each with the count of commits it holds that the default branch does
 not. A session cannot delete a branch, so leave strays for the owner.
+
+Another session's task branch whose task is `DONE`, `DISMISSED` or `BLOCKED`
+on that branch but not on the integration branch is reported as
+`session-open` step 3 reports it, never as parked or abandoned, and is not
+offered for merging.
 
 ## 11. Report
 
