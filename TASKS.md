@@ -55,6 +55,63 @@ Then the detail block, as prose.
 
 ## Open Tasks
 
+### Point The Backfill Recovery Prompt At The Right Branch And Repository
+
+HOLDING | GRM / MRFIELDTECH | 261019 011740
+
+**Slug:** `backfill-problems`
+**Status:** ACTIVE
+**Opened:** 2026-10-19
+
+**Why.** MrFieldTech, 2026-10-19, ran `/session-open backfill-problems`
+with the reply of a session in another of the owner's repositories that
+was given the BACKFILL RECOVERY PROMPT from `README.md`. That repository
+had taken a kit update on a task branch merged into its integration
+branch, not yet promoted to its default branch. The session had a second
+repository attached, only to read a standard from it. It stopped, and its
+reply offered the second repository as a place the backfill could go,
+which MrFieldTech did not expect.
+
+**Facts, 2026-10-19.**
+
+- The prompt's items 2 to 4 check for the kit, check its release and read
+  the kit files on the default branch only. A kit update merges into the
+  integration branch at close and reaches the default branch only when the
+  owner promotes it, so a repository that has just updated fails item 3
+  until the promotion. The session reported release 1.2.0 on the default
+  branch of the repository it worked in.
+- `session-open` itself works from the base, the integration branch when it
+  exists, so the skill would have run the backfill had the prompt let it
+  reach step 5.
+- The prompt says "this repository" and never says which one when a
+  session has more than one. The session found an update branch in the
+  second repository, not merged into its default branch either, and so
+  offered it as an option, and its second action line told the owner to
+  merge it there.
+
+**Open questions, round 1.**
+
+1. Which branch should the recovery prompt check for the kit and its
+   release, and read the kit files from?
+   a. The base, as `session-open` step 2 finds it: the integration branch
+      named in `CLAUDE.md` when it exists on the remote, else the default
+      branch (recommended).
+   b. The default branch, as now, with the stop message saying to promote
+      the integration branch first.
+   c. Whichever of the two holds the newer release.
+2. Which repository does the backfill go into when the session has more
+   than one?
+   a. The one this session committed to or ran a kit open in. A repository
+      it only read from is never written to, and when work landed in more
+      than one, it asks which (recommended).
+   b. It always asks which repository when there is more than one.
+   c. One backfill in each repository the session changed.
+
+**Stopping point.** Round 1 asked, waiting on MrFieldTech's answers. The
+fix is a release, 1.16.0: the prompt in `README.md`, any matching text in
+the skills or `references.md`, `VERSION`, `CHANGELOG.md` and the README's
+update slug.
+
 ## Closed Tasks
 ### Answer What The First 1.14.0 Backfills Raised
 
