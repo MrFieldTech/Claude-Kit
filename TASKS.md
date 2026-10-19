@@ -145,7 +145,13 @@ describes one upload.
 
 The frontier is empty after round 1.
 
-**Stopping point.** Grilling done. Next: write release 1.15.0 as decided.
+**Done, 2026-10-19.** Release 1.15.0, as decided: `session-open` step 3,
+step 5's conflict rule and Backfill step 1; `session-close` step 8's
+conflict rule and detach, and step 10; `HOUSE.md`'s conflict rule; item 8
+of the BACKFILL RECOVERY PROMPT and the update block in `README.md`;
+`CHANGELOG.md` and `VERSION`. `bash check.sh` passed on the release commit.
+
+**Stopping point.** Release written and pushed. Next: `/session-close`.
 
 ## Closed Tasks
 ### Backfill Work That Ran No Kit Close
